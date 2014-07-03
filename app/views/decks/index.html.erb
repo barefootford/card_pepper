@@ -1,0 +1,31 @@
+<% if current_user %>
+<h1>Deck Manager</h1>
+
+<% if @user_decks %>
+  <ul>
+    <% @user_decks.each do |deck| %>
+      <li>
+        <p><%= link_to deck.title, deck %></p>
+        <p><%= deck_history(deck) %></p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to 'New Deck', new_deck_path, class: 'button' %>
+
+
+<% end %>
+
+<h1>Top decks:</h1>
+
+<ul>
+  <% @decks.each do |deck| %>
+    <li>
+      <p><%= link_to title_and_editor(deck), deck %></p>
+      <p><%= deck_history(deck) %></p>
+    </li>
+  <% end %>
+</ul>
+
+

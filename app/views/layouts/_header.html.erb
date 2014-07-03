@@ -1,0 +1,18 @@
+<span class='header'>
+  <h3 class='header-left'>
+    <%= link_to 'Card Pepper', root_path %> |
+
+    <% if current_user %>
+      <%= link_to current_user.name, current_user %> |
+      <%= link_to 'Sign Out', session_path,
+                method: :delete, class: 'button' %> |
+      <%= link_to 'Account Settings', edit_user_path(current_user) %>
+    
+    <% else %>
+      <%= link_to 'Sign Up', sign_up_path, class: 'button' %> |
+      <%= link_to 'Sign In', sign_in_path, class: 'button' %>  
+    <% end %>
+  
+  </h3>
+</span>
+<hr>

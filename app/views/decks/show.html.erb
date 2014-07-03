@@ -1,0 +1,23 @@
+<h1><%= @deck.title %></h1>
+
+<h3>Editor: <%= @deck.user.name %></h3>
+
+<h2>Instructions:</h2>
+<p><%= @deck.instructions %></p>
+
+<h2>Chapters</h2>
+
+<% if @deck.chapters.any? %>
+  <ol>
+    <% @deck.chapters.each do |chapter| %>
+    <li><%= chapter.title %></li>
+    <% end %>
+  </ol>
+<% end %>
+
+<%= link_to "[New Chapter]", '#' %>
+
+
+<% if current_user && current_user.id == @deck.user.id %>
+  <%= link_to "Delete Deck", deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' } %>
+<% end %>

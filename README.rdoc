@@ -1,0 +1,11 @@
+== README
+
+CardPepper makes collaborative decks for Anki super simple.
+
+Catches:
+
+* Files have to be imported as .txts
+
+* No rich text/HTML support
+
+* There isn't an easy way to export your decks into .txt files from Anki (yet!)
