@@ -11,6 +11,7 @@ Pepper::Application.routes.draw do
     resources :chapters
   end
 
+  resources :chapters
 
   resource :session
   resources :decks

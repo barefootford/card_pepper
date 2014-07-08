@@ -1,0 +1,11 @@
+<h1>New Chapter</h1>
+<h3>(Chapters hold cards.)</h3>
+
+<%= form_for [@deck, @chapter] do |f| %>
+<p>
+  <%= f.label :title, "Title:" %><br>
+  <%= f.text_area :title, cols: 60 %>
+</p>
+
+<%= f.submit "Save" %>
+<% end %>
