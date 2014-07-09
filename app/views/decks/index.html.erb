@@ -1,31 +1,27 @@
 <% if current_user %>
-<h1>Deck Manager</h1>
+<div class='row'>
+    <div class='col-md-8'>
+      <h1 class='text-center'>Decks</h1>
 
-<% if @user_decks %>
-  <ul>
-    <% @user_decks.each do |deck| %>
-      <li>
-        <p><%= link_to deck.title, deck %></p>
-        <p><%= deck_history(deck) %></p>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+        <% if @user_decks %>
+          <% @user_decks.each do |deck| %>
+            <div>
+              <%= link_to deck.title, deck, class:'btn btn-lg btn-block btn-default' %>
+              <br>
+            </div>
+          <% end %>
+      <% end %>
 
-<%= link_to 'New Deck', new_deck_path, class: 'button' %>
-
-
-<% end %>
-
-<h1>Top decks:</h1>
-
-<ul>
-  <% @decks.each do |deck| %>
-    <li>
-      <p><%= link_to title_and_editor(deck), deck %></p>
-      <p><%= deck_history(deck) %></p>
-    </li>
+      <%= link_to 'New Deck', new_deck_path, class:'btn btn-lg btn-block btn-primary' %>
+      <br>
+    </div>
+    <div class='col-md-4'>
+      <p>Recommendations:</p>
+      <% if @user_decks %>
+        <% @user_decks.each do |deck| %>
+          <div><%= deck.title %> (0)</div>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-</ul>
-
-
+</div>

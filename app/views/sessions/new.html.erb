@@ -1,24 +1,44 @@
-<header class="content-header">
-  <h1>Sign in</h1>
-</header>
+<div class='row flashcard-bg' >
+  <div class='col-md-6'>
+    <h1 class='text-center'>Welcome to Pepper</h1>
+    <p class='lead text-center'>The home of collaborative flashcards</p>
+  </div>
+  
+  <div class='col-md-6'>
+    <%= form_tag(session_path) do %>
+      <%= email_field_tag :email, 'Email Address', autofocus: true,
+        required: true, class:'form-control input-hg' %> 
 
-<%= form_tag(session_path) do %>
-  <fieldset>
-    
-      <p>
-        <%= label_tag :email %>
-        <%= email_field_tag :email, nil, autofocus: true,
-              size: 40, required: true %> 
-      </p>
-      
-      <p>
-        <%= label_tag :password %>
-        <%= password_field_tag :password, 'abracadabra', size: 40,
-            required: true %>
-      </p>
-    
-    <p>
-      <%= submit_tag "Sign In!" %>  
-    </p>
-  </fieldset>
-<% end %>
+      <%= password_field_tag :password, nil, placeholder:'Password', size: 40,
+        required: true, class:'form-control input-hg' %>
+      <%= password_field_tag :password, nil, placeholder:'Password', size: 40,
+        required: true, class:'form-control input-hg' %>    
+          
+      <%= submit_tag "Register", class:"btn btn-lg btn-block btn-success" %>
+      <br>
+    <% end %>
+  </div>
+  
+  <div class='col-md-12'>
+    <hr>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-6'>
+    <p class='lead text-center'>Registered? Sign in.</p>
+  </div>
+
+  <div class='col-md-6'>
+    <%= form_tag(session_path) do %>
+        <%= email_field_tag :email, 'Email Address', autofocus: true,
+          required: true, class:'form-control input-hg' %> 
+
+        <%= password_field_tag :password, nil, placeholder:'Password', size: 40,
+            required: true, class:'form-control input-hg' %>
+
+        <%= submit_tag "Sign In", class:"btn btn-lg btn-block btn-inverse" %>
+    <% end %>
+    <br>
+  </div>
+</div>

@@ -19,7 +19,7 @@ private
   def require_sign_in
     unless current_user
       session[:intended_url] = request.url
-      redirect_to new_session_url, alert: 'Please sign in first.'
+      redirect_to sign_in_path, alert: 'Only registered users can view decks. Sign in or sign up here.'
     end
   end
 

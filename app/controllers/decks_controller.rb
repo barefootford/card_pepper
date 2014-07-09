@@ -1,10 +1,11 @@
 class DecksController < ApplicationController
 
-  before_action :require_sign_in, except: [:index, :show]
+  before_action :require_sign_in, except: [:show]
   before_action :require_deck_creator, only: [:edit, :update, :destroy]
 
   def index
     @decks = Deck.all
+    
     if current_user
       @user_decks = current_user.decks
     end  
