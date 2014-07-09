@@ -1,23 +1,26 @@
-<h1><%= @deck.title %></h1>
+<div class='row'>
+  <div class='col-md-6'>
+    <h3><%= @deck.title %></h3>
 
-<h3>Editor: <%= @deck.user.name %></h3>
+    <h3>Chapters</h3>
 
-<h2>Instructions:</h2>
-<p><%= @deck.instructions %></p>
-
-<h2>Chapters</h2>
-
-<% if @deck.chapters.any? %>
-  <ol>
-    <% @deck.chapters.each do |chapter| %>
-    <li><%= link_to chapter.title, chapter %></li>
+    <% if @deck.chapters.any? %>
+      <ol>
+        <% @deck.chapters.each do |chapter| %>
+        <li draggable="true">
+          <span class='btn btn-xs btn-primary mhm btn-danger'>X</span>
+          <!-- <span class='btn btn-xs btn-primary mhm btn-primary'>E</span> -->
+          <%= link_to chapter.title, chapter %>
+        </li>
+        <% end %>
+      </ol>
     <% end %>
-  </ol>
-<% end %>
 
-<%= link_to "[New Chapter]", new_deck_chapter_path(@deck) %>
+    <br>
+    <br>
+    <%# if current_user && current_user.id == @deck.user.id %>
+      <%#= link_to "Delete Deck", deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' } %>
+    <%# end %>
 
-
-<%# if current_user && current_user.id == @deck.user.id %>
-  <%#= link_to "Delete Deck", deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' } %>
-<%# end %>
+  </div>
+</div>
