@@ -1,7 +1,7 @@
 class DecksController < ApplicationController
 
   before_action :require_sign_in, except: [:show]
-  before_action :require_deck_creator, only: [:edit, :update, :destroy]
+  before_action :require_creator, only: [:edit, :update, :destroy]
 
   def index
     @decks = Deck.all
@@ -39,7 +39,7 @@ class DecksController < ApplicationController
     @deck = current_user.decks.new(deck_params)
     if @deck.save
        @deck.chapters.create!(title:"Chapter 1")
-       redirect_to @deck, notice: "Deck created successfully. Let's get to work."  
+       redirect_to @deck, notice: "Deck built successfully."  
     else
       render :new
     end
@@ -47,11 +47,10 @@ class DecksController < ApplicationController
 
   private
 
-  def require_deck_creator
-    
-    unless current_user == Deck.find(params[:id]).user
-      redirect_to root_url, notice: 'Only the deck creator can edit the deck.'
-    end    
+  def require_creator
+    unless current_user && current_user == current_model(self).find(params[:id]).user
+      redirect_to root_url, notice: "Only the #{current} creator can edit the '###'."
+    end
   end
 
   def set_deck
@@ -60,5 +59,9 @@ class DecksController < ApplicationController
 
   def deck_params
     params.require(:deck).permit(:title,:editor,:instructions)    
+  end
+
+  def current_model(controller)
+    @model ||= controller.class.to_s.sub('sController','').constantize
   end
 end

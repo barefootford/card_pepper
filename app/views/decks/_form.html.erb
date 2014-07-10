@@ -10,14 +10,14 @@
         rows: 4 %>
       <br>
 </div>
-<!-- 
+
     <div class='col-md-4'>
-        <%#= f.submit "Update", class:'btn btn-lg btn-block btn-primary' %>
+        <%= f.submit "Update", class:'btn btn-lg btn-block btn-primary' %>
         <br>
     </div>
     <span class='col-md-2'>
-        <%# if current_user && @deck.user.id == current_user.id %>
-            <%#= link_to 'Delete', deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' }, class:'btn btn-lg btn-block btn-warning' %>
-        <%# end %>
-    </span>    
+        <% if current_user && @deck.user.id == current_user.id %>
+            <%= link_to 'Delete', deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' }, class:'btn btn-lg btn-block btn-warning' %>
+        <% end %>
+    </span>
 <% end %>

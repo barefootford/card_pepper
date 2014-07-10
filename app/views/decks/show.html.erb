@@ -1,24 +1,31 @@
 <div class='row'>
   <div class='col-md-8'>
-    <h3><%= @deck.title %>
-      <span class='btn btn-xs btn-default' %>
-        <%= link_to 'Edit', edit_deck_path(@deck) %>
-      </span>
-    </h3>
-  <h3>Chapters</h3>
+    <h3 class='head-with-author'><%= @deck.title %></h3>
+    <span><%= link_to @deck.user.name, user_path(@deck.user), class:'label label-info no-link-color' %>
+    </span>
+    
+    <h3>Chapters:</h3>
 
     <% if @deck.chapters.any? %>
       <ol>
         <% @deck.chapters.each do |chapter| %>
         <li>
-          <span class='btn btn-xs btn-primary btn-danger'>X</span>
-          <!-- <span class='btn btn-xs btn-primary mhm btn-primary'>E</span> -->
-          <%= link_to chapter.title, chapter %>
+          <h6>
+            <%= link_to chapter.title, chapter %>
+          <h6>
         </li>
         <% end %>
       </ol>
     <% end %>
     <br>
+    
+    <% byebug %>
+    <% unless @deck.instructions.blank? %>
+      <h3>Instructions:</h3>
+      <p><%= @deck.instructions %></p>
+    <% end %>
+    
+    <%= link_to "Download Deck", "#", class:'btn btn-lg btn-block btn-primary' %>
     <br>
   </div>
 </div>
