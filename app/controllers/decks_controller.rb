@@ -22,7 +22,7 @@ class DecksController < ApplicationController
   def update
     set_deck
     @deck.update(deck_params)
-    redirect_to @deck    
+    redirect_to @deck, notice: "Deck updated successfully."    
   end
 
   def destroy

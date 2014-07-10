@@ -1,15 +1,23 @@
-<%= form_for @deck do |f| %>
-<%= render "layouts/errors", object: @deck %>
-
-  <p>
-    <%= f.label :title %><br>
-    <%= f.text_area :title, cols: 40 %>
-    <br>
-  </p>
-  <p>
-    <%= f.label :instructions %><br>
-    <%= f.text_area :instructions, cols: 40, rows: 4 %>
-    <br>
-  </p>
-  <%= f.submit %>
+<div class-'col-md-6'>
+  <h3>Editing</h3>
+  <%= form_for @deck do |f| %>
+    <%= render "layouts/errors", object: @deck %>
+      <%= f.label :title, "Title:" %><br>
+      <%= f.text_area :title, class:'form-control', rows: 1 %>
+      <br>
+      <%= f.label :instructions, "Instructions:" %><br>
+      <%= f.text_area :instructions, class:'form-control',
+        rows: 4 %>
+      <br>
+</div>
+<!-- 
+    <div class='col-md-4'>
+        <%#= f.submit "Update", class:'btn btn-lg btn-block btn-primary' %>
+        <br>
+    </div>
+    <span class='col-md-2'>
+        <%# if current_user && @deck.user.id == current_user.id %>
+            <%#= link_to 'Delete', deck_path, method: :delete, data: { confirm: 'Are you sure you want to delete this deck? This cannot be un done.' }, class:'btn btn-lg btn-block btn-warning' %>
+        <%# end %>
+    </span>    
 <% end %>
