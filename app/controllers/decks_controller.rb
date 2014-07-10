@@ -16,7 +16,8 @@ class DecksController < ApplicationController
   end
 
   def edit
-    set_deck    
+    set_deck
+    @chapter = Chapter.new(deck_id: set_deck.id)
   end
 
   def update
@@ -39,7 +40,7 @@ class DecksController < ApplicationController
     @deck = current_user.decks.new(deck_params)
     if @deck.save
        @deck.chapters.create!(title:"Chapter 1")
-       redirect_to @deck, notice: "Deck built successfully."  
+       redirect_to edit_deck_path(@deck), notice: "Deck built successfully. Add a chapter to store cards."
     else
       render :new
     end
@@ -48,20 +49,17 @@ class DecksController < ApplicationController
   private
 
   def require_creator
-    unless current_user && current_user == current_model(self).find(params[:id]).user
-      redirect_to root_url, notice: "Only the #{current} creator can edit the '###'."
+    unless current_user && current_user == set_deck.user
+      redirect_to root_url, notice: "Only the deck's creator can edit the deck."
     end
   end
 
   def set_deck
-    @deck = Deck.find(params[:id])
+    @deck ||= Deck.find(params[:id])
   end
 
   def deck_params
     params.require(:deck).permit(:title,:editor,:instructions)    
   end
 
-  def current_model(controller)
-    @model ||= controller.class.to_s.sub('sController','').constantize
-  end
 end

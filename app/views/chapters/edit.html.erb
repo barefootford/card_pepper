@@ -1,11 +1,11 @@
-<div class=''>
+<div class='row'>
   <div class='col-md-6'>
     <h3>Editing:</h3>
 
     <%= form_for @chapter do |f| %>
     <p>
       <%= f.label :title, "Title:" %><br>
-      <%= f.text_area :title, cols: 60 %>
+      <%= f.text_area :title, class:'form-control' %>
     </p>
 
     <%= f.submit "Save", class:'btn btn-lg btn-block btn-primary' %>
