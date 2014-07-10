@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.2'
 
 gem 'rails', '4.1.4'
+gem 'bcrypt-ruby'
 gem 'sqlite3'
 
 gem 'uglifier', '>= 1.3.0'
@@ -10,7 +11,6 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
-gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'byebug'
 
 gem 'bootstrap-sass', '~> 3.2.0'
