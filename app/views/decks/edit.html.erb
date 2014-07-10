@@ -1,6 +1,39 @@
 <div class='row'>
   <div class='col-md-6'>
     <h3>Editing: <%= @deck.title %></h3>
-    <%#= render 'form' %>
+    <%= form_for @deck do |f| %>
+      <small>Title:</small>
+      <%= f.text_area :title, class:'form-control', rows:1 %>
+      <small>Instructions:</small>
+      <%= f.text_area :instructions, placeholder:"Instructions make decks more valuable by showing how to use them.", class:'form-control', rows:6 %>
+      <br>
+      <%= f.submit ("Edit Deck"), class:'btn btn-block btn-primary' %>
+      <br>
+      <% if current_user && @deck.user == current_user %>
+            <%= link_to 'Delete Deck', deck_path, method: :delete, data: { confirm: 'Are you *sure* you want to delete this deck?' }, class:'btn btn-block btn-danger' %><br>
+        <% end %>
+    <% end %>
+  </div>
+  <div class='col-md-6'>
+    <h3>Chapters:</h3>
+    <% if @deck.chapters.any? %>
+      <ol>
+        <% @deck.chapters.each do |chapter| %>
+        <li>
+          <h6>
+            <span><%= link_to "Edit", edit_chapter_path(chapter), class:'btn btn-xs btn-info'  %></span>
+            <span>
+              <%= link_to "X", chapter_path, method: :delete, data: { confirm: 'Are you *sure* you want to delete this chapter?' }, class:'btn btn-xs btn-danger' %>
+            </span>
+
+            <%#= link_to 'Delete Deck', deck_path, method: :delete, data: { confirm: 'Are you *sure* you want to delete this deck?' }, class:'btn btn-block btn-danger' %>
+
+            <%= link_to chapter.title, chapter %>
+          <h6>
+        </li>
+        <% end %>
+      </ol>
+    <% end %>
+    <br>
   </div>
 </div>

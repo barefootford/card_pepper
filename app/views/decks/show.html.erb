@@ -1,9 +1,9 @@
 <div class='row'>
   <div class='col-md-8'>
     <h3 class='head-with-author'><%= @deck.title %></h3>
-    <span><%= link_to @deck.user.name, user_path(@deck.user), class:'label label-info no-link-color' %>
+    <span><%= link_to @deck.user.name, user_path(@deck.user), class:'label label-info no-link-color' if @deck.user == current_user %>
     </span>
-    
+    <span><%= link_to "Edit", edit_deck_path(@deck), class:'label label-primary' %></span>
     <h3>Chapters:</h3>
 
     <% if @deck.chapters.any? %>
@@ -19,7 +19,6 @@
     <% end %>
     <br>
     
-    <% byebug %>
     <% unless @deck.instructions.blank? %>
       <h3>Instructions:</h3>
       <p><%= @deck.instructions %></p>
