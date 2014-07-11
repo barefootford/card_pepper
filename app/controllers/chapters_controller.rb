@@ -30,6 +30,8 @@ class ChaptersController < ApplicationController
 
   def edit
     @chapter = current_chapter
+    @cards   = @chapter.cards
+    @card    = @chapter.cards.new
   end
 
   def destroy

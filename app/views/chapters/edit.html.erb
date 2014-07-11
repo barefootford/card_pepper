@@ -1,6 +1,6 @@
 <div class='row'>
   <div class='col-md-6'>
-    <h3>Editing:</h3>
+    <h3>Editing: <%= @chapter.title %></h3>
 
     <%= form_for @chapter do |f| %>
     <p>
@@ -8,8 +8,18 @@
       <%= f.text_area :title, class:'form-control' %>
     </p>
 
-    <%= f.submit "Save", class:'btn btn-lg btn-block btn-primary' %>
+    <%= f.submit "Save", class:'btn btn-lg btn-block btn-info' %>
     <br>
+    <% end %>
+  </div>
+  <div class='col-md-6'>
+    <h3>Cards:</h3>
+    <% @cards.each do |card| %>
+    <%#= card.question + card.answer %>
+    <% end %>
+    
+    <%= form_for @card do |f|  %>
+
     <% end %>
   </div>
 </div>
