@@ -1,20 +1,30 @@
 class ChaptersController < ApplicationController
-  # before_action :current_deck
   
   before_action :require_sign_in, except: [:index]
   before_action :current_deck, only: [:create]
 
-  def new
-    redirect_to decks_path unless current_deck
-    @chapter = current_deck.chapters.new
-  end
-
   def create
-    @chapter = current_deck.chapters.new(deck_params)
+    @chapter = current_deck.chapters.new(chapter_params)
     if @chapter.save
       redirect_to edit_deck_path(@deck), notice: "Chapter added."
     else
       render :new
+    end
+  end
+
+  def index
+    redirect_to decks_path    
+  end
+
+  def new
+    redirect_to decks_path
+  end
+
+  def show
+    if current_chapter
+      redirect_to deck_path(@chapter.deck)
+    else
+      redirect_to decks_path
     end
   end
 
@@ -29,7 +39,7 @@ class ChaptersController < ApplicationController
   end
 
   def update
-    if current_chapter # && chapter_params[:title]
+    if current_chapter
       @chapter.update(chapter_params)
       redirect_to edit_deck_path(@chapter.deck)
     else
@@ -40,16 +50,11 @@ class ChaptersController < ApplicationController
 private
   
   def current_chapter
-    Chapter.find(params[:id])
+    @chapter ||= Chapter.find(params[:id])
   end
 
   def current_deck
-    redirect_to decks_path unless params[:deck_id]
     @deck = Deck.find(params[:deck_id])
-  end
-
-  def deck_params
-    params.require(:chapter).permit(:title, :deck_id)
   end
 
   def chapter_params

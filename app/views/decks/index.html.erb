@@ -1,27 +1,22 @@
-<% if current_user %>
 <div class='row'>
-    <div class='col-md-8'>
-      <h1 class='text-center'>Decks</h1>
-
-        <% if @user_decks %>
-          <% @user_decks.each do |deck| %>
-            <div>
-              <%= link_to deck.title, deck, class:'btn btn-lg btn-block btn-default' %>
-              <br>
-            </div>
-          <% end %>
-      <% end %>
-
-      <%= link_to 'New Deck', new_deck_path, class:'btn btn-lg btn-block btn-primary' %>
-      <br>
-    </div>
-    <div class='col-md-4'>
-      <p>Recommendations:</p>
-      <% if @user_decks %>
-        <% @user_decks.each do |deck| %>
-          <div><%= deck.title %> (0)</div>
+  <div class='col-md-8'>
+    <h1 class='text-center'>Community Decks</h1>
+    <% @decks.each do |deck| %>
+      <h3 class='head-with-author'><%= link_to deck.title, deck %>
+        <% if deck.user == current_user %>
+          <span class='small'><%= link_to "Edit", edit_deck_path(deck), class:'label label-primary' %></span>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
+      </h3>
+      <h6>
+        Editor: <%= link_to deck.user.name, user_path(deck.user) %> |
+        Category: Language | 
+        <%= "#{deck.chapters.count} #{'chapters'.pluralize(deck.chapters.count)} "%>
+      </h6>  
+    <% end %><br>
+  </div>
+
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
+  </div>
+  </div>
 </div>

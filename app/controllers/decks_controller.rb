@@ -4,7 +4,7 @@ class DecksController < ApplicationController
   before_action :require_creator, only: [:edit, :update, :destroy]
 
   def index
-    @decks = Deck.all
+    @decks = Deck.all.limit(10)
     
     if current_user
       @user_decks = current_user.decks
