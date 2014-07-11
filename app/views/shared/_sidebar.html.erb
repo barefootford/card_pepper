@@ -1,0 +1,14 @@
+<% if @user_decks %>
+  <h4>Your Decks:</h4>
+  <% @user_decks.each do |deck| %>
+    <div>
+      <p><span><%= link_to "Edit", edit_deck_path(deck), class:'btn btn-xs btn-info'  %></span>
+      <%= link_to deck.title, deck %><p>
+    </div>
+  <% end %>
+  <%= link_to "New Deck", new_deck_path, class:'btn btn-xs btn-info' %>
+  <br>
+<% else %>  
+  <h4>Learn more efficiently</h4>
+  <%= link_to 'Sign Up', new_user_path, class:'btn btn-xs btn-info' %>
+<% end %>
