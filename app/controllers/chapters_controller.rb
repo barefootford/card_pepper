@@ -28,10 +28,12 @@ class ChaptersController < ApplicationController
     end
   end
 
-  def edit
-    @chapter = current_chapter
-    @cards   = @chapter.cards
-    @card    = @chapter.cards.new
+  def edit    
+    @chapter       = current_chapter
+    @chapter_cards = @chapter.cards
+    @card          = @chapter.cards.new()
+    
+    byebug
   end
 
   def destroy

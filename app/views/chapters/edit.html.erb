@@ -1,6 +1,7 @@
 <div class='row'>
   <div class='col-md-6'>
     <h3>Editing: <%= @chapter.title %></h3>
+    <h6><%= link_to @chapter.deck.title.truncate(30), @chapter.deck %></h6>
 
     <%= form_for @chapter do |f| %>
     <p>
@@ -12,14 +13,39 @@
     <br>
     <% end %>
   </div>
+
   <div class='col-md-6'>
     <h3>Cards:</h3>
-    <% @cards.each do |card| %>
-    <%#= card.question + card.answer %>
-    <% end %>
-    
-    <%= form_for @card do |f|  %>
+    <% if @chapter_cards.any? %>
+      <ol>
+        <% @chapter_cards.each do |card| %>
+        <li>
+          <h6>
+            <span><%= link_to "Edit", edit_card_path(card), class:'btn btn-xs btn-info'  %></span>
+            <span><%= link_to "X", "#", class:'btn btn-xs btn-danger' %></span>
 
+            <%= link_to card.question, "#" %>
+          <h6>
+        </li>
+        <% end %>  
+      </ol>    
+    <% end %>
+
+  </div>
+  <div class='col-md-6'>
+    <small>Add a Card:</small>
+  </div>
+
+  <div class='col-md-5'>  
+    <%= form_for [@chapter, @card] do |f|  %>  
+      <%= f.text_area :question, placeholder:'Question',
+      rows:1, class:'form-control' %>
+      <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control' %>
+  </div>
+
+  <div class = 'col-md-1'>
+    <%= f.submit "Save", class:"span btn btn-md btn-info" %>
+    <br>
     <% end %>
   </div>
 </div>

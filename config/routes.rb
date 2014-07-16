@@ -12,6 +12,13 @@ Pepper::Application.routes.draw do
   end
 
   resources :chapters
+  resources :cards
+
+  resources :chapters do 
+    resources :cards
+  end
+
+
 
   resource :session
   resources :decks
