@@ -1,2 +1,17 @@
-<h1><%= @user.name %> </h1>
+<h1><%= @user.name %></h1>
 <p class='small'>Member Since <%= @user.created_at.strftime("%B %Y") %></p>
+
+<% if @user.decks.any? %>
+  <h5><%= "#{@user.first_name}'s decks:" %></h5>
+  
+  <% @user.decks.each do |deck| %>
+    <%= link_to deck.title, deck %>
+  <% end %>
+<% end %>
+
+<% if @user.website %>
+  <h5>Website:</h5><p><%= link_to @user.website.truncate(20), url_for(@user.website), rel:"nofollow" %></p>
+<% end %>
+
+<%= link_to "Edit Profile", edit_user_path(@user), class:'btn btn-lg btn-primary' if current_user == @user %>
+<br><br>

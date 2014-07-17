@@ -31,9 +31,6 @@ class ChaptersController < ApplicationController
   def edit    
     @chapter       = current_chapter
     @chapter_cards = @chapter.cards
-    @card          = @chapter.cards.new()
-    
-    byebug
   end
 
   def destroy

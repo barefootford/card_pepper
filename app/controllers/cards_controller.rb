@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
 
-  before_action :set_chapter, only: [:create]
+  before_action :set_chapter, only: [:create, :destroy, :edit]
   
   def create
     @card = @chapter.cards.new(card_params)
@@ -13,7 +13,14 @@ class CardsController < ApplicationController
   end
 
   def edit
-    @card = set_card 
+    @card = set_card
+  end
+
+  def destroy
+    @card = set_card
+    @card.destroy
+    redirect_to edit_chapter_path(set_chapter),
+      notice: 'Card deleted.'
   end
 
   private

@@ -1,8 +1,15 @@
 <div class="row bottom-menu bottom-menu-inverse">
-  <!-- <div class="container"> -->
-    <%#= link_to "Home", decks_path %> 
-    <%#= link_to "About", '#' %> 
-    <%#= link_to "Source", '#' %> 
-    <%#= link_to "Contact", "#" %> 
-  <!-- </div> -->
+  <div class='col-md-12'>
+    <%= link_to "CardPepper", root_url, class:'text-primary text-center' %>
+    <span> | </span>
+    <%= link_to 'Decks', root_path %>
+    <span> | </span>
+    <%= link_to "Home", root_path %>
+    <span> | </span>
+    <%= link_to 'Sign Out', session_path,
+      method: :delete, class: 'button' if current_user %>
+    <%= " | " if current_user %>
+    <%= link_to 'Account', user_path(current_user) if current_user %>
+    
+  </div>
 </div>

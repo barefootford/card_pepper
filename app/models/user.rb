@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :decks
+  has_many :decks, dependent: :destroy
   has_secure_password
 
-  validates :name, length: { minimum: 2 }
   validates :email, presence: true,                   
                   format: /\A\S+@\S+\z/,
                   uniqueness: { case_sensitive: false }
@@ -11,4 +10,8 @@ class User < ActiveRecord::Base
     user = User.find_by(email: email)
     user && user.authenticate(password)              
   end            
+
+  def name
+    "#{first_name} #{last_name}"    
+  end
 end

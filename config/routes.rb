@@ -4,21 +4,17 @@ Pepper::Application.routes.draw do
   
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
-  
+  get 'users/:id/delete' => 'users#delete', as: 'user_delete'
+
   resources :users
 
   resources :decks do 
     resources :chapters
   end
 
-  resources :chapters
-  resources :cards
-
   resources :chapters do 
     resources :cards
   end
-
-
 
   resource :session
   resources :decks

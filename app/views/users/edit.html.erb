@@ -1,0 +1,26 @@
+<div class='row'>
+  <div class='col-md-4'>
+    <%= render "shared/errors", object: @user %>
+
+    <%= form_for(@user) do |f| %>    
+      <small>Email Address:</small>    
+      <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
+
+      <small>First Name:</small>    
+      <%= f.text_area :first_name, placeholder:'First Name', class:'form-control', rows:1 %>
+
+      <small>Last Name:</small>    
+      <%= f.text_area :last_name, placeholder:'Last Name', class:'form-control', rows:1 %>
+
+      <small>Website:</small>
+      <%= f.text_area :website, placeholder:'http://barefootford.com', class:'form-control', rows:1 %>
+
+      <small>Password:</small>
+      <%= f.password_field :password, placeholder:'******', class:'form-control', rows:1 %>
+      <br>
+        <%= f.submit "Update Account", class:'btn btn-block btn-info' %>  
+      <br>
+    <% end %>
+    <p><%= link_to "Delete My Account", user_delete_path(@user) %></p>
+  </div>
+</div>

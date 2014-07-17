@@ -21,8 +21,8 @@
         <% @chapter_cards.each do |card| %>
         <li>
           <h6>
-            <span><%= link_to "Edit", edit_card_path(card), class:'btn btn-xs btn-info'  %></span>
-            <span><%= link_to "X", "#", class:'btn btn-xs btn-danger' %></span>
+            <span><%= link_to "Edit", "#", class:'btn btn-xs btn-info'  %></span>
+            <span><%= link_to "X", chapter_card_path(@chapter, card), method: :delete, data: { confirm: 'Are you *sure* you want to delete this card?' }, class:'btn btn-xs btn-danger' %></span>
 
             <%= link_to card.question, "#" %>
           <h6>
@@ -36,8 +36,8 @@
     <small>Add a Card:</small>
   </div>
 
-  <div class='col-md-5'>  
-    <%= form_for [@chapter, @card] do |f|  %>  
+  <div class='col-md-5'>
+    <%= form_for [@chapter, @chapter.cards.new] do |f|  %>  
       <%= f.text_area :question, placeholder:'Question',
       rows:1, class:'form-control' %>
       <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control' %>
