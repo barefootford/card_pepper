@@ -23,10 +23,11 @@ class UsersController < ApplicationController
 
   def update
     @user = user
-    if @user.update(user_params)
-      redirect_to @user, notice: 'Account updated.'
+
+    if password_params[:password] || password_params[:new_password] || password_params[:new_password_confirmation]
+      update_password
     else
-      render :edit
+      update_profile
     end
   end
 
@@ -42,13 +43,13 @@ class UsersController < ApplicationController
     @user.destroy
     destroy_session
     redirect_to root_url,
-      notice: 'We enjoyed the time we had. We hope you sign up again.'
+      notice: 'Account deleted. We promise not to text you anymore.'
   end
 
   private
 
   def require_correct_user
-    redirect_to root_url unless user == current_user    
+    redirect_to root_url unless current_user && (user == current_user)
   end
 
   def user
@@ -58,5 +59,43 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :website,
       :email, :password, :password_confirmation)
+  end
+
+  def password_params
+    params.require(:user).permit(:password, :new_password, :new_password_confirmation)
+  end
+
+  def update_profile
+    if @user.update(user_params)
+      redirect_to @user, notice: 'Account updated.'
+    else
+      render :edit
+    end
+  end
+
+  def new_passwords_match?
+    password_params[:new_password] == password_params[:new_password_confirmation]      
+  end
+
+  def old_password_checks_out?
+    User.authenticate(@user.email, password_params[:password])
+  end
+
+  def update_password
+    unless old_password_checks_out?
+      redirect_to edit_user_path(@user) return, notice: 'Password incorrect.' 
+      return
+    end
+    
+    unless new_passwords_match?
+      redirect_to edit_user_path(@user) && return, notice: "New passwords don't match."
+      return
+    end
+      
+    if @user.update_password(password_params)
+      redirect_to edit_user_path(@user), notice: "Password updated successfuly."
+    else
+      render :edit
+    end
   end
 end

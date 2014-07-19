@@ -53,4 +53,8 @@ describe 'A user' do
       user.save
     }.to change(User, :count)
   end
+
+  describe 'website' do 
+    it 'needs an http or https'
+  end
 end
