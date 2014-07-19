@@ -3,6 +3,7 @@
     <h1 class='text-center'>Community Decks</h1>
     <% @decks.each do |deck| %>
       <h3 class='head-with-author'><%= link_to deck.title, deck %>
+        <% current_user = nil %>
         <% if deck.user == current_user %>
           <span class='small'><%= link_to "Edit", edit_deck_path(deck), class:'label label-primary' %></span>
         <% end %>
