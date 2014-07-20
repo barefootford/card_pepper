@@ -1,19 +1,17 @@
 require 'spec_helper'
 
 describe 'A user' do
-  xit 'can be created with a name' do 
-    user = User.new(name:'')
-
+  it 'can be created with a reasonable first/last name' do 
+    user = User.new(first_name:'Jon', last_name:'Gon')
     expect(user.valid?).to be_false
-    # expect(user.errors[:name].any?).to be_true
+    expect(user.errors[:first_name].any?).to be_false
+    expect(user.errors[:last_name].any?).to be_false
   end
 
-  it 'can be created without a name'
-
-  it 'accepts names where length > 1' do
-    user = User.new(name:'I')
+  it 'does not accept first names where length is less than 1' do
+    user = User.new(first_name:'X')
     expect(user.valid?).to be_false
-    expect(user.errors[:name].any?).to be_true
+    expect(user.errors[:first_name].any?).to be_true
   end
 
   it 'accepts properly formatted email addresses' do 
@@ -55,6 +53,36 @@ describe 'A user' do
   end
 
   describe 'website' do 
-    it 'needs an http or https'
+    it 'always displays a website with http when website attribute exists' do 
+      user = User.new
+      user.website = 'http://google.com'
+      expect(user.website).to eq('http://google.com')
+    end
+    
+    it 'will not show a website if the attribute is not set' do 
+      user = User.new(website:'')
+      expect(user.website).to be_nil
+    end
+    
+    it 'will append http to websites entered without it' do 
+      user = User.new(website:'cybiko.com')
+      expect(user.website).to eq('http://cybiko.com')  
+    end
+
+  end
+
+  describe 'new?' do 
+    it 'returns true for users who are less than 30 days old' do 
+      user = User.new
+      user.created_at = Time.new-5.days
+      expect(user.new?).to be_true
+    end
+
+    it 'returns false for users that are more than 30 days old' do 
+      user = User.new
+      user.created_at = Time.new-60.days
+      expect(user.new?).to be_false
+    end
+    
   end
 end
