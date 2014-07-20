@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true,                   
                   format: /\A\S+@\S+\z/,
                   uniqueness: { case_sensitive: false }
+  validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }                 
 
   def self.authenticate(email, password)
     user = User.find_by(email: email)
@@ -17,6 +18,16 @@ class User < ActiveRecord::Base
 
   def website?
     return true unless website.blank?    
+  end
+
+  def website=(website)
+    self[:website] = website    
+  end
+
+  def website
+    return nil if self[:website].nil? || self[:website].blank?  
+    return self[:website] if self[:website].include?('http' || 'https')
+    return "http://#{self[:website]}"
   end
 
   def update_password(password_params)
@@ -37,6 +48,6 @@ class User < ActiveRecord::Base
   end
 
   def new?
-    true    
+    self.created_at > Time.now-30.days    
   end
 end
