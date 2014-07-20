@@ -1,28 +1,24 @@
 <%= form_for(@user) do |f| %>
   <%= render "shared/errors", object: @user %>
-  <fieldset>
-      <div class="required">
-        <%= f.label :name, "Name:" %><br>
-        <%= f.text_field :name, size: 40, autofocus: true %>
-      </div>
-      <div class="required">
-        <%= f.label :email %><br>
-        <%= f.email_field :email, size: 40 %>
-      </div>
-      <div class="required">
-        <%= f.label :password %><br>
-        <%= f.password_field :password, size: 40 %>
-      </div>
-      <div class="required">
-        <%= f.label :password_confirmation, "Confirm Password" %><br>
-        <%= f.password_field :password_confirmation, size: 40 %>
-      </div>
-    <p>
-      <% if @user.new_record? %>
-        <%= f.submit "Create Account" %>
-      <% else %>
-        <%= f.submit "Update Account" %>
-      <% end %>  
-    </p>
-  </fieldset>
+    
+    <small>Email Address:</small>    
+    <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
+
+    <small>First Name:</small>    
+    <%= f.text_area :first_name, placeholder:'Stevie', class:'form-control', rows:1 %>
+
+    <small>Last Name:</small>    
+    <%= f.text_area :last_name, placeholder:'Janowski', class:'form-control', rows:1 %>
+
+    <small>Password:</small>
+    <%= f.password_field :password, placeholder:'********', class:'form-control', rows:1 %>
+    <small>Password Confirmation:</small>
+    <%= f.password_field :password_confirmation, placeholder:'********', class:'form-control', rows:1 %>
+    <br>
+    <% if @user.new_record? %>
+      <%= f.submit "Create Account", class:'btn btn-block btn-primary' %>
+    <% else %>
+      <%= f.submit "Update Account", class:'btn btn-block btn-info' %>
+    <% end %>
+    <br>
 <% end %>

@@ -11,12 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140511054736) do
+ActiveRecord::Schema.define(version: 20140717092339) do
 
   create_table "cards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "chapter_id"
+    t.string   "question"
+    t.string   "answer"
   end
+
+  add_index "cards", ["chapter_id"], name: "index_cards_on_chapter_id"
 
   create_table "chapters", force: true do |t|
     t.integer  "deck_id"
@@ -39,11 +44,13 @@ ActiveRecord::Schema.define(version: 20140511054736) do
   add_index "decks", ["user_id"], name: "index_decks_on_user_id"
 
   create_table "users", force: true do |t|
-    t.string   "name"
+    t.string   "first_name"
     t.string   "email"
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "last_name"
+    t.string   "website"
   end
 
 end

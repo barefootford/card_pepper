@@ -2,12 +2,7 @@
   <div class='col-md-8'>
     <h1 class='text-center'>Community Decks</h1>
     <% @decks.each do |deck| %>
-      <h3 class='head-with-author'><%= link_to deck.title, deck %>
-        <% current_user = nil %>
-        <% if deck.user == current_user %>
-          <span class='small'><%= link_to "Edit", edit_deck_path(deck), class:'label label-primary' %></span>
-        <% end %>
-      </h3>
+      <h3 class='head-with-author'><%= link_to deck.title, deck %></h3>
       <h6>
         Editor: <%= link_to deck.user.name, user_path(deck.user) %> |
         Category: Language | 
@@ -19,5 +14,14 @@
   <div class='col-md-4'>
     <%= render 'shared/sidebar' %>
   </div>
-  </div>
+  
+  <div class='row'>
+    <div class='col-md-8'>
+      <% if !current_user %>
+        <br>
+        <%= link_to "Register", new_user_path, class:'btn btn-block btn-primary' %>
+        <br>
+      <% end %>
+    </div>
+  </div>  
 </div>

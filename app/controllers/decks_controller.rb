@@ -1,7 +1,7 @@
 class DecksController < ApplicationController
 
-  # before_action :require_sign_in, except: [:show, :index]
-  # before_action :require_creator, only: [:edit, :update, :destroy]
+before_action :require_sign_in, except: [:show, :index]
+before_action :require_creator, only: [:edit, :update, :destroy]
 
   def index
     @decks = Deck.all.limit(10)

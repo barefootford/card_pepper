@@ -28,8 +28,9 @@ class ChaptersController < ApplicationController
     end
   end
 
-  def edit
-    @chapter = current_chapter
+  def edit    
+    @chapter       = current_chapter
+    @chapter_cards = @chapter.cards
   end
 
   def destroy

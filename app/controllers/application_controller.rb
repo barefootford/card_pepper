@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
 private
   
+  def destroy_session
+    session[:user_id] = nil    
+  end
+  
   def require_creator
     unless Deck.find(params[:id]).user == current_user
       redirect_to root_url,
@@ -20,9 +24,9 @@ private
   def require_sign_in
     unless current_user
       session[:intended_url] = request.url
-      redirect_to sign_in_path, alert: 'Card Pepper is free, but only registered users can see decks. Please sign in or sign up.'
+      redirect_to sign_up_path, alert: 'Card Pepper is free, but only registered users can do that.'
     end
   end
 
-  helper_method :current_user
+  helper_method :current_user, :destroy_session
 end

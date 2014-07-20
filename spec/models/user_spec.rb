@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe 'A user' do
-  it 'requires a name' do 
+  xit 'can be created with a name' do 
     user = User.new(name:'')
 
     expect(user.valid?).to be_false
     # expect(user.errors[:name].any?).to be_true
   end
+
+  it 'can be created without a name'
 
   it 'accepts names where length > 1' do
     user = User.new(name:'I')
@@ -50,5 +52,9 @@ describe 'A user' do
     expect {
       user.save
     }.to change(User, :count)
+  end
+
+  describe 'website' do 
+    it 'needs an http or https'
   end
 end

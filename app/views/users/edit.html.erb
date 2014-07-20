@@ -1,0 +1,50 @@
+<div class='row'>
+  <div class='col-md-6'>
+    <%= render "shared/errors", object: @user %>
+
+    <h5>Edit Profile:</h5>
+
+    <%= form_for(@user) do |f| %>    
+      <small>Email Address(not public):</small>    
+      <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
+
+      <small>First Name:</small>    
+      <%= f.text_area :first_name, placeholder:'First Name', class:'form-control', rows:1 %>
+
+      <small>Last Name:</small>    
+      <%= f.text_area :last_name, placeholder:'Last Name', class:'form-control', rows:1 %>
+
+      <small>Website:</small>
+      <%= f.text_area :website, placeholder:'http://barefootford.com', class:'form-control', rows:1 %>
+      <br>
+
+        <%= f.submit "Update Account", class:'btn btn-block btn-info' %>  
+      
+        <%= link_to "Nevermind", user_path(@user), class:'btn btn-block btn-default' %>
+    <% end %>
+    
+      <%= link_to "Delete Account", user_delete_path(@user), class:'no-link-primary', class:'label label-default' %>
+
+    <br>
+  </div>
+  <div class='col-md-6'>
+    <%= form_for @user do |f| %>
+      <h5>Edit Password:</h5>
+        <small>Current Password:</small>
+        <%= f.password_field :password, class:'form-control' %>
+      
+        <small>New Password:</small>
+        <%= f.password_field :new_password, class:'form-control' %>
+        
+        <small>New Password Again:</small>
+        <%= f.password_field :new_password_confirmation, class:'form-control' %>
+        <br>
+
+        <%= f.submit "Update Password", class:'btn btn-block btn-info' %>
+
+        <%= link_to "Nevermind", edit_user_path(@user), class:'btn btn-block btn-default' %>
+        <br>
+
+    <% end %>
+  </div>
+</div>
