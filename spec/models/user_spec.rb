@@ -52,6 +52,9 @@ describe 'A user' do
     }.to change(User, :count)
   end
 
+  it 'saves with a valid password'
+  it 'does not save with an invalid password'
+
   describe 'website' do 
     it 'always displays a website with http when website attribute exists' do 
       user = User.new

@@ -7,6 +7,7 @@ Pepper::Application.routes.draw do
   get 'users/:id/delete' => 'users#delete', as: 'user_delete'
   get 'password/edit' => 'users#password_edit'
   
+  get 'session/destroy' => 'sessions#destroy'  
 
   resources :users
 

@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
 
   def new
+    if current_user
+      redirect_to root_url, notice: "#{current_user.name} is already signed in. Not you? Click 'Sign Out.'"
+    end
   end
 
   def create

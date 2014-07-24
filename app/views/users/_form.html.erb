@@ -1,24 +1,34 @@
 <%= form_for(@user) do |f| %>
-  <%= render "shared/errors", object: @user %>
     
-    <small>Email Address:</small>    
-    <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
+    <div class='col-md-4'>
+      <small>Email Address:</small>    
+      <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
+    </div>
 
-    <small>First Name:</small>    
-    <%= f.text_area :first_name, placeholder:'Stevie', class:'form-control', rows:1 %>
+    <div class='col-md-2'>      
+      <small>First Name:</small>    
+      <%= f.text_area :first_name, placeholder:'Stevie', class:'form-control', rows:1 %>
+    </div>  
 
-    <small>Last Name:</small>    
-    <%= f.text_area :last_name, placeholder:'Janowski', class:'form-control', rows:1 %>
+    <div class='col-md-2'>  
+      <small>Last Name:</small>    
+      <%= f.text_area :last_name, placeholder:'Janowski', class:'form-control', rows:1 %>
+    </div>  
 
-    <small>Password:</small>
-    <%= f.password_field :password, placeholder:'********', class:'form-control', rows:1 %>
-    <small>Password Confirmation:</small>
-    <%= f.password_field :password_confirmation, placeholder:'********', class:'form-control', rows:1 %>
-    <br>
-    <% if @user.new_record? %>
-      <%= f.submit "Create Account", class:'btn btn-block btn-primary' %>
-    <% else %>
-      <%= f.submit "Update Account", class:'btn btn-block btn-info' %>
-    <% end %>
-    <br>
+    <div class='col-md-4'>
+      <small>Password:</small>
+      <%= f.password_field :password, placeholder:'********', class:'form-control', rows:1 %>
+      <small>Password Again:</small>
+      <%= f.password_field :password_confirmation, placeholder:'********', class:'form-control', rows:1 %>
+      <br>
+
+      <% if @user.new_record? %>
+        <%= f.submit "Create Account", class:'btn btn-block btn-primary' %>
+      <% else %>
+        <%= f.submit "Update Account", class:'btn btn-block btn-info' %>
+      <% end %>
+      <br>
+      
+      <small>Already a member? <%= link_to "Sign in.", sign_in_path %></small>
+    </div>  
 <% end %>

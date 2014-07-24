@@ -1,11 +1,11 @@
 <% if object.errors.any? %>
   <section id="errors">
     <p>
-      The <%= object.class.name.titleize.downcase %> couldn't be saved. <strong>Please fix the following <%= pluralize(object.errors.count, 'error') %></strong>:
+      The <%= object.class.name.titleize.downcase %> couldn't be saved. Please fix the following <%= 'error'.pluralize(object.errors.count) %>:
     </p>
     <ul>
       <% object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li><strong><%= message %></strong></li>
       <% end %>
     </ul>
   </section>

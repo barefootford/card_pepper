@@ -1,11 +1,10 @@
 <div class='row flashcard-bg' >
   <div class='col-md-8'>
+    <%= render "shared/errors", object: @user %>
     <h1 class='text-center'>Card Pepper</h1>
     <p class='lead text-center'>Smart collaborative flashcards for everyone.</p>
   </div>
   
-  <div class='col-md-4'>
-    <%= render 'form', object: @user %>
-    <small>Already a member? <%= link_to "Sign in.", sign_in_path %></small>
-  </div>
+  <%= render 'form', object: @user %>  
+  
 </div>

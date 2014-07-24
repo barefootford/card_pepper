@@ -9,7 +9,7 @@
       <span><%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-info no-link-color' %></span>
     <% end %>
 
-    <h3>Chapters:</h3>
+    <h5>Chapters:</h5>
     
     <% if @deck.chapters.any? %>
       <ol>
@@ -29,6 +29,8 @@
       <p><%= @deck.instructions %></p>
     <% end %>
     
+    <%=  %>
+
     <%= link_to "Download Deck", "#", class:'btn btn-lg btn-block btn-primary' %>
     <br>
   </div>

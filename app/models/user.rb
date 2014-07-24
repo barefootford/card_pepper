@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
                   format: /\A\S+@\S+\z/,
                   uniqueness: { case_sensitive: false }
   validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }                 
+  validates :password, length: { minimum: 6, maximum: 20 }
 
   def self.authenticate(email, password)
     user = User.find_by(email: email)
@@ -14,6 +15,10 @@ class User < ActiveRecord::Base
 
   def name
     "#{first_name} #{last_name}"    
+  end
+
+  def initials
+    "#{first_name[0]}#{last_name[0]}'s"
   end
 
   def website?
@@ -31,10 +36,15 @@ class User < ActiveRecord::Base
   end
 
   def update_password(password_params)
-    byebug
     self.password              = password_params[:new_password]
     self.password_confirmation = password_params[:new_password_confirmation]
-    self.save
+    self.valid?
+
+    if self.errors.any?
+      return false
+    else
+      self.save
+    end
   end
 
   def card_count

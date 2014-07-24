@@ -73,29 +73,21 @@ class UsersController < ApplicationController
     end
   end
 
-  def new_passwords_match?
-    password_params[:new_password] == password_params[:new_password_confirmation]      
-  end
-
-  def old_password_checks_out?
-    User.authenticate(@user.email, password_params[:password])
+  def password_is_wrong?
+    return true if User.authenticate(@user.email, password_params[:password]) == false 
   end
 
   def update_password
-    unless old_password_checks_out?
-      redirect_to edit_user_path(@user) return, notice: 'Password incorrect.' 
-      return
+
+    if password_is_wrong?
+      @user.errors[:current_password] = 'is incorrect.'
     end
-    
-    unless new_passwords_match?
-      redirect_to edit_user_path(@user) && return, notice: "New passwords don't match."
-      return
-    end
-      
+
     if @user.update_password(password_params)
       redirect_to edit_user_path(@user), notice: "Password updated successfuly."
     else
       render :edit
     end
   end
+
 end
