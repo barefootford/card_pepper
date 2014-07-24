@@ -1,17 +1,50 @@
-<h1><%= @user.name %></h1>
-<p class='small'>Member Since <%= @user.created_at.strftime("%B %Y") %></p>
+<div class='row'>
+  <div class='col-md-4'>
+    <h1 class='less-margin'><%= @user.name %></h1>
+    <p>    
+      <% if @user.new? %>
+        <span class='label label-primary'>New User</span>
+      <% end  %>
+      
+      <span class='label label-default label-margin'>
+        <%= @user.created_at.strftime("%B %Y")%>
+      </span>  
+      
+      <span class='label label-default label-margin'>
+        <%= number_of_cards(@user.card_count) %>
+      </span>
+      
+      <span class='label label-default label-margin'>
+        <%= number_of("deck", @user.card_count) %>
+      </span>
+    </p>
+    <h5>Decks:</h5>
+    <% if @user.decks.any? %>
+            
+      <% @user.decks.each do |deck| %>
+        <small>
+          <%= link_to deck.title, deck %>
+          (<%= number_of_cards(deck.card_count) %>)
+        </small><br>
+      <% end %>
 
-<% if @user.decks.any? %>
-  <h5><%= "#{@user.first_name}'s decks:" %></h5>
-  
-  <% @user.decks.each do |deck| %>
-    <%= link_to deck.title, deck %>
-  <% end %>
-<% end %>
+    <% else %>
 
-<% if @user.website %>
-  <h5>Website:</h5><p><%= link_to @user.website.truncate(20), url_for(@user.website), rel:"nofollow" %></p>
-<% end %>
+      <%= "#{@user.name} doesn't manage any decks yet."  %>  
 
-<%= link_to "Edit Profile", edit_user_path(@user), class:'btn btn-lg btn-primary' if current_user == @user %>
-<br><br>
+    <% end %>
+
+    <h5>Website:</h5>
+    <p>
+      <% if @user.website? %>  
+        <%= link_to @user.website.truncate(70), url_for(@user.website), rel:"nofollow"  %>
+      <% else %>
+        No website listed.
+      <% end %>
+    </p>
+
+    <br><br>
+    <%= link_to "Edit Account", edit_user_path(@user), class:'btn btn-block btn-primary' if current_user == @user %>
+    <br><br>
+  </div>
+</div>

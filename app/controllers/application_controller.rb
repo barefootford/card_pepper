@@ -23,7 +23,7 @@ private
   def require_sign_in
     unless current_user
       session[:intended_url] = request.url
-      redirect_to sign_up_path, alert: 'Card Pepper is free, but only registered users can see decks. Please sign in or sign up.'
+      redirect_to sign_up_path, alert: 'Card Pepper is free, but only registered users can do that.'
     end
   end
 

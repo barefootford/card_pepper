@@ -14,5 +14,14 @@
   <div class='col-md-4'>
     <%= render 'shared/sidebar' %>
   </div>
-  </div>
+  
+  <div class='row'>
+    <div class='col-md-8'>
+      <% if !current_user %>
+        <br>
+        <%= link_to "Register", new_user_path, class:'btn btn-block btn-primary' %>
+        <br>
+      <% end %>
+    </div>
+  </div>  
 </div>
