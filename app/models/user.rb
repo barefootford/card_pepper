@@ -58,6 +58,6 @@ class User < ActiveRecord::Base
   end
 
   def new?
-    self.created_at > Time.now-30.days    
+    self.created_at > Time.now-30.days
   end
 end

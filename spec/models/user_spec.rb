@@ -87,5 +87,7 @@ describe 'A user' do
       expect(user.new?).to be_false
     end
     
+  describe 'website' do 
+    it 'needs an http or https'
   end
 end
