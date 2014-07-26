@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def update
     @user = user
 
-    if password_params[:password] || password_params[:new_password] || password_params[:new_password_confirmation]
+    if filled_in_a_password? 
       update_password
     else
       update_profile
@@ -48,14 +48,6 @@ class UsersController < ApplicationController
 
   private
 
-  def require_correct_user
-    redirect_to root_url unless current_user && (user == current_user)
-  end
-
-  def user
-    @user ||= User.find(params[:id])    
-  end
-
   def user_params
     params.require(:user).permit(:first_name, :last_name, :website,
       :email, :password, :password_confirmation)
@@ -63,6 +55,18 @@ class UsersController < ApplicationController
 
   def password_params
     params.require(:user).permit(:password, :new_password, :new_password_confirmation)
+  end
+
+  def filled_in_a_password?
+    return true if password_params[:password] || password_params[:new_password] || password_params[:new_password_confirmation]      
+  end
+
+  def require_correct_user
+    redirect_to root_url unless current_user && (user == current_user)
+  end
+
+  def user
+    @user ||= User.find(params[:id])    
   end
 
   def update_profile
@@ -89,5 +93,4 @@ class UsersController < ApplicationController
       render :edit
     end
   end
-
 end

@@ -2,14 +2,18 @@
   <div class='col-md-8'>
     <h3 class='text-center'>Community Decks</h3>
     <% @decks.each do |deck| %>
-      <h5 class='head-with-author'><%= link_to deck.title, deck %></h5>
-      <h6>
-        Editor: <%= link_to deck.user.name, user_path(deck.user) %> |
-        Category: Language | 
-        <%= "#{deck.chapters.count} #{'chapters'.pluralize(deck.chapters.count)} "%>
-      </h6>  
+      <h5 class='head-with-author' id='no-link-color'><%= link_to deck.title, deck %></h5>
+      
+      <%= link_to deck.user.name, user_path(deck.user), class:'label label-primary' %>
+      <%=  %>  
+      <%= link_to "Language", "#", class:'label label-default' %>
+      <%= link_to "#{deck.chapters.count} #{'chapters'.pluralize(deck.chapters.count)}", "#", class:'label label-default' %>
+
+      <%= link_to "2 cards", '#', class:'label label-default' %>
+
     <% end %><br>
   </div>
+  <br>
 
   <div class='col-md-4'>
     <%= render 'shared/sidebar' %>
@@ -19,7 +23,7 @@
     <div class='col-md-8'>
       <% if !current_user %>
         <br>
-        <%= link_to "Register", new_user_path, class:'btn btn-block btn-primary' %>
+        <%= link_to "Sign Up", new_user_path, class:'btn btn-block btn-primary' %>
         <br>
       <% end %>
     </div>

@@ -1,15 +1,18 @@
 <div class='row'>
   <div class='col-md-8'>
-    <h3 class='head-with-author'><%= @deck.title %></h3>
-    
-    
+    <h4 class='head-with-author'><%= @deck.title %></h4>
     <% if @deck.user == current_user %>
-      <span><%= link_to "Edit", edit_deck_path(@deck), class:'label label-primary' %></span>
-    <% else %>
-      <span><%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-info no-link-color' %></span>
+      <%= link_to "Edit", edit_deck_path(@deck), class:'label label-primary' %>
     <% end %>
 
-    <h5>Chapters:</h5>
+    <%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-default' %>
+
+    <% unless @deck.instructions.blank? %>
+      <h5>Instructions:</h5>
+      <p><%= @deck.instructions %></p>
+    <% end %>
+
+    <h6>Chapters:</h6>
     
     <% if @deck.chapters.any? %>
       <ol>
@@ -23,11 +26,6 @@
       </ol>
     <% end %>
     <br>
-    
-    <% unless @deck.instructions.blank? %>
-      <h3>Instructions:</h3>
-      <p><%= @deck.instructions %></p>
-    <% end %>
     
     <%=  %>
 
