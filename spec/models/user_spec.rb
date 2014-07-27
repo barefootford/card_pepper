@@ -71,7 +71,6 @@ describe 'A user' do
       user = User.new(website:'cybiko.com')
       expect(user.website).to eq('http://cybiko.com')  
     end
-
   end
 
   describe 'new?' do 
@@ -86,7 +85,8 @@ describe 'A user' do
       user.created_at = Time.new-60.days
       expect(user.new?).to be_false
     end
-    
+  end
+
   describe 'website' do 
     it 'needs an http or https'
   end
