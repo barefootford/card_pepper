@@ -23,11 +23,24 @@ class UsersController < ApplicationController
 
   def update
     @user = user
-
-    if filled_in_a_password? 
-      update_password
+    if @user.update(user_params)
+      redirect_to @user, notice: 'Account updated.'
     else
-      update_profile
+      render :edit
+    end
+  end
+
+  def update_password
+    @user = user
+
+    if password_is_wrong?
+      @user.errors[:current_password] = 'is incorrect.'
+    end
+
+    if @user.update_password(password_params)
+      redirect_to edit_user_path(@user), notice: "Password updated successfuly."
+    else
+      render :edit_password
     end
   end
 
@@ -46,6 +59,10 @@ class UsersController < ApplicationController
       notice: 'Account deleted. We promise not to text you anymore.'
   end
 
+  def edit_password
+    @user = user    
+  end
+
   private
 
   def user_params
@@ -58,7 +75,8 @@ class UsersController < ApplicationController
   end
 
   def filled_in_a_password?
-    return true if password_params[:password] || password_params[:new_password] || password_params[:new_password_confirmation]      
+    return false if password_params[:password].nil?
+
   end
 
   def require_correct_user
@@ -69,28 +87,7 @@ class UsersController < ApplicationController
     @user ||= User.find(params[:id])    
   end
 
-  def update_profile
-    if @user.update(user_params)
-      redirect_to @user, notice: 'Account updated.'
-    else
-      render :edit
-    end
-  end
-
   def password_is_wrong?
     return true if User.authenticate(@user.email, password_params[:password]) == false 
-  end
-
-  def update_password
-
-    if password_is_wrong?
-      @user.errors[:current_password] = 'is incorrect.'
-    end
-
-    if @user.update_password(password_params)
-      redirect_to edit_user_path(@user), notice: "Password updated successfuly."
-    else
-      render :edit
-    end
   end
 end

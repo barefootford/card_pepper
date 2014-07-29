@@ -8,7 +8,7 @@ class CardsController < ApplicationController
       redirect_to edit_chapter_path(@chapter),
         notice: 'Card added successfully.'  
     else
-      render :new
+      render '/chapters/edit'
     end
   end
 
