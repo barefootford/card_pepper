@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     @user = user    
   end
 
-  private
+private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :website,
@@ -75,8 +75,8 @@ class UsersController < ApplicationController
   end
 
   def filled_in_a_password?
+    byebug
     return false if password_params[:password].nil?
-
   end
 
   def require_correct_user
@@ -88,6 +88,6 @@ class UsersController < ApplicationController
   end
 
   def password_is_wrong?
-    return true if User.authenticate(@user.email, password_params[:password]) == false 
+    return true if User.authenticate(@user.email, password_params[:password]) == false
   end
 end

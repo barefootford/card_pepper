@@ -5,7 +5,7 @@
 
   <div class='col-md-6'>
     <%= form_tag(session_path) do %>
-        <%= email_field_tag :email, 'Email Address', autofocus: true,
+        <%= email_field_tag :email, '', placeholder:'Email Address', autofocus: true,
           required: true, class:'form-control input-hg' %> 
 
         <%= password_field_tag :password, nil, placeholder:'Password', size: 40,

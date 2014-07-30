@@ -12,6 +12,7 @@
  *= require_tree .
  */
 
+@import "bootstrap";
 @import "bootstrap-sprockets";
 @import "bootstrap-custom";
 @import 'flat-ui';
