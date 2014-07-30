@@ -1,5 +1,6 @@
 <div class='row'>
   <div class='col-md-6'>
+        <%= render "shared/errors", object: @deck %>
     <h1>Let's build a deck.</h1>
     <p class='lead'>First, give it a title:</p>  
     <%= form_for @deck do |f| %>
