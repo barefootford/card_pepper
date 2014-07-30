@@ -5,9 +5,9 @@ describe 'Creating a new deck' do
   it 'is not permitted by signed-out users' do 
     visit new_deck_url
     
-    expect(current_path).to eq(new_session_path)    
-    expect(page).to have_text('Please sign in first.')
-    expect(page).not_to have_text("Let's build a deck.")
+    expect(current_path).to eq(sign_up_path)    
+    # expect(page).to have_text('Please sign in first.')
+    # expect(page).not_to have_text("Let's build a deck.")
   end
 
   it 'is permitted by signed-in users' do
