@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Editing a chapter" do 
 
-  it 'can have its title changed with the correct user' do
+  it 'can be done by its editor' do
     create_user_and_sign_in
     create_deck
 

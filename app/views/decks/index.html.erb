@@ -4,8 +4,7 @@
     <% @decks.each do |deck| %>
       <h5 class='head-with-author' id='no-link-color'><%= link_to deck.title, deck %></h5>
       
-      <%= link_to deck.user.name, user_path(deck.user), class:'label label-primary' %>
-      <%=  %>  
+      <%= link_to deck.user.name, user_path(deck.user), class:'label label-default' %>  
       <%= link_to "Language", "#", class:'label label-default' %>
       <%= link_to "#{deck.chapters.count} #{'chapters'.pluralize(deck.chapters.count)}", "#", class:'label label-default' %>
 
