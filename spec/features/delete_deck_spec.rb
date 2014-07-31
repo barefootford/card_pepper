@@ -2,29 +2,30 @@ require 'spec_helper'
 
 describe 'Deleting a deck' do 
   before do 
-    @user = User.create!(user_attributes)
-    @deck = @user.decks.create!(deck_attributes)
+    create_user
+    create_deck
   end
 
-  it 'can be performed by the decks creator' do 
+  it 'can be done by the decks creator' do 
     sign_in(@user)
+    visit edit_deck_path(@deck)
+    expect(@user.decks.count).to eq(1)
+    
+    click_link('Delete Deck')
 
-    visit deck_path(@deck)
-
-    expect(page).to have_link ('Delete Deck')
-    # click_link('Delete Deck')
-
-    # expect(Deck.all.count).to eq(0)
-
-    # expect(current_url).to eq(root_url)
-    # expect(page).to have_text("Deck deleted successfully.")
+    expect(current_url).to eq(root_url)
+    expect(@user.decks.count).to eq(0)
+    expect(page).to have_text("Deck deleted successfully.")
   end
 
-  it 'is impossible for someone other than its creator' do 
-    @user2 = User.create!(user_attributes(email:"User2@example.com", name:"Example User 2"))
+  it 'cannot be done someone else' do 
+    @user2 = User.create!(user_attributes(email:"User2@example.com", first_name:'Another', last_name:'User'))
     sign_in(@user2)
 
-    visit deck_path(@deck)
+    visit edit_deck_path(@deck)
+   
+    expect(current_path).to eq(root_path)
     expect(page).not_to have_link('Delete Deck')
+    expect(page).to have_text("Only the deck's creator can edit the deck")
   end
 end

@@ -2,28 +2,34 @@ require 'spec_helper.rb'
 
 describe "Viewing a deck" do
   
-  it 'should list its details' do
-    create_a_user
-    deck = @user.decks.create!(deck_attributes)
+  before do 
+    create_user
+    create_deck
+  end
 
-    visit deck_path(deck)
+  it 'should list its details' do
+    visit deck_path(@deck)
 
     expect(page).to have_text deck_attributes[:title]
     expect(page).to have_text deck_attributes[:name]
-    
     expect(page).to have_text deck_attributes[:instructions]
+    expect(page).to have_link 'Decks'
   end
 
-  it 'links back to the index' do 
-    create_a_user
-    deck = @user.decks.create!(deck_attributes)
+  it 'should list an edit link for its editor' do 
+    sign_in(@user)
+    
+    visit deck_path(@deck)
 
-    visit deck_path(deck)    
-
-    expect(current_path).to eq(deck_path(deck))
-
-    click_link 'All Decks'
-    expect(current_path).to eq(decks_path)
+    expect(page).to have_link('Edit')
   end
 
+  it 'should not show an edit link for other users' do 
+    create_second_user
+    sign_in(@user2)
+
+    visit deck_path(@deck)
+
+    expect(page).not_to have_link('Edit')
+  end
 end

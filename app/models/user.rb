@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
                   format: /\A\S+@\S+\z/,
                   uniqueness: { case_sensitive: false }
   validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }                 
-  validates :password, length: { minimum: 6, maximum: 20 }
+  validates :password, length: { minimum: 6, maximum: 20, allow_blank: true }
 
   def self.authenticate(email, password)
     user = User.find_by(email: email)
@@ -55,6 +55,12 @@ class User < ActiveRecord::Base
     end
 
     @card_count
+  end
+
+  def deck_count
+    @deck_count = 0
+
+    @deck_count = decks.count    
   end
 
   def new?

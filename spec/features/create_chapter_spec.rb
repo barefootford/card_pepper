@@ -2,21 +2,22 @@ require 'spec_helper'
 
 describe 'Creating a chapter' do 
 
-  it 'is created from a deck, saved, then shows itself' do
+  it 'can be done through a deck' do
     create_user_and_sign_in 
+    create_deck
+
+    visit edit_deck_path(@deck)
     
-    visit deck_path(create_a_deck) 
-    
-    expect(current_path).to eq(deck_path(@deck))
+    expect(current_path).to eq(edit_deck_path(@deck))
     expect(page).to have_text(deck_attributes[:title])
-    
-    click_link 'New Chapter'
-    expect(current_path).to eq(new_deck_chapter_path(@deck))
-    
-    fill_in 'Title', with: chapter_attributes[:title]
-    click_button 'Save'
-    
-    expect(current_path).to eq(chapter_path(Chapter.last))
-    expect(page).to have_text(chapter_attributes[:title])
+    expect(@deck.chapters.count).to eq(1)
+
+    fill_in 'chapter_title', with: 'Second chapter'
+    click_button 'save-deck-chapter'
+ 
+    expect(current_path).to eq(edit_deck_path(@deck))
+    expect(@deck.chapters.count).to eq(2)
+    expect(page).to have_text('Chapter added')
+    expect(page).to have_text('Second chapter')   
   end
 end

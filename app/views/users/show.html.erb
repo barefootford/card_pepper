@@ -4,6 +4,8 @@
     <p>    
       <% if @user.new? %>
         <span class='label label-primary'>New User</span>
+      <% else %>
+        <span class='label label-primary'>Veteran</span>
       <% end  %>
       
       <span class='label label-default label-margin'>
@@ -15,7 +17,7 @@
       </span>
       
       <span class='label label-default label-margin'>
-        <%= number_of("deck", @user.card_count) %>
+        <%= number_of("deck", @user.deck_count) %>
       </span>
     </p>
     <h5>Decks:</h5>
