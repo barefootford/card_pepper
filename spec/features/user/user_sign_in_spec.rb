@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe 'Signing in a user' do
-  it 'works if email/password is valid' do
+
+  it 'works with valid email/password' do
     user = User.create!(user_attributes)
     
     visit new_session_path
@@ -26,7 +27,7 @@ describe 'Signing in a user' do
     expect(page).to have_field('password')          
   end
 
-  it 'will not work with a bad password' do
+  it 'does not work with a bad password' do
     user = User.create!(user_attributes)
 
     visit new_session_path  
