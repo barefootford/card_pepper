@@ -1,6 +1,6 @@
 require 'spec_helper.rb'
 
-describe 'Viewing the index' do 
+describe 'Deck Index Page' do 
 
   before do
     user = User.create!(user_attributes)
@@ -13,7 +13,7 @@ describe 'Viewing the index' do
   end
 
   it "shows the title" do
-    expect(page).to have_text "Top decks:"
+    expect(page).to have_text 'Community Decks'
   end
 
   it 'is allowed by signed out users' do 

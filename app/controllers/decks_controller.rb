@@ -12,22 +12,22 @@ before_action :require_creator, only: [:edit, :update, :destroy]
   end
 
   def show  
-    set_deck
+    @deck = deck
   end
 
   def edit
-    set_deck
-    @chapter = Chapter.new(deck_id: set_deck.id)
+    @deck = deck
+    @chapter = Chapter.new(deck_id: @deck.id)
   end
 
   def update
-    set_deck
+    @deck = deck
     @deck.update(deck_params)
-    redirect_to @deck, notice: "Deck updated successfully."    
+    redirect_to edit_deck_path(@deck), notice: "Deck updated successfully."    
   end
 
   def destroy
-    set_deck
+    @deck = deck
     @deck.destroy    
     redirect_to root_url, notice: 'Deck deleted successfully.'
   end
@@ -49,12 +49,12 @@ before_action :require_creator, only: [:edit, :update, :destroy]
   private
 
   def require_creator
-    unless current_user && current_user == set_deck.user
+    unless current_user && current_user == deck.user
       redirect_to root_url, notice: "Only the deck's creator can edit the deck."
     end
   end
 
-  def set_deck
+  def deck
     @deck ||= Deck.find(params[:id])
   end
 

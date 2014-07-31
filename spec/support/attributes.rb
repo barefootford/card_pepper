@@ -1,15 +1,19 @@
-def create_a_user
+def create_user
   @user = User.create!(user_attributes)  
 end
 
-def create_a_deck
+def create_second_user
+  @user2 = User.create!(user_attributes(first_name:'Second', email:'user2@example.com'))  
+end
+
+def create_deck
   @deck = Deck.create!(deck_attributes)
+  @chapter = @deck.chapters.create!(chapter_attributes)
 end
 
 def create_user_and_sign_in
-  create_a_user
-  sign_in(@user)  
-  create_a_deck
+  create_user
+  sign_in(@user)
 end
 
 def sign_in(user)
@@ -21,21 +25,19 @@ def sign_in(user)
   click_button 'Sign In'
 end
 
-# Attributes
-
 def user_attributes(overrides = {})
   {
-    first_name: "Example",
-    last_name: "User",
-    email: "user@example.com",
-    password: "secret",
-    password_confirmation: "secret"
+    first_name: 'Example',
+    last_name: 'User',
+    email: 'user@example.com',
+    password: 'secret',
+    password_confirmation: 'secret'
   }.merge(overrides)
 end
 
 def deck_attributes(overrides = {})
   {
-    title:"Pragmatic Studio Ruby Notes",
+    title:'Pragmatic Studio Ruby Notes',
     user_id:1,
     instructions:"Use this deck promptly after finishing the class and you'll do really well."
   }.merge(overrides)

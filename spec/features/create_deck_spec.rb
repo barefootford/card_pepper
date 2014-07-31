@@ -11,7 +11,7 @@ describe 'Creating a new deck' do
   end
 
   it 'is permitted by signed-in users' do
-    create_a_user
+    create_user
     sign_in(@user)
 
     visit new_deck_path
@@ -21,7 +21,7 @@ describe 'Creating a new deck' do
   end
 
   it 'saves the deck, then goes to the edit page' do 
-    create_a_user
+    create_user
     sign_in(@user)
 
     visit new_deck_path
@@ -38,7 +38,7 @@ describe 'Creating a new deck' do
   end
 
   it 'does not get saved with a tiny title' do
-    create_a_user
+    create_user
     sign_in(@user)
 
     visit new_deck_path
@@ -51,7 +51,7 @@ describe 'Creating a new deck' do
   end
 
   it 'also creates a first chapter for cards' do 
-    create_a_user
+    create_user
     sign_in(@user)
 
     visit new_deck_path

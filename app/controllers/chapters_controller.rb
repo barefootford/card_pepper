@@ -21,7 +21,7 @@ class ChaptersController < ApplicationController
   end
 
   def show
-    if current_chapter
+    if chapter
       redirect_to deck_path(@chapter.deck)
     else
       redirect_to decks_path
@@ -29,28 +29,29 @@ class ChaptersController < ApplicationController
   end
 
   def edit    
-    @chapter       = current_chapter
+    @chapter       = chapter
     @chapter_cards = @chapter.cards
   end
 
   def destroy
-    parent_deck = current_chapter.deck
-    current_chapter.destroy
+    parent_deck = chapter.deck
+    chapter.destroy
     redirect_to edit_deck_path(parent_deck), notice:'Chapter deleted.'
   end
 
   def update
-    if current_chapter
+    if chapter
       @chapter.update(chapter_params)
-      redirect_to edit_deck_path(@chapter.deck)
+      redirect_to edit_deck_path(@chapter.deck),
+      notice: 'Chapter title updated.'
     else
       render :edit
     end
   end
 
 private
-  
-  def current_chapter
+
+  def chapter
     @chapter ||= Chapter.find(params[:id])
   end
 

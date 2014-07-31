@@ -2,29 +2,33 @@ require 'spec_helper'
 
 describe "Editing a chapter" do 
 
-  before do 
-    @chapter = Chapter.create!(chapter_attributes)
-  end
+  it 'can have its title changed with the correct user' do
+    create_user_and_sign_in
+    create_deck
 
-  let(:new_title) { "New Chapter Name" }
+    visit edit_deck_path(@deck.chapters.last)
+    click_link('Edit')
 
-  it "can have its title changed" do
-    create_user_and_sign_in 
-    visit chapter_path(@chapter)
-    
+    expect(current_path).to eq(edit_deck_chapter_path(@deck, @chapter))
     expect(page).to have_text(chapter_attributes[:title])
-    
-    click_link "Edit"
-    expect(current_path).to eq(edit_chapter_path(@chapter))
     expect(page).to have_text "Editing:"
-    expect(page).to have_text(@chapter.title)
+    
+    fill_in 'chapter_title', with: 'The New Chapter Title' 
+    click_button 'save-chapter'
 
-    fill_in "Title", with: new_title 
-    click_button 'Save'
-
-    expect(current_path).to eq(chapter_path(@chapter))
-    expect(page).to have_text(new_title)
+    expect(current_path).to eq(edit_deck_path(@deck))
+    expect(page).to have_text('Chapter title updated')
   end
 
-  it 'can only be edited by its owner'
+  it 'cannot be done by others' do 
+    create_user
+    create_deck
+    create_second_user
+    sign_in(@user2)
+
+    visit edit_deck_path(@deck)
+
+    expect(current_path).not_to eq(edit_deck_path(@deck))
+    expect(page).to have_text("Only the deck's creator can edit the deck")
+  end
 end
