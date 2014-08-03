@@ -13,6 +13,7 @@ before_action :require_creator, only: [:edit, :update, :destroy]
 
   def show  
     @deck = deck
+    @suggested_card = CardSuggestion.new
   end
 
   def edit

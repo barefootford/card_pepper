@@ -12,6 +12,7 @@ Pepper::Application.routes.draw do
   patch 'users/:id/edit_password' => 'users#update_password', as: 'update_password'
   
   resources :users
+  resource :session
 
   resources :decks do 
     resources :chapters
@@ -19,8 +20,6 @@ Pepper::Application.routes.draw do
 
   resources :chapters do 
     resources :cards
+    resources :card_suggestions
   end
-
-  resource :session
-  resources :decks
 end
