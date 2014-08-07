@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-sprockets
+//= require twitter/bootstrap
+//= require designmodo/flat_ui/flat_ui
 //= require turbolinks
 //= require_tree .

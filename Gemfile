@@ -13,9 +13,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'byebug'
 
-gem 'bootstrap-sass', '~> 3.2.0'
-gem 'sass-rails', '>= 3.2'
-gem 'autoprefixer-rails' #add vendor prefixes automatically
+gem 'therubyracer'
+gem 'less-rails'
+gem 'less-rails-bootstrap'
 
 group :test, :development do
   gem "minitest"
