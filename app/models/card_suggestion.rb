@@ -4,4 +4,8 @@ class CardSuggestion < ActiveRecord::Base
   validates :chapter_id, :user_id, presence: :true
   validates :question, presence: :true, length: { maximum: 140, minimum: 2 }
   validates :answer, presence: :true, length: { maximum: 140, minimum: 2 }
+
+  def self.saved
+    where('id > 0 ')    
+  end
 end

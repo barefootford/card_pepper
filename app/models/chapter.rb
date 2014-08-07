@@ -11,6 +11,6 @@ class Chapter < ActiveRecord::Base
   end
 
   def card_suggestions_count
-    card_suggestions.all.count    
+    card_suggestions.all.saved.count    
   end
 end

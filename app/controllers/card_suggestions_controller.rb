@@ -17,6 +17,9 @@ class CardSuggestionsController < ApplicationController
     end
   end
 
+  def approve    
+  end
+
   def edit
   end
 

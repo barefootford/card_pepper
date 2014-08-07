@@ -4,8 +4,7 @@ describe 'Deck Index Page' do
 
   before do
     user = User.create!(user_attributes)
-    deck = user.decks.create!(title:"Ruby Foundations",
-      instructions:"Great for beginners.")
+    deck = create_deck
     deck = user.decks.create!(title:"Pragmatic Ruby II")
     deck = user.decks.create!(title:"Pragmatic Rails")
 
@@ -27,13 +26,14 @@ describe 'Deck Index Page' do
   it "shows all the decks" do
     expect(page).to have_text("Pragmatic Rails")
     expect(page).to have_text("Pragmatic Ruby II")
-    expect(page).to have_text("Ruby Foundations")
+    expect(page).to have_text(deck_attributes[:title])
   end
 
   it "links to show pages" do 
-    click_link 'Ruby Foundations'
+    expect(page).to have_link deck_attributes[:title]
+    click_link deck_attributes[:title]
 
-    expect(page).to have_content "Great for beginners."
+    expect(page).to have_content deck_attributes[:instructions]
   end
 
 

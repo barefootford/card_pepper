@@ -60,4 +60,3 @@ def card_attributes(overrides = {})
     answer: 'Yes'
   }.merge(overrides)
 end
-

@@ -12,12 +12,11 @@ describe 'Creating a card sugestion' do
     fill_in('card-question', with:'Roja')
     fill_in('card-answer', with:'Red')
     click_button('save-card-suggestion')
-    byebug
   
     expect(current_path).to eq(deck_path(@deck))
     expect(page).to have_text('Roja')
     expect(page).to have_text('Red')
-    expect(page).to have_text('Card suggestion added.')
-    byebug
+    # expect(page).to have_text('Card suggestion added.')
+    
   end
 end

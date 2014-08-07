@@ -4,13 +4,22 @@
 </div>
 
 <div class='col-md-5'>
-  <%= form_for [@deck.chapters.last, @deck.chapters.last.card_suggestions.new] do |f|  %>  
+  <%= form_for [@chapter, @card_suggestion] do |f|  %>  
     <small>Question:</small>
     <%= f.text_area :question, placeholder:'Question',
     rows:1, class:'form-control', id:'card-question' %>
 
     <small>Answer:</small>
     <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer' %>
+  <br>
+    <select class='btn btn-block btn-hg btn-default'>
+      
+      <% @chapters.each do |chapter| %>
+        <option value='<%= chapter.id %>', class='btn btn-block btn-hg btn-default'><%= chapter.title %></option>
+      <% end %>
+
+    </select>
+    <%#= f.select :chapter, options_for_select() %>
   <br>
 </div>
 
