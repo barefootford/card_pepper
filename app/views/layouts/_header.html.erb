@@ -15,7 +15,7 @@
       <li><%= link_to 'Account', edit_user_path(current_user) if current_user  %></li>
       <li><%= link_to 'Account', new_user_path if !current_user %></li>
       <li><%= link_to 'Sign Out', session_path,
-      method: :delete, class: 'button' if current_user  %></li>
+      method: :delete, class: 'button', id:'sign-out-head-nav' if current_user  %></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav><!-- /navbar -->
