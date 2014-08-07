@@ -39,7 +39,6 @@ describe 'Creating a new user' do
     }.not_to change(User, :count)
 
     expect(page).to have_text('error')
-
-    expect(page).not_to have_text('Account')
+    expect(page).not_to have_link('Sign Out')
   end
 end

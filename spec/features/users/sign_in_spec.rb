@@ -41,7 +41,5 @@ describe 'Signing in a user' do
     expect(page).to have_link('Sign Up')
 
     expect(page).not_to have_link('Sign Out')
-    expect(page).not_to have_link('Account')
   end
-
 end
