@@ -28,12 +28,11 @@ describe 'A Card' do
     expect(card.errors[:question].any?).to be_true
   end
 
-
+  it 'has a user attribute' do 
+    create_user
+    create_deck
+    create_card
+   
+    expect(@card.user).to eq(@user)
+  end
 end
-
-# it "requires a name" do
-#     user = User.new(name: "")
-
-#     expect(user.valid?).to be_false
-#     expect(user.errors[:name].any?).to be_true
-#   end

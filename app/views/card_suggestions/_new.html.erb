@@ -1,0 +1,31 @@
+<div class='col-md-6'>
+  <%= render 'shared/errors', object: @suggested_card %>
+  <h6>Suggest a Card:</h6>
+</div>
+
+<div class='col-md-5'>
+  <%= form_for [@chapter, @card_suggestion] do |f|  %>  
+    <small>Question:</small>
+    <%= f.text_area :question, placeholder:'Question',
+    rows:1, class:'form-control', id:'card-question' %>
+
+    <small>Answer:</small>
+    <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer' %>
+  <br>
+    <select class='btn btn-block btn-hg btn-default'>
+      
+      <% @chapters.each do |chapter| %>
+        <option value='<%= chapter.id %>', class='btn btn-block btn-hg btn-default'><%= chapter.title %></option>
+      <% end %>
+
+    </select>
+    <%#= f.select :chapter, options_for_select() %>
+  <br>
+</div>
+
+<div class = 'col-md-1'>
+  <%= f.submit "Save", class:"btn btn-block btn-info", id:'save-card-suggestion' %>
+  <br>
+  <% end %>
+</div>
+<br>

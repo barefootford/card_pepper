@@ -16,6 +16,13 @@
     <%= yield %>
 
     <%= render "layouts/footer" %>
+
+    <% if current_user && Rails.env == 'development' %>
+      <div>
+        <h5>Current User:</h5>
+        <h6><%= current_user.name %></h6>
+      </div>
+    <% end %>
   </div>
 </body>
 </html>

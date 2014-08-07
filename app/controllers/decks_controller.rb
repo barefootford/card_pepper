@@ -13,6 +13,11 @@ before_action :require_creator, only: [:edit, :update, :destroy]
 
   def show  
     @deck = deck
+    @suggested_card = CardSuggestion.new
+    @chapters = @deck.chapters.to_a
+    @chapter = @deck.chapters.first
+    @card_suggestion = @chapter.card_suggestions.new
+    # byebug
   end
 
   def edit

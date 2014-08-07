@@ -11,6 +11,10 @@ def create_deck
   @chapter = @deck.chapters.create!(chapter_attributes)
 end
 
+def create_card
+  @card = @deck.chapters.first.cards.new(card_attributes)
+end
+
 def create_user_and_sign_in
   create_user
   sign_in(@user)
@@ -50,3 +54,9 @@ def chapter_attributes(overrides = {})
   }.merge(overrides)  
 end
 
+def card_attributes(overrides = {})
+  {
+    question: 'Is the sky blue?',
+    answer: 'Yes'
+  }.merge(overrides)
+end
