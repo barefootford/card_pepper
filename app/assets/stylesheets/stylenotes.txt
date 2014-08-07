@@ -1,6 +1,0 @@
-create/new - btn-primary
-update     - btn-default
-delete     - btn-warning
-
-show pages: h4 for headings
-download:
