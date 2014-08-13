@@ -1,5 +1,5 @@
 <div class='row'>
-  <div class='col-md-6'>
+  <div class='col-md-8'>
     <%= render "shared/errors", object: @user %>
 
     <h5>Edit Profile:</h5>
@@ -18,7 +18,7 @@
       <%= f.text_area :website, placeholder:'http://barefootford.com', class:'form-control', rows:1 %>
       <br>
 
-        <%= f.submit 'Update Account', class:'btn btn-block btn-info' %>  
+        <%= f.submit 'Update Account', class:'btn btn-block btn-primary' %>  
       
         <%= link_to 'Nevermind', user_path(@user), class:'btn btn-block btn-default' %>
     <% end %>
@@ -27,5 +27,8 @@
       <%= link_to 'Edit Password', edit_password_path(@user), class:'label label-default' %>
 
     <br>
+  </div>
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
   </div>
 </div>

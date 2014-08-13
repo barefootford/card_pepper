@@ -1,0 +1,18 @@
+<h6>Suggested Cards:</h6>
+<ol>
+  <% @deck.chapters.each do |chapter| %>
+    <% if chapter.card_suggestions.saved.any? %>
+        <% chapter.card_suggestions.saved.each do |card| %>
+          <ul>
+            <li>
+              Q: <%= card.question %> | A: <%= card.answer %>
+              <br>
+              <%= content_tag :div, card.chapter.title, class: 'label label-default' %>
+              <%= link_to card.user.name, card.user, class: 'label label-default' %>
+            </li>
+          </ul>
+        <% end %>                
+      </li>
+    <% end %>
+  <% end %>
+</ol>

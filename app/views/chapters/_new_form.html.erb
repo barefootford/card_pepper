@@ -1,14 +1,6 @@
 <%= form_for [@deck, @chapter] do |f| %>
-  <div class='col-md-6'>
-    <small>Add a New Chapter:</small>
-    <br>
-  </div>
-  <div class='col-md-5'>
-    <%= f.text_area :title, placeholder:'Spanish verbs that end in "r"', rows:1, class:'form-control' %>
-  </div>
+  <small>Add a New Chapter:</small>
   <br>
-  <div class='col-md-1'>
-    <%= f.submit "Save", class:'btn btn-block btn-info', id:'save-deck-chapter' %>
-    <br>
-  </div>
+  <%= f.text_area :title, placeholder:'Spanish verbs that end in "r"', rows:1, class:'form-control' %>
+  <%= f.submit "Save", class:'btn btn-block btn-primary', id:'save-deck-chapter' %>
 <% end %>

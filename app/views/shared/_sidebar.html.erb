@@ -1,11 +1,31 @@
-<% if @user_decks %>
-  <h4>Your Decks:</h4>
-  <% @user_decks.each do |deck| %>
-    <div>
-      <p><span><%= link_to "Edit", edit_deck_path(deck), class:'btn btn-xs btn-info'  %></span>
-      <%= link_to deck.title, deck %><p>
-    </div>
-  <% end %>
-  <%= link_to "New Deck", new_deck_path, class:'btn btn-xs btn-info' %>
-  <br>
+<ul class="nav nav-list">
+  <li class='nav-header'>Your Decks</li>
+
+  <% if current_user && current_user.has_decks? %>    
+    <% current_user.decks.saved.each do |deck| %>
+      <li>
+        <%= link_to deck.title, edit_deck_path(deck) %>      
+      </li>
+    <% end %>
+  <% end %>    
+  <li class='active'>
+    <%= link_to "New Deck", new_deck_path %>
+  </li>
+  
+  <li class="divider"></li>
+</ul>
+
+
+<% if current_user %>
+  <ul class="nav nav-list">
+    <li class='nav-header'>Your Account</li>
+    
+    <li><%= link_to "#{current_user.name}", user_path(current_user) %></li>
+    <li><%= link_to 'Dashboard', dashboard_path(current_user) %></li>
+    <li><%= link_to 'Edit Profile', edit_user_path(current_user) %></li>
+    <li><%= link_to 'Edit Password', edit_password_path(current_user) %></li>
+
+
+    <li class="divider"></li>
+  </ul>
 <% end %>

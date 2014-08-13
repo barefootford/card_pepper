@@ -18,18 +18,16 @@ gem 'less-rails'
 gem 'less-rails-bootstrap'
 
 group :test, :development do
-  gem "minitest"
-  gem "rspec-rails", "2.14.1"
+  gem 'minitest'
+  gem 'rspec-rails', '2.14.1'
+  gem 'spring-commands-rspec'
+  gem 'guard'
+  gem 'guard-rspec', require: false
+  gem 'spring'
 end
 
 group :test do
   gem "capybara", "2.2.1"
-end
-
-group :development do
-  gem 'guard'
-  gem 'guard-rspec', require: false
-  gem 'spring'
 end
 
 group :doc do

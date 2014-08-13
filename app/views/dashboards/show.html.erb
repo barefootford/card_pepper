@@ -1,27 +1,46 @@
 <div class='row'>
-  <div class='col-md-6'>
-    <h1>Dashboard</h1>
+  <div class='col-md-8'>
+    <h5>Community Suggested Cards</h5>
+    <br>
+    
+    <table>
+      <th>Question:</th>
+      <tr>What is the Spanish word for blue?</tr>
+      <tr>Azul</tr>
+    </table>
 
-    <div>
-      <% @decks.each do |deck| %>
-        <p>
-          <h5><%= deck.title %></h5>
+    <% current_user.decks.each do |deck|  %>
 
-          <% if deck.card_suggestions.any? %>
-            <p><strong>Card Suggestions:</strong></p>
-            <% deck.card_suggestions.each do |card| %>
-              <div>
-                <%= link_to 'Approve', '', class:'btn btn-xs btn-primary', id:'approve-card' %>
-                <%= card.question %> | <%= card.answer %>
-                <%= content_tag :span, card.user.name, class:'label label-default' %>
+      <% if deck.any_card_suggestions? %>
+        <tr><strong><%= deck.title %></strong></tr>
+          <% deck.card_suggestions.each do |card| %>
+          <div class='table'>
+            <table class='table table-striped'>
+              <tbody>
+                <tr>
+                  <th>Chapter</th>
+                  <th>Question</th>
+                  <th>Answer</th>
+                  <th>Approve?</th>
+                </tr>
+              
+                <tr>
+                  <td><%= card.chapter.title %></td>
+                  <td><%= card.question %></td>
+                  <td><%= "yes yes" * 20 %></td>
+                  <!-- <td><%#= card.answer %></td> -->
+                  <td><%= link_to 'Approve', '#', class:'label label-primary' %></td>
+                </tr>
                 <% end %>
-              </div>
-          <% else %>
-          <p>No suggestions.</p>  
-          <% end %>  
-        </p>
+                
+              </tbody>
+            </table>
+          </div>
       <% end %>
-    </div>
+    <% end %>
+  </div>
+  
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
   </div>
 </div>
-

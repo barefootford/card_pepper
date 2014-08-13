@@ -1,5 +1,5 @@
 <div class='row'>
-  <div class='col-md-6'>
+  <div class='col-md-8'>
         <%= render "shared/errors", object: @deck %>
     <h1>Let's build a deck.</h1>
     <p class='lead'>First, give it a title:</p>  
@@ -9,5 +9,8 @@
       <%= f.submit "Build It", class:'btn btn-lg btn-block btn-primary' %>
       <br>
     <% end %>
+  </div>
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
   </div>
 </div>

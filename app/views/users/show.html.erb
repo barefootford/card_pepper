@@ -1,11 +1,11 @@
 <div class='row'>
-  <div class='col-md-4'>
+  <div class='col-md-8'>
     <h1 class='less-margin'><%= @user.name %></h1>
     <p>    
       <% if @user.new? %>
-        <span class='label label-primary'>New User</span>
+        <span class='label label-primary label-margin'>New User</span>
       <% else %>
-        <span class='label label-primary'>Veteran</span>
+        <span class='label label-primary label-margin'>Veteran</span>
       <% end  %>
       
       <span class='label label-default label-margin'>
@@ -22,18 +22,14 @@
     </p>
     <h5>Decks:</h5>
     <% if @user.decks.any? %>
-            
       <% @user.decks.each do |deck| %>
         <small>
           <%= link_to deck.title, deck %>
           (<%= number_of_cards(deck.card_count) %>)
         </small><br>
       <% end %>
-
     <% else %>
-
       <%= "#{@user.name} doesn't manage any decks yet."  %>  
-
     <% end %>
 
     <h5>Website:</h5>
@@ -43,10 +39,9 @@
       <% else %>
         No website listed.
       <% end %>
-    </p>
-
-    <br><br>
-    <%= link_to "Edit Account", edit_user_path(@user), class:'btn btn-block btn-primary' if current_user == @user %>
-    <br><br>
+    </p>   
+  </div>
+  <div class='col-md-4'>
+    <%= render '/shared/sidebar' %>
   </div>
 </div>

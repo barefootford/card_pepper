@@ -7,6 +7,12 @@ class Deck < ActiveRecord::Base
   validates :title, length: { minimum: 5, maximum: 65 }
   validates :user_id, presence: :true
 
+  scope :saved, lambda { where('id > 0') }
+
+  def any_card_suggestions?
+    @any_card_suggestions ||= card_suggestions.count > 0  
+  end
+
   def card_count
     count = 0
 
@@ -16,7 +22,7 @@ class Deck < ActiveRecord::Base
 
     count
   end
-
+  
   def card_suggestions_count
     count = 0
 

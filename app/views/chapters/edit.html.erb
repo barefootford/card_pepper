@@ -9,7 +9,7 @@
       <%= f.text_area :title, class:'form-control' %>
     </p>
 
-    <%= f.submit "Save", class:'btn btn-lg btn-block btn-info', id:'save-chapter' %>
+    <%= f.submit "Save", class:'btn btn-lg btn-block btn-primary', id:'save-chapter' %>
     <br>
     <% end %>
   </div>
@@ -21,7 +21,7 @@
         <% @chapter_cards.each do |card| %>
         <li>
           <h6>
-            <span><%= link_to "Edit", "#", class:'btn btn-xs btn-info'  %></span>
+            <span><%= link_to "Edit", "#", class:'btn btn-xs btn-primary'  %></span>
             <span><%= link_to "X", chapter_card_path(@chapter, card), method: :delete, data: { confirm: 'Are you *sure* you want to delete this card?' }, class:'btn btn-xs btn-danger' %></span>
 
             <%= link_to card.question, "#" %>
@@ -44,7 +44,7 @@
   </div>
 
   <div class = 'col-md-1'>
-    <%= f.submit "Save", class:"span btn btn-md btn-info" %>
+    <%= f.submit "Save", class:"span btn btn-md btn-primary" %>
     <br>
     <% end %>
   </div>

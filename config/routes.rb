@@ -1,6 +1,8 @@
 Pepper::Application.routes.draw do
 
   root 'decks#index'
+
+  get 'dashboards/example' => 'dashboards#example'
   
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
@@ -20,8 +22,9 @@ Pepper::Application.routes.draw do
     resources :chapters
   end
 
+  resources :card_suggestions
+
   resources :chapters do 
     resources :cards
-    resources :card_suggestions
   end
 end
