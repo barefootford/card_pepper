@@ -4,8 +4,8 @@ class CardSuggestionsController < ApplicationController
   end
 
   def create
-    @deck = set_deck
-    @suggested_card = CardSuggestion.new(card_suggestion_params)  
+    @chapter = set_chapter
+    @suggested_card = @chapter.card_suggestions.new(card_suggestion_params)  
     @suggested_card.user_id = current_user.id
 
     if @suggested_card.save
@@ -43,6 +43,6 @@ private
   end
 
   def card_suggestion_params
-    params.require(:card_suggestion).permit(:question, :answer, :purpose)
+    params.require(:card_suggestion).permit(:question, :answer, :chapter_id)
   end
 end

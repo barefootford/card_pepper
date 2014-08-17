@@ -22,9 +22,8 @@ Pepper::Application.routes.draw do
     resources :chapters
   end
 
-  resources :card_suggestions
-
   resources :chapters do 
     resources :cards
+    resources :card_suggestions
   end
 end

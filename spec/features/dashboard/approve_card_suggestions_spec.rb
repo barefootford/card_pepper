@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Approving Card Suggestions' do 
-  it 'can be done through the dashboard' do 
+  xit 'can be done through the dashboard' do 
     create_user
     create_deck
     

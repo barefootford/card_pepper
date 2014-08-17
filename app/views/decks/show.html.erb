@@ -29,14 +29,15 @@
     <br><hr><br>
 
     <%= render 'card_suggestions' if @deck.any_card_suggestions? %>
-    
   </div>
   <div class='col-md-4'>
     <%= render 'shared/sidebar' %>
     
-    <% if current_user %>
+    <% if current_user && not_owner_of(@deck)  %>
       <%= render 'card_suggestions/new' %>
-    <% else %>
+    <% end %>
+
+    <% if !current_user %>
       <br>
         <p><%= link_to 'Login', new_session_path %> or <%= link_to 'Sign Up', new_user_path %> to suggest chapters and cards.</p>  
       <br>

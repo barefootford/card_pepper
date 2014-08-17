@@ -15,21 +15,4 @@ describe "Viewing a deck" do
     expect(page).to have_text deck_attributes[:instructions]
     expect(page).to have_link 'Decks'
   end
-
-  it 'should list an edit link for its editor' do 
-    sign_in(@user)
-    
-    visit deck_path(@deck)
-
-    expect(page).to have_link('Edit')
-  end
-
-  it 'should not show an edit link for other users' do 
-    create_second_user
-    sign_in(@user2)
-
-    visit deck_path(@deck)
-
-    expect(page).not_to have_link('Edit')
-  end
 end

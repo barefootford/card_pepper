@@ -2,13 +2,16 @@
   <div class='col-md-8'>
     <h3 class='text-center'>Community Decks</h3>
     <% @decks.each do |deck| %>
-      <h6 class='head-with-author' id='no-link-color'><%= link_to deck.title, deck %></h6>
+      <h6 class='head-with-author' id='no-link-color'>
+        <%= link_to deck.title, deck %>
+      </h6>
       
       <%= link_to deck.user.name, user_path(deck.user), class:'label label-default' %>  
       <%= link_to "Language", "#", class:'label label-default' %>
       <%= link_to "#{deck.chapters.count} #{'chapters'.pluralize(deck.chapters.count)}", "#", class:'label label-default' %>
 
       <%= link_to "2 cards", '#', class:'label label-default' %>
+      <%= content_tag :div, pluralize(deck.card_suggestions_count, 'contribution'), class:'label label-default' %>
 
     <% end %><br>
   </div>

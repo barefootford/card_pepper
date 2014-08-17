@@ -1,4 +1,4 @@
-<% if object.errors.any? %>
+<% if object && object.errors.any? %>
   <section id="errors">
     <p>
       The <%= object.class.name.titleize.downcase %> couldn't be saved. Please fix the following <%= 'error'.pluralize(object.errors.count) %>:
