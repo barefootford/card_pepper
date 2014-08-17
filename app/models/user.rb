@@ -13,6 +13,18 @@ class User < ActiveRecord::Base
     user && user.authenticate(password)          
   end
 
+  def card_suggestions
+    @card_suggestions = []
+
+    decks.each do |deck| 
+      deck.card_suggestions.each do |card|
+        @card_suggestions << card
+      end
+    end
+
+    @card_suggestions
+  end
+
   def name
     "#{first_name} #{last_name}"    
   end
@@ -57,9 +69,11 @@ class User < ActiveRecord::Base
     @card_count
   end
 
-  def deck_count
-    @deck_count = 0
+  def has_decks?
+    decks.all.count > 0    
+  end
 
+  def deck_count
     @deck_count = decks.count    
   end
 

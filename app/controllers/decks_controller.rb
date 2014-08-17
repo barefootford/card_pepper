@@ -4,20 +4,15 @@ before_action :require_sign_in, except: [:show, :index]
 before_action :require_creator, only: [:edit, :update, :destroy]
 
   def index
-    @decks = Deck.all.limit(10)
-    
-    if current_user
-      @user_decks = current_user.decks
-    end  
+    @decks = Deck.all.limit(10) 
   end
 
   def show  
     @deck = deck
-    @suggested_card = CardSuggestion.new
     @chapters = @deck.chapters.to_a
     @chapter = @deck.chapters.first
-    @card_suggestion = @chapter.card_suggestions.new
-    # byebug
+    # @card_suggestion = @chapter.card_suggestions.new
+    @card_suggestion = CardSuggestion.new
   end
 
   def edit
@@ -66,5 +61,4 @@ before_action :require_creator, only: [:edit, :update, :destroy]
   def deck_params
     params.require(:deck).permit(:title,:editor,:instructions)    
   end
-
 end

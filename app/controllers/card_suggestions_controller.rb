@@ -4,8 +4,7 @@ class CardSuggestionsController < ApplicationController
   end
 
   def create
-    @deck = deck
-    @chapter = chapter
+    @chapter = set_chapter
     @suggested_card = @chapter.card_suggestions.new(card_suggestion_params)  
     @suggested_card.user_id = current_user.id
 
@@ -31,15 +30,19 @@ class CardSuggestionsController < ApplicationController
 
 private
   
-  def deck
-    @deck ||= chapter.deck    
+  def set_deck
+    @deck ||= set_chapter.deck
+  end
+
+  def set_chapter
+    @chapter ||= Chapter.find(params[:card_suggestion][:chapter_id])
+  end
+
+  def selected_chapter
+    params.require(:chapter_id)   
   end
 
   def card_suggestion_params
-    params.require(:card_suggestion).permit(:question, :answer, :purpose)    
-  end
-
-  def chapter
-    @chapter ||= Chapter.find(params[:chapter_id])
+    params.require(:card_suggestion).permit(:question, :answer, :chapter_id)
   end
 end

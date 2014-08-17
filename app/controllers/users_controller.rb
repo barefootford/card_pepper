@@ -75,7 +75,6 @@ private
   end
 
   def filled_in_a_password?
-    byebug
     return false if password_params[:password].nil?
   end
 

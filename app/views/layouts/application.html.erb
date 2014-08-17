@@ -18,10 +18,10 @@
     <%= render "layouts/footer" %>
 
     <% if current_user && Rails.env == 'development' %>
-      <div>
+    <!--   <div>
         <h5>Current User:</h5>
-        <h6><%= current_user.name %></h6>
-      </div>
+        <h6><%#= current_user.name %></h6>
+      </div> -->
     <% end %>
   </div>
 </body>
