@@ -9,11 +9,10 @@
       <tr>Azul</tr>
     </table>
 
-    <% current_user.decks.each do |deck|  %>
+    <% @decks.each do |deck|  %>
 
       <% if deck.any_card_suggestions? %>
         <tr><strong><%= deck.title %></strong></tr>
-          <% deck.card_suggestions.each do |card| %>
           <div class='table'>
             <table class='table table-striped'>
               <tbody>
@@ -24,13 +23,14 @@
                   <th>Approve?</th>
                 </tr>
               
-                <tr>
-                  <td><%= card.chapter.title %></td>
-                  <td><%= card.question %></td>
-                  <td><%= "yes yes" * 20 %></td>
-                  <!-- <td><%#= card.answer %></td> -->
-                  <td><%= link_to 'Approve', '#', class:'label label-primary' %></td>
-                </tr>
+                <% deck.card_suggestions.each do |card| %>
+                  <tr>
+                    <td><%= card.chapter.title %></td>
+                    <td><%= card.question %></td>
+                    <td><%= "yes yes" * 20 %></td>
+                    <!-- <td><%#= card.answer %></td> -->
+                    <td><%= link_to 'Approve', card_approve_path(deck, card), method: :patch, class:'label label-primary' %></td>
+                  </tr>
                 <% end %>
                 
               </tbody>

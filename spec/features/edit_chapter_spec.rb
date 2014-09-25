@@ -7,6 +7,7 @@ describe "Editing a chapter" do
     create_deck
 
     visit edit_deck_path(@deck.chapters.last)
+    byebug
     click_link('Edit')
 
     expect(current_path).to eq(edit_deck_chapter_path(@deck, @chapter))

@@ -9,6 +9,10 @@ private
     session[:user_id] = nil    
   end
   
+  def users_match?(object1, object2)
+    object1 == object2
+  end
+
   def require_creator
     unless Deck.find(params[:id]).user == current_user
       redirect_to root_url,
@@ -16,6 +20,10 @@ private
     end 
   end
   
+  def deck_id
+    params[:deck_id]  
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]  
   end
@@ -27,5 +35,5 @@ private
     end
   end
 
-  helper_method :current_user, :destroy_session
+  helper_method :current_user, :destroy_session, :deck_id
 end
