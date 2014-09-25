@@ -22,12 +22,11 @@
         <% @deck.chapters.each do |chapter| %>
         <li>
           <h6>
-            <span><%= link_to "Edit", edit_deck_chapter_path(@deck,chapter), class:'btn btn-xs btn-default'  %></span>
+            <span><%= link_to "Edit", edit_chapter_path(chapter), class:'btn btn-xs btn-default'  %></span>
             <span><%= link_to "X", chapter_path(chapter), method: :delete, data: { confirm: 'Are you *sure* you want to delete this chapter?' }, class:'btn btn-xs btn-default' %></span>
 
             <%= link_to chapter.title, chapter %>
-            <% cards = chapter.cards.count %>
-            <span><%= "(#{cards} #{'card'.pluralize(cards)})" if cards > 0 %></span>
+            <span><%= "(#{chapter.cards.count} #{'card'.pluralize(chapter.cards.count)})" if chapter.cards.count > 0 %></span>
           <h6>
         </li>
         <% end %>  
