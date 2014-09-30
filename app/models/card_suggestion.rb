@@ -10,4 +10,10 @@ class CardSuggestion < ActiveRecord::Base
   def self.saved
     where('id > 0 ')    
   end
+
+  def approve
+    self.approved = true
+    self.save
+    Card.create(question: self.question, answer: self.answer, chapter_id: self.chapter_id)
+  end
 end
