@@ -6,11 +6,10 @@ describe "Editing a chapter" do
     create_user_and_sign_in
     create_deck
 
-    visit edit_deck_path(@deck.chapters.last)
-    byebug
-    click_link('Edit')
+    visit edit_deck_path(@deck)
+    click_link("edit-chapter-#{@deck.chapters.first.id}")
 
-    expect(current_path).to eq(edit_deck_chapter_path(@deck, @chapter))
+    expect(current_path).to eq(edit_chapter_path(@chapter))
     expect(page).to have_text(chapter_attributes[:title])
     expect(page).to have_text "Editing:"
     

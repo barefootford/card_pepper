@@ -73,6 +73,10 @@ class User < ActiveRecord::Base
     decks.all.count > 0    
   end
 
+  def owns_card(card)
+    card.chapter.user == self
+  end
+
   def deck_count
     @deck_count = decks.count    
   end
