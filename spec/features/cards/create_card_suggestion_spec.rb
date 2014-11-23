@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Creating a card sugestion' do 
+describe 'Creating a card suggestion' do 
   
   it 'through the show decks page ' do
     create_user
@@ -14,9 +14,7 @@ describe 'Creating a card sugestion' do
     click_button('save-card-suggestion')
   
     expect(current_path).to eq(deck_path(@deck))
-    expect(page).to have_text('Roja')
-    expect(page).to have_text('Red')
-    # expect(page).to have_text('Card suggestion added.')
     
+    expect(page).to have_text('Card suggestion added.') 
   end
 end
