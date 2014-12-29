@@ -8,7 +8,7 @@ class CardSuggestion < ActiveRecord::Base
   validates :user_id, presence: :true
 
   def self.saved
-    where('id > 0 ')    
+    where('id > 0 ')
   end
 
   def approve

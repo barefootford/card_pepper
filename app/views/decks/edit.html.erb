@@ -16,7 +16,10 @@
       <% end %>
     <% end %>
 
-    <h3>Chapters:</h3>
+    <%= render 'cards/new' %>
+
+
+    <h4>Chapters:</h4>
     <% if @deck.chapters.any? %>
       <ol>
         <% @deck.chapters.each do |chapter| %>
@@ -29,8 +32,8 @@
             <span><%= "(#{chapter.cards.count} #{'card'.pluralize(chapter.cards.count)})" if chapter.cards.count > 0 %></span>
           <h6>
         </li>
-        <% end %>  
-      </ol>    
+        <% end %>
+      </ol>
     <% end %>
     
     <%= render 'chapters/new_form' %>

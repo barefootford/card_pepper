@@ -17,7 +17,8 @@ before_action :require_creator, only: [:edit, :update, :destroy]
 
   def edit
     @deck = deck
-    @chapter = Chapter.new(deck_id: @deck.id)
+    @new_chapter = Chapter.new(deck_id: @deck.id)
+    @new_card = @deck.chapters.first.cards.build
   end
 
   def update
@@ -54,6 +55,7 @@ before_action :require_creator, only: [:edit, :update, :destroy]
     end
   end
 
+  #change this to set_deck
   def deck
     @deck ||= Deck.find(params[:id])
   end
