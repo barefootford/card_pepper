@@ -2,6 +2,7 @@ Pepper::Application.routes.draw do
 
   root 'decks#index'
 
+  get 'spadeck' => 'decks#spa_deck'
   get 'dashboards/example' => 'dashboards#example'
   
   get 'sign_in' => 'sessions#new'

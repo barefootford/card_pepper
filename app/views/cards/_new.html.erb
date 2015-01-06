@@ -1,19 +1,30 @@
 <%= render 'shared/errors', object: @card %>
 
-<h4>Add a Card:</h4>
-<%= form_for [@deck.chapters.first, @new_card] do |f| %>  
-  
-  <small>Question:</small>
-  <%= f.text_area :question, placeholder:'Question',
-  rows:1, class:'form-control', id:'card-question' %>
+<a id='new_card_toggle_button' class='btn btn-default mhm'>Add a Card</a>
 
-  <small>Answer:</small>
-  <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer', prompt: true %>
-  
-  <small>Select a chapter:</small><br>
-  <%= collection_select :card, :chapter_id, @deck.chapters, :id, :title %>
+<div id='new_card_form'>
+	<%= form_for [@deck.chapters.first, @new_card] do |f| %>  
+	  
+	  <small>Question:</small>
+	  <%= f.text_area :question, placeholder:'Question',
+	  rows:1, class:'form-control', id:'card-question' %>
 
-    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
-    <br>
-<% end %>
-<br>
+	  <small>Answer:</small>
+	  <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer', prompt: true %>
+	  
+	  <small>Select a chapter:</small><br>
+	  <%= collection_select :card, :chapter_id, @deck.chapters, :id, :title %>
+
+	    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
+	    <br>
+	<% end %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#new_card_form").hide();
+    $("#new_card_toggle_button").click(function(){
+      $("#new_card_form").toggle(150);
+    });
+  });
+</script>
