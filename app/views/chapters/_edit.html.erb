@@ -1,0 +1,32 @@
+<h5>Edit Chapters
+  <span id='edit_chapters_toggle_button' class='btn btn-default btn-xs'>Show/Hide</span>
+</h5>
+
+<div id='edit_chapters_form'>
+  <h4>Chapters:</h4>
+  <% if @deck.chapters.any? %>
+    <ol>
+      <% @deck.chapters.each do |chapter| %>
+      <li>
+        <h6>
+          <span><%= link_to "Edit", edit_chapter_path(chapter), class:'btn btn-xs btn-default', id:"edit-chapter-#{chapter.id}"  %></span>
+          <span><%= link_to "X", chapter_path(chapter), method: :delete, data: { confirm: 'Are you *sure* you want to delete this chapter?' }, class:'btn btn-xs btn-default' %></span>
+
+          <%= link_to chapter.title, chapter %>
+          <span><%= "(#{chapter.cards.count} #{'card'.pluralize(chapter.cards.count)})" if chapter.cards.count > 0 %></span>
+        <h6>
+      </li>
+      <% end %>
+    </ol>
+  <% end %>
+  <%= render 'chapters/new_form' %><br>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#edit_chapters_form").hide();
+    $("#edit_chapters_toggle_button").click(function(){
+      $("#edit_chapters_form").toggle(150);
+    });
+  });
+</script>

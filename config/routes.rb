@@ -16,7 +16,7 @@ Pepper::Application.routes.draw do
   resources :users
   resource :session
 
-  resources :dashboards
+  get 'dashboard' => 'dashboards#show', as: 'dashboard'
 
   resources :decks do 
     resources :chapters

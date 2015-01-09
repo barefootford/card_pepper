@@ -1,15 +1,16 @@
-<% if current_user %>
+<% if 1 == 0 %>
+<%# if current_user %>
   <ul class="nav nav-list">
     
     <li class='nav-header'>Edit Decks:</li>
 
-    <% if current_user.has_decks? %>    
+    <% if current_user && current_user.has_decks? %>    
       <% current_user.decks.saved.each do |deck| %>
         <li>
           <%= link_to "Edit: #{deck.title}", edit_deck_path(deck) %>      
         </li>
       <% end %>
-    <% end %>    
+    <% end %>
     
     <li class='active'>
       <%= link_to "New Deck", new_deck_path %>

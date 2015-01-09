@@ -5,17 +5,11 @@
     </button>
     <a class="navbar-brand primary" color='#1abc9c' href="/">
       Card Pepper
-      <!-- <span class="fui-flat">ps</span> -->
     </a>
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse-01">
     <ul class="nav navbar-nav">           
-      <!-- <li class="active"><a href="#fakelink">Home</a></li> -->
-      <li><%= link_to 'Decks', decks_path %></li>
-      <li><%= link_to 'Account', edit_user_path(current_user) if current_user  %></li>
-      <li><%= link_to 'Account', new_user_path if !current_user %></li>
-      <li><%= link_to 'Sign Out', session_path,
-      method: :delete, class: 'button', id:'sign-out-head-nav' if current_user  %></li>
+      <li><%= link_to 'Dashboard', dashboard_path %></li>
     </ul>
-  </div><!-- /.navbar-collapse -->
-</nav><!-- /navbar -->
+  </div>
+</nav>
