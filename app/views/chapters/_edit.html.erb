@@ -1,4 +1,6 @@
-<a class='btn btn-default mhm'>Edit Chapters</a>
+<h5>Edit Chapters
+  <span id='edit_chapters_toggle_button' class='btn btn-default btn-xs'>Show/Hide</span>
+</h5>
 
 <div id='edit_chapters_form'>
   <h4>Chapters:</h4>
@@ -17,7 +19,6 @@
       <% end %>
     </ol>
   <% end %>
-
   <%= render 'chapters/new_form' %><br>
 </div>
 
@@ -25,8 +26,7 @@
   $(document).ready(function(){
     $("#edit_chapters_form").hide();
     $("#edit_chapters_toggle_button").click(function(){
-      $("#deck_details").toggle(150);
+      $("#edit_chapters_form").toggle(150);
     });
   });
 </script>
-

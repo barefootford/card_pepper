@@ -7,7 +7,7 @@ describe 'Signing out' do
 
     expect(current_path).to eq(user_path(user))
     
-    click_link 'sign-out-head-nav'
+    click_link 'sign-out-button'
 
     expect(page).to have_text("signed out")
     expect(page).to have_link('Sign In')

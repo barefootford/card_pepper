@@ -1,6 +1,5 @@
 class DashboardsController < ApplicationController
   before_action :require_sign_in
-  before_action :deck_owner_matches_current_user
 
   def show
     @user = current_user      
@@ -25,14 +24,6 @@ private
   
   def suggested_card
     CardSuggestion.find(dashboard_params[:card_suggestion_id].to_i)
-  end
-
-  def deck_owner_matches_current_user
-    set_card
-  end
-
-  def set_card
-    # @card_suggestion ||= CardSuggestion.find(params[:card_suggestion_id])     
   end
 
   def set_deck

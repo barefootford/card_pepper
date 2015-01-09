@@ -12,19 +12,13 @@
     <span> | </span>
     
     <% if current_user %>
-
-      <%= link_to 'Sign Out', session_path,
-      method: :delete, class: 'button' if current_user %>
-      
-      <span> | </span>  
-
-      <%= link_to 'Account', dashboard_path(current_user) %>
+      <%= link_to 'Sign Out', session_path, method: :delete, id:'sign-out-button', class: 'button' if current_user %>
+      <span> | </span>
+      <%= link_to 'Account', edit_user_path(current_user) if current_user  %>
     <% else %>
       <%= link_to "Sign In", new_session_path %>
-      <span> | </span>  
-
+      <span> | </span>
       <%= link_to "Sign Up", new_user_path, class:'label label-primary' %>
     <% end %>
-    
   </div>
 </div>

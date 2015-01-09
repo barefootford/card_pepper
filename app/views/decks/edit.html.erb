@@ -1,13 +1,9 @@
 <div class='row'>
   <div class='col-md-8'>
     <h3>Editing: <%= @deck.title %></h3>
-    
-    <%= render 'decks/details' %>
-    <%= render 'cards/new' %>
-    <%= render 'chapters/edit' %>
-  </div>
 
-  <div class='col-md-4'>
-    <%= render 'shared/sidebar' %>
+    <%= render 'cards/new' %>    
+    <%= render 'chapters/edit' %>
+    <%= render 'decks/details' %>
   </div>
 </div>
