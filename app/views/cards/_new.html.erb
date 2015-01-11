@@ -9,17 +9,17 @@
 	  
 	  <small>Question:</small>
 	  <%= f.text_area :question, placeholder:'Question',
-	  rows:1, class:'form-control', id:'card-question' %>
+	  rows:3, class:'form-control', id:'card-question' %>
 
 	  <small>Answer:</small>
-	  <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer', prompt: true %>
+	  <%= f.text_area :answer, placeholder:'Answer', rows:3, class:'form-control', id:'card-answer', prompt: true %>
 
-	  <small>Select a chapter:</small><br>
+	  <small class='label-margin-10'>Select a chapter:</small>
 	  <%= collection_select :card, :chapter_id, @deck.chapters, :id, :title %>
 
-	    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
-	    <br>
-	    <hr>
+    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
+    <br>
+    <hr>
 	<% end %>
 </div>
 
