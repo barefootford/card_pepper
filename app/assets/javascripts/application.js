@@ -14,5 +14,4 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require designmodo/flat_ui/flat_ui
-//= require turbolinks
 //= require_tree .

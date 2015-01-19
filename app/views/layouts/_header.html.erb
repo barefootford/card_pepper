@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" id='navigation-id'role="navigation">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
       <span class="sr-only">Toggle navigation</span>
@@ -9,7 +9,8 @@
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse-01">
     <ul class="nav navbar-nav">           
-      <li><%= link_to 'Dashboard', dashboard_path %></li>
+      <li><%= link_to 'Dashboard', dashboard_path if current_user %></li>
+      <li><%= link_to 'Sign Up', new_user_path if !current_user %></li>
     </ul>
   </div>
 </nav>

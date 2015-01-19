@@ -1,0 +1,6 @@
+$('#new-card-question').val('');
+$('#new-card-answer').val('');
+$('#navigation-id').after('<h5 class="flash card alert card-created" id="new-card-success">Card Added</h5>');
+$(document).ready( function() {
+	$('#new-card-success').delay(6000).fadeOut();
+})
