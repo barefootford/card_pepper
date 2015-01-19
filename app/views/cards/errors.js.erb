@@ -1,0 +1,3 @@
+$('.flash').remove();
+$('#navigation-id').after('<h5 class="flash card alert card-error">Card fail.</h5>');
+$('#navigation-id').after('<div class="flash notice alert" id="new-card-fail"><%= @card.errors.full_messages.collect {|c| } %></div>');

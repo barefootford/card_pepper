@@ -2,9 +2,65 @@
   <div class='col-md-8'>
     <h3>Editing: <%= @deck.title %></h3>
     <hr>
+    <div>
+			<button class='btn btn-sm btn-inverse' id='new-card-button'>New Card</button>
+			<button class='btn btn-sm btn-default' id='edit_chapters_toggle_button'>Chapters</button>
+			<button class='btn btn-sm btn-default' id='deck_details_toggle_button'>Deck Settings</button>
+    </div>
 
-    <%= render 'cards/new' %>    
+    <%= render 'cards/new' %>
     <%= render 'chapters/edit' %>
     <%= render 'decks/details' %>
+    <%= render 'cards/edit' %>
+  	<hr>
   </div>
 </div>
+
+<!-- use .show and .hidden classes. to hide forms without using jquery -->
+
+<script>
+	$(document).ready(function(){
+		$('#new-card-button').click(function(){
+			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
+			$('#new-card-button').removeClass('btn-default').addClass('btn-inverse');
+			$('.hideable').hide();
+		  $("#new_card_form").show(150);
+		});
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $("#edit_chapters_form").hide();
+    $("#edit_chapters_toggle_button").click(function(){
+			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+			$('#edit_chapters_toggle_button').removeClass('btn-default').addClass('btn-inverse');
+	  	$('.hideable').hide(1);
+      $("#edit_chapters_form").show(150);
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $("#edit-cards-form").hide();
+    $("#edit_cards_button").click(function(){
+			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+			$('#edit_cards_button').removeClass('btn-default').addClass('btn-inverse');
+	  	$('.hideable').hide(1);
+      $("#edit_cards_form").show(150);
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $("#deck_details").hide();
+    $("#deck_details_toggle_button").click(function(){
+			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+			$('#deck_details_toggle_button').removeClass('btn-default').addClass('btn-inverse');
+	  	$('.hideable').hide(1);
+      $("#deck_details").show(150);
+    });
+  });
+</script>

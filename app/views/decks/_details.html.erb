@@ -1,10 +1,6 @@
-<h5>Edit Deck Details
-  <span id='deck_details_toggle_button' class='btn btn-default btn-xs'>
-  Show/Hide  
-  </span>
-</h5>
+<div id='deck_details' class='hideable'>
+  <h5>Edit Deck Details</h5>
 
-<div id='deck_details'>
   <%= form_for @deck do |f| %>
     <small>Title:</small>
     <%= f.text_area :title, class:'form-control', rows:1 %>
@@ -18,14 +14,4 @@
       <%= link_to 'Delete Deck', deck_path, method: :delete, data: { confirm: 'Are you *sure* you want to delete this deck?' }, class:'btn btn-block btn-default' %><br>
     <% end %>
   <% end %>
-  <hr>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#deck_details").hide();
-    $("#deck_details_toggle_button").click(function(){
-      $("#deck_details").toggle(150);
-    });
-  });
-</script>

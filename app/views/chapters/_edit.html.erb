@@ -1,9 +1,5 @@
-<h5>Edit Chapters
-  <span id='edit_chapters_toggle_button' class='btn btn-default btn-xs'>Show/Hide</span>
-</h5>
-
-<div id='edit_chapters_form'>
-  <h4>Chapters:</h4>
+<div id='edit_chapters_form' class='hideable'>
+  <h5>Edit Chapters</h5>  
   <% if @deck.chapters.any? %>
     <ol>
       <% @deck.chapters.each do |chapter| %>
@@ -21,12 +17,3 @@
   <% end %>
   <%= render 'chapters/new_form' %><br>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#edit_chapters_form").hide();
-    $("#edit_chapters_toggle_button").click(function(){
-      $("#edit_chapters_form").toggle(150);
-    });
-  });
-</script>
