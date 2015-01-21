@@ -8,11 +8,10 @@ end
 
 def create_deck
   @deck = Deck.create!(deck_attributes)
-  @chapter = @deck.chapters.create!(chapter_attributes)
 end
 
 def create_card
-  @card = @deck.chapters.first.cards.new(card_attributes)
+  @card = @deck.cards.new(card_attributes)
 end
 
 def create_user_and_sign_in
@@ -45,13 +44,6 @@ def deck_attributes(overrides = {})
     user_id:1,
     instructions:"Use this deck promptly after finishing the class and you'll do really well."
   }.merge(overrides)
-end
-
-def chapter_attributes(overrides = {})
-  {
-    title: 'Chapter 1: Ruby Handshakes',
-    deck_id: 1
-  }.merge(overrides)  
 end
 
 def card_attributes(overrides = {})

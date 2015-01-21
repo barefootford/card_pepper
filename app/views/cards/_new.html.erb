@@ -1,8 +1,8 @@
 <div id='new_card_form' class='hideable'>
 	<h5>Add a Card</h5>
-	<%= render 'shared/errors', object: @card %>
+	<%= render 'shared/errors', object: @card %>    
 
-	<%= form_for([@deck.chapters.first, @new_card], remote: true) do |f| %>
+	<%= form_for([@deck, @new_card], remote: true) do |f| %>
 	  <small>Question:</small>
 	  <%= f.text_area :question, placeholder:'Question',
 	  rows:3, class:'form-control', id:'new-card-question' %>
@@ -10,10 +10,7 @@
 	  <small >Answer:</small>
 	  <%= f.text_area :answer, placeholder:'Answer', rows:3, class:'form-control', id:'new-card-answer', prompt: true %>
 
-	  <small class='label-margin-10'>Select a chapter:</small>
-	  <%= collection_select :card, :chapter_id, @deck.chapters, :id, :title %>
-
     <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
     <br>
 	<% end %>
-</div>
+</div>      

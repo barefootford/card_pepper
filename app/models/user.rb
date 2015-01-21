@@ -1,22 +1,23 @@
 class User < ActiveRecord::Base
   has_many :decks, dependent: :destroy
+  has_many :cards, through: :decks
   has_secure_password
 
-  validates :email, presence: true,                   
+  validates :email, presence: true,
                   format: /\A\S+@\S+\z/,
                   uniqueness: { case_sensitive: false }
-  validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }                 
+  validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }
   validates :password, length: { minimum: 6, maximum: 20, allow_blank: true }
 
   def self.authenticate(email, password)
     user = User.find_by(email: email)
-    user && user.authenticate(password)          
+    user && user.authenticate(password)
   end
 
   def card_suggestions
     @card_suggestions = []
 
-    decks.each do |deck| 
+    decks.each do |deck|
       deck.card_suggestions.each do |card|
         @card_suggestions << card
       end
@@ -26,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def name
-    "#{first_name} #{last_name}"    
+    "#{first_name} #{last_name}"
   end
 
   def initials
@@ -34,11 +35,11 @@ class User < ActiveRecord::Base
   end
 
   def website?
-    return true unless website.blank?    
+    return true unless website.blank?
   end
 
   def website=(website)
-    self[:website] = website    
+    self[:website] = website
   end
 
   def website
@@ -70,15 +71,15 @@ class User < ActiveRecord::Base
   end
 
   def has_decks?
-    decks.all.count > 0    
+    decks.all.count > 0
   end
 
   def owns_card(card)
-    card.chapter.user == self
+    card.user == self
   end
 
   def deck_count
-    @deck_count = decks.count    
+    @deck_count = decks.count
   end
 
   def new?

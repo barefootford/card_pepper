@@ -3,26 +3,12 @@
     <h4 class='head-with-author'><%= @deck.title %></h4>
 
     <%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-default' %>
-    <%= content_tag :div, pluralize(@deck.card_count, 'card'), class:'label label-default' %>
+    <%= content_tag :div, pluralize(@deck.cards.count, 'card'), class:'label label-default' %>
     <%= content_tag :div, pluralize(@deck.card_suggestions_count, 'contribution'), class:'label label-default' %>
 
     <% unless @deck.instructions.blank? %>
       <h5>Instructions:</h5>
       <p><%= @deck.instructions %></p>
-    <% end %>
-
-    <h6>Chapters:</h6>
-    
-    <% if @deck.chapters.any? %>
-      <ol>
-        <% @deck.chapters.each do |chapter| %>
-        <li>
-          <h6>
-            <%= link_to chapter.title, chapter %>
-          <h6>
-        </li>
-        <% end %>
-      </ol>
     <% end %>
 
     <%= link_to "Download Deck", "#", class:'btn btn-lg btn-block btn-primary' %>

@@ -18,7 +18,6 @@
             <table class='table table-striped'>
               <tbody>
                 <tr>
-                  <th>Chapter</th>
                   <th>Question</th>
                   <th>Answer</th>
                   <th>Approve?</th>
@@ -26,9 +25,8 @@
               
                 <% deck.card_suggestions.each do |card| %>
                   <tr>
-                    <td><%= card.chapter.title %></td>
                     <td><%= card.question %></td>
-                    <!-- <td><%#= card.answer %></td> -->
+                    <td><%= card.answer %></td>
                     <td><%= link_to 'Approve', card_approve_path(deck, card), method: :patch, class:'label label-primary' %></td>
                   </tr>
                 <% end %>

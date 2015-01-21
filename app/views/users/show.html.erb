@@ -13,11 +13,11 @@
       </span>  
       
       <span class='label label-default label-margin'>
-        <%= number_of_cards(@user.card_count) %>
+        <%= number_of_cards(@user.cards.count) %>
       </span>
       
       <span class='label label-default label-margin'>
-        <%= number_of("deck", @user.deck_count) %>
+        <%= number_of("deck", @user.decks.count) %>
       </span>
     </p>
     <h5>Decks:</h5>
@@ -25,7 +25,7 @@
       <% @user.decks.each do |deck| %>
         <small>
           <%= link_to deck.title, deck %>
-          (<%= number_of_cards(deck.card_count) %>)
+          (<%= number_of_cards(deck.cards.count) %>)
         </small><br>
       <% end %>
     <% else %>
