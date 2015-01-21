@@ -1,6 +1,0 @@
-<%= form_for [@deck, @new_chapter] do |f| %>
-  <small>Add a New Chapter:</small>
-  <br>
-  <%= f.text_area :title, placeholder:'Spanish verbs that end in "r"', rows:1, class:'form-control' %>
-  <%= f.submit "Save Chapter", class:'btn btn-block btn-primary', id:'save-deck-chapter' %>
-<% end %>

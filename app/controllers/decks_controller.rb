@@ -2,34 +2,30 @@ class DecksController < ApplicationController
 
 before_action :require_sign_in, except: [:show, :index]
 before_action :require_creator, only: [:edit, :update, :destroy]
-  
+
   def index
-    @decks = Deck.all.limit(10) 
+    @decks = Deck.all.limit(10)
   end
 
-  def show  
+  def show
     @deck = deck
-    @chapters = @deck.chapters.to_a
-    @chapter = @deck.chapters.first
-    # @card_suggestion = @chapter.card_suggestions.new
     @card_suggestion = CardSuggestion.new
   end
 
   def edit
     @deck = deck
-    @new_chapter = Chapter.new(deck_id: @deck.id)
-    @new_card = @deck.chapters.first.cards.build
+    @new_card = @deck.cards.build
   end
 
   def update
     @deck = deck
     @deck.update(deck_params)
-    redirect_to edit_deck_path(@deck), notice: "Deck updated successfully."    
+    redirect_to edit_deck_path(@deck), notice: "Deck updated successfully."
   end
 
   def destroy
     @deck = deck
-    @deck.destroy    
+    @deck.destroy
     redirect_to root_url, notice: 'Deck deleted successfully.'
   end
 
@@ -40,8 +36,7 @@ before_action :require_creator, only: [:edit, :update, :destroy]
   def create
     @deck = current_user.decks.new(deck_params)
     if @deck.save
-       @deck.chapters.create!(title:"Chapter 1")
-       redirect_to edit_deck_path(@deck), notice: "Deck built successfully. Add a chapter to store cards."
+       redirect_to edit_deck_path(@deck), notice: "Deck built successfully."
     else
       render :new
     end
@@ -55,12 +50,11 @@ before_action :require_creator, only: [:edit, :update, :destroy]
     end
   end
 
-  #change this to set_deck
   def deck
     @deck ||= Deck.find(params[:id])
   end
 
   def deck_params
-    params.require(:deck).permit(:title,:editor,:instructions)    
+    params.require(:deck).permit(:title,:editor,:instructions)
   end
 end

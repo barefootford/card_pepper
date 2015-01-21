@@ -1,9 +1,10 @@
 class Card < ActiveRecord::Base
-  belongs_to :chapter
-  validates :chapter_id, presence: :true
-  validates :question, :answer, presence: :true, length: { maximum: 140, minimum: 2 }
+  belongs_to :deck
+  belongs_to :user
+  validates :question, :answer, presence: :true, length: { maximum: 140, minimum: 1 }
+  validates :deck_id, presence: :true
 
   def user
-    chapter.deck.user   
+    deck.user
   end
 end

@@ -11,31 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804235453) do
+ActiveRecord::Schema.define(version: 20150121013546) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
     t.string   "answer"
     t.string   "purpose"
     t.integer  "user_id"
-    t.integer  "chapter_id"
+    t.integer  "deck_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "approved",   default: false
   end
 
-  add_index "card_suggestions", ["chapter_id"], name: "index_card_suggestions_on_chapter_id"
+  add_index "card_suggestions", ["deck_id"], name: "index_card_suggestions_on_deck_id"
   add_index "card_suggestions", ["user_id"], name: "index_card_suggestions_on_user_id"
 
   create_table "cards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "chapter_id"
+    t.integer  "deck_id"
     t.string   "question"
     t.string   "answer"
   end
 
-  add_index "cards", ["chapter_id"], name: "index_cards_on_chapter_id"
+  add_index "cards", ["deck_id"], name: "index_cards_on_deck_id"
 
   create_table "chapters", force: true do |t|
     t.integer  "deck_id"

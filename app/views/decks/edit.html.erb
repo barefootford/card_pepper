@@ -4,12 +4,10 @@
     <hr>
     <div>
 			<button class='btn btn-sm btn-inverse' id='new-card-button'>New Card</button>
-			<button class='btn btn-sm btn-default' id='edit_chapters_toggle_button'>Chapters</button>
 			<button class='btn btn-sm btn-default' id='deck_details_toggle_button'>Deck Settings</button>
     </div>
 
     <%= render 'cards/new' %>
-    <%= render 'chapters/edit' %>
     <%= render 'decks/details' %>
     <%= render 'cards/edit' %>
   	<hr>
@@ -26,18 +24,6 @@
 			$('.hideable').hide();
 		  $("#new_card_form").show(150);
 		});
-  });
-</script>
-
-<script>
-  $(document).ready(function(){
-    $("#edit_chapters_form").hide();
-    $("#edit_chapters_toggle_button").click(function(){
-			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
-			$('#edit_chapters_toggle_button').removeClass('btn-default').addClass('btn-inverse');
-	  	$('.hideable').hide(1);
-      $("#edit_chapters_form").show(150);
-    });
   });
 </script>
 
