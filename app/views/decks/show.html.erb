@@ -14,16 +14,15 @@
     <%= link_to "Download Deck", "#", class:'btn btn-lg btn-block btn-primary' %>
     <br><hr><br>
   </div>
+
   <div class='col-md-4'>
-    <%= render 'shared/sidebar' %>
-    
     <% if current_user && not_owner_of(@deck)  %>
       <%= render 'card_suggestions/new' %>
     <% end %>
 
     <% if !current_user %>
       <br>
-        <p><%= link_to 'Login', new_session_path %> or <%= link_to 'Sign Up', new_user_path %> to suggest chapters and cards.</p>  
+        <p><%= link_to 'Login', new_session_path %> or <%= link_to 'Sign Up', new_user_path %> to suggest cards.</p>  
       <br>
     <% end %>
   </div>

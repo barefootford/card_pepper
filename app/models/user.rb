@@ -74,8 +74,8 @@ class User < ActiveRecord::Base
     decks.all.count > 0
   end
 
-  def owns_card(card)
-    card.user == self
+  def owns_deck_for(card_suggestion)
+    self == card_suggestion.deck.user
   end
 
   def deck_count

@@ -1,3 +1,34 @@
-<div id='edit-cards-form'>
-	<h5>Edit Cards</h5>
+<div class='hideable hidden' id='edit-cards-form'>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th>Question</th>
+        <th>Answer</th>
+        <th>Creator</th>
+        <th>Delete</th>
+      </tr>
+
+      <% @cards.each do |card| %>
+        <tr id=<%= "card#{card.id}" %> >
+          <td><%= "#{card.question}" %></td>
+          <td><%= "#{card.answer}" %></td>
+          <td><%= "#{card.user.name}**" %></td>
+          <td><div class='label label-danger'>X</div></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#card-list-toggle-button').click(function(){
+      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
+      $('#card-list-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+      $('.hideable').hide();
+      $('#edit-cards-form').removeClass('hidden')
+      $('#edit-cards-form').show(50);
+    });
+  });
+</script>

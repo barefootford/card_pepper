@@ -20,7 +20,8 @@ Pepper::Application.routes.draw do
 
   resources :decks do 
     resources :cards
+    resources :card_suggestions
   end
 
-  patch 'decks/:deck_id/card_suggestions/:card_suggestion_id/approve' => 'dashboards#approve', as: 'card_approve'
+  patch 'decks/:deck_id/card_suggestions/:card_suggestion_id/approve' => 'card_suggestions#approve', as: 'card_approve'
 end

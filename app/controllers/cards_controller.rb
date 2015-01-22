@@ -2,11 +2,9 @@ class CardsController < ApplicationController
   before_action :set_deck, only: [:create, :destroy, :edit]
 
   def create
-    byebug
     @card = set_deck.cards.new(card_params)
 
     respond_to do |format|
-      format.html { create_card_html }
       format.js { create_card_js } 
     end
   end
@@ -22,10 +20,10 @@ class CardsController < ApplicationController
       notice: 'Card deleted.'
   end
 
-  private
+private
 
   def card_params
-    params.require(:card).permit(:id, :question, :answer, :deck_id)
+    params.require(:card).permit(:id, :question, :answer).merge(deck_params)
   end
 
   def deck_params
@@ -37,7 +35,7 @@ class CardsController < ApplicationController
   end
 
   def set_deck
-    @deck ||= Deck.find(deck_params[:deck_id])
+    @deck ||= Deck.find(card_params[:deck_id])
   end
 
   def create_card_js
@@ -47,8 +45,5 @@ class CardsController < ApplicationController
       puts "there are some errors."
       render :errors
     end
-  end
-
-  def create_card_html
   end
 end

@@ -1,0 +1,31 @@
+<div class='hideable hidden' id='card-suggestions-form'>
+	<% if @card_suggestions.any? %>
+			<% @card_suggestions.each do |card| %>
+				<div>
+					<strong>Q: </strong><%= card.question %><br>
+					<strong>A: </strong><%= card.answer %><br>
+					<small>
+					  <%= link_to "#{card.user.first_name.capitalize} #{card.user.last_name.capitalize}", user_path(card.user) %>
+					</small>
+					<br>
+					<button class='btn btn-xs'>
+					  <%= link_to "Approve and Add Card", card_approve_path(@deck, card), method: :patch %>
+					</button>
+				  <hr>
+				</div>
+			<% end %>
+	<% else %>
+	<p>No suggested cards for this deck.</p>
+	<% end %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#community-cards-toggle-button").click(function(){
+			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+			$('#community-cards-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+	  	$('.hideable').hide();
+      $("#card-suggestions-form").show(50).removeClass('hidden');
+    });
+  });
+</script>

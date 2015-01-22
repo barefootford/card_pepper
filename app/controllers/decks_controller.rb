@@ -2,29 +2,28 @@ class DecksController < ApplicationController
 
 before_action :require_sign_in, except: [:show, :index]
 before_action :require_creator, only: [:edit, :update, :destroy]
+before_action :deck, only: [:show, :edit, :update, :destroy]
 
   def index
     @decks = Deck.all.limit(10)
   end
 
   def show
-    @deck = deck
     @card_suggestion = CardSuggestion.new
   end
 
   def edit
-    @deck = deck
+    @card_suggestions = @deck.card_suggestions.unapproved
     @new_card = @deck.cards.build
+    @cards = @deck.cards.saved
   end
 
   def update
-    @deck = deck
     @deck.update(deck_params)
     redirect_to edit_deck_path(@deck), notice: "Deck updated successfully."
   end
 
   def destroy
-    @deck = deck
     @deck.destroy
     redirect_to root_url, notice: 'Deck deleted successfully.'
   end
