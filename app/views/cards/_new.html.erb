@@ -1,16 +1,23 @@
 <div id='new_card_form' class='hideable'>
-	<h5>Add a Card</h5>
-	<%= render 'shared/errors', object: @card %>    
+  <%= render 'shared/errors', object: @card %>    
+  <%= form_for([@deck, @new_card], remote: true) do |f| %>
+    <small>Question:</small>
+    <%= f.text_area :question, placeholder:'Question',
+    rows:3, class:'form-control', id:'new-card-question' %>
 
-	<%= form_for([@deck, @new_card], remote: true) do |f| %>
-	  <small>Question:</small>
-	  <%= f.text_area :question, placeholder:'Question',
-	  rows:3, class:'form-control', id:'new-card-question' %>
+    <small >Answer:</small>
+    <%= f.text_area :answer, placeholder:'Answer', rows:3, class:'form-control', id:'new-card-answer', prompt: true %><br>
+    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %><br>
+  <% end %>
+</div>
 
-	  <small >Answer:</small>
-	  <%= f.text_area :answer, placeholder:'Answer', rows:3, class:'form-control', id:'new-card-answer', prompt: true %>
-
-    <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
-    <br>
-	<% end %>
-</div>      
+<script>
+  $(document).ready(function(){
+    $('#new-card-toggle-button').click(function(){
+      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
+      $('#new-card-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+      $('.hideable').hide();
+      $("#new_card_form").show(50);
+    });
+  });
+</script>

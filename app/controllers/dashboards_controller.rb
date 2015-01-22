@@ -6,17 +6,6 @@ class DashboardsController < ApplicationController
     @decks = current_user.decks.all
   end
 
-  def approve
-    if current_user.owns_card(suggested_card)
-      suggested_card.approve
-      redirect_to set_deck,
-      notice: 'The card has been approved.'
-    else
-      redirect_to root_url,
-      notice: 'Only the creator can edit the deck.'  
-    end
-  end
-
 private
   def dashboard_params
     params.permit(:card_suggestion_id)

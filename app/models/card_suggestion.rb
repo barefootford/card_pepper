@@ -7,6 +7,8 @@ class CardSuggestion < ActiveRecord::Base
   validates :user_id, presence: :true
   validates :deck_id, presence: :true
 
+  scope :unapproved, -> { where(approved: false ) }
+
   def self.saved
     where('id > 0 ')
   end

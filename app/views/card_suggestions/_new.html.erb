@@ -1,18 +1,15 @@
 <%= render 'shared/errors', object: @card_suggestion %>
 
 <h6>Suggest a Card:</h6>
-<%= form_for [@chapter, @card_suggestion] do |f| %>  
+<%= form_for [@deck, @card_suggestion] do |f| %>  
   <small>Question:</small>
   <%= f.text_area :question, placeholder:'Question',
   rows:1, class:'form-control', id:'card-question' %>
 
   <small>Answer:</small>
   <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer', prompt: true %>
-  
-  <small>What chapter should it be in?</small><br>
-  <%= collection_select :card_suggestion, :chapter_id, @deck.chapters, :id, :title %>
 
-    <%= f.submit "Save", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
-    <br>
+	<%= f.submit "Save", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
+  <br>
 <% end %>
 <br>

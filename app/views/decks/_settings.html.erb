@@ -1,6 +1,4 @@
-<div id='deck_details' class='hideable'>
-  <h5>Edit Deck Details</h5>
-
+<div id='deck-settings-form' class='hideable hidden'>
   <%= form_for @deck do |f| %>
     <small>Title:</small>
     <%= f.text_area :title, class:'form-control', rows:1 %>
@@ -15,3 +13,14 @@
     <% end %>
   <% end %>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $("#deck-settings-toggle-button").click(function(){
+      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+      $('#deck-settings-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+      $('.hideable').hide();
+      $('#deck-settings-form').show(50).removeClass('hidden');
+    });
+  });
+</script>
