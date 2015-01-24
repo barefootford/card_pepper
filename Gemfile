@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.1.5'
 
+gem "capybara-webkit"
 gem 'faker'
 gem 'rails', '4.1.4'
 gem 'bcrypt'

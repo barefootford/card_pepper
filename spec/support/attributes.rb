@@ -21,6 +21,7 @@ end
 
 def sign_in(user)
   visit new_session_url
+  puts page.body
 
   fill_in 'email', with: user.email
   fill_in 'password', with: user.password
