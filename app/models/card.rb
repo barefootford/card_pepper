@@ -6,7 +6,6 @@ class Card < ActiveRecord::Base
 
   scope :saved, -> { where('id > 0') }
 
-
   def user
     deck.user
   end
