@@ -16,9 +16,9 @@ describe 'Creating a new card' do
 
       click_button 'save-card-button'
 
+      expect(page).to have_text('Card Added')
       expect(find_field('new-card-question').value).to eq('')
       expect(find_field('new-card-answer').value).to eq('')
-      expect(page).to have_text('Card Added')
     end
     
     it 'shows validation errors', js: true do
