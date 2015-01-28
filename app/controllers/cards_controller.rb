@@ -42,7 +42,6 @@ private
     if @card.save
       render :create
     else
-      puts "there are some errors."
       render :errors
     end
   end
