@@ -6,12 +6,12 @@
   <div class='col-md-6'>
     <%= form_tag(session_path) do %>
         <%= email_field_tag :email, '', placeholder:'Email Address', autofocus: true,
-          required: true, class:'form-control input-hg' %> 
+          required: true, class:'form-control input-hg' %>
 
         <%= password_field_tag :password, nil, placeholder:'Password', size: 40,
             required: true, class:'form-control input-hg' %>
 
-        <%= submit_tag "Sign In", class:"btn btn-lg btn-block btn-inverse" %>
+        <%= submit_tag "Sign In", class:"btn btn-lg btn-block btn-inverse", id: 'sign-in-btn' %>
     <% end %>
     <br>
   </div>
