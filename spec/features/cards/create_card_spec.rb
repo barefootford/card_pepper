@@ -20,7 +20,7 @@ describe 'Creating a new card' do
       expect(find_field('new-card-question').value).to eq('')
       expect(find_field('new-card-answer').value).to eq('')
     end
-    
+
     it 'shows validation errors', js: true do
       fill_in 'new-card-question', with: ''
       fill_in 'new-card-answer', with: ''
