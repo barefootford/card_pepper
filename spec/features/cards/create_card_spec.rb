@@ -1,11 +1,10 @@
 require 'spec_helper'
 
-describe 'Creating a new card' do 
-
-  it 'is permitted by an editor' do 
+describe 'Creating a new card' do
+  xit 'is permitted by an editor' do
     create_user_and_sign_in
     create_deck
-    #visit deck
+    # visit deck
     #fill in front
     #fill in back
     # select chapter

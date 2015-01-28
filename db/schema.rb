@@ -37,15 +37,6 @@ ActiveRecord::Schema.define(version: 20150121013546) do
 
   add_index "cards", ["deck_id"], name: "index_cards_on_deck_id"
 
-  create_table "chapters", force: true do |t|
-    t.integer  "deck_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-  end
-
-  add_index "chapters", ["deck_id"], name: "index_chapters_on_deck_id"
-
   create_table "decks", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"

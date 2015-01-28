@@ -29,6 +29,9 @@ end
 
 group :test do
   gem "capybara", "2.2.1"
+  gem 'capybara-webkit'
+  gem 'launchy'
+  gem 'database_cleaner'
 end
 
 group :doc do
