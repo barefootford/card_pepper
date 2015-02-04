@@ -12,7 +12,7 @@ describe 'Deck Index Page' do
   end
 
   it "shows the title" do
-    expect(page).to have_text 'Community Decks'
+    expect(page).to have_text 'Top Decks'
   end
 
   it 'is allowed by signed out users' do 
