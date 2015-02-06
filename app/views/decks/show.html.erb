@@ -1,10 +1,6 @@
 <div class='row'>
   <div class='col-md-8'>
-    <h4 class='head-with-author'><%= @deck.title %></h4>
-
-    <%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-default' %>
-    <%= content_tag :div, pluralize(@deck.cards.count, 'card'), class:'label label-default' %>
-    <%= content_tag :div, pluralize(@deck.card_suggestions_count, 'contribution'), class:'label label-default' %>
+    <%= render 'decks/title' %>
 
     <% unless @deck.instructions.blank? %>
       <h5>Instructions:</h5>

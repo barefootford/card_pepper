@@ -1,6 +1,11 @@
 $('#new-card-question').val('');
 $('#new-card-answer').val('');
 $('#navigation-id').after('<h5 class="flash card alert card-created" id="new-card-success">Card Added</h5>');
+
 $(document).ready( function() {
 	$('#new-card-success').delay(6000).fadeOut();
 })
+
+$('#cards-table').append('<tr id="card#{@card.id}"><td><%= @card.question %></td><td><%= @card.answer %></td><td><%= @card.user.name %></td><td><div class="label label-danger">X</div></td></tr>');
+
+$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %>').fadeOut().fadeIn();

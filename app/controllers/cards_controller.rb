@@ -26,6 +26,14 @@ private
     params.require(:card).permit(:id, :question, :answer).merge(deck_params)
   end
 
+  def create_card_js
+    if @card.save
+      render :create
+    else
+      render :errors
+    end
+  end
+
   def deck_params
     params.permit(:deck_id)
   end
@@ -36,13 +44,5 @@ private
 
   def set_deck
     @deck ||= Deck.find(card_params[:deck_id])
-  end
-
-  def create_card_js
-    if @card.save
-      render :create
-    else
-      render :errors
-    end
   end
 end
