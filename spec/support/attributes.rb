@@ -3,11 +3,11 @@ def create_user
 end
 
 def create_second_user
-  @user2 = User.create!(user_attributes(first_name:'Second', email:'user2@example.com'))
+  @user2 = User.create(user_attributes(first_name:'Second', email:'user2@example.com'))
 end
 
 def create_deck
-  @deck = Deck.create!(deck_attributes)
+  @deck = Deck.create(deck_attributes)
 end
 
 def create_card

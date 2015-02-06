@@ -1,53 +1,87 @@
 require 'spec_helper'
 
 describe DecksController do
-  
-  describe 'signed-out users' do 
-    it 'can view a deck' do 
-      create_deck
-      
-      get :show, id: @deck.id
 
-      expect(response.success?).to be_true
-    end
+  before do
+    create_user
+    create_second_user
+    create_deck
   end
 
-  describe 'while signed in' do 
-    it 'users can view another users deck' do 
-      create_deck
-      session[:user_id] = 2
-
+  describe 'signed out users' do
+    it 'can view a deck' do
       get :show, id: @deck.id
 
       expect(response.success?).to be_true
     end
     
-    it 'will not let non-owners edit a deck' do 
-      create_user
-      create_second_user
-      create_deck
-      session[:user_id] = 2
+    it 'cannot create decks' do
+      get :new
 
-      get :edit, id: @deck
-      
-      expect(response).to redirect_to(root_url)
+      expect(response).to redirect_to(sign_up_path)
+    end
+
+    it 'cannot edit decks' do 
+      get :edit, id: @deck.id
+
+      expect(response).to redirect_to(sign_up_path)
+    end
+
+    it 'cannot update decks' do
+      patch :update, id: @deck.id
+
+      expect(response).to redirect_to(sign_up_path)
     end
     
-    it 'will not let non-owners update a deck' do
-      create_user
-      create_second_user
-      create_deck
+    it 'cannot delete decks' do
+      delete :destroy, id: @deck.id
 
-      session[:user_id] = 2
-
-      # patch :update
+      expect(response).to redirect_to(sign_up_path)
     end
   end
-end  
 
+  describe 'while signed in' do
+    before do
+      session[:user_id] = 99
+    end
 
-  
+    it 'users can view individual decks' do
+      get :show, id: @deck.id
 
-  # it 'will let the owner delete the deck'
-  # it 'will let signed in users create decks'
-  # it 'will not let signed in users create decks'
+      expect(response.success?).to be_true
+    end
+
+    it 'can view the decks index view' do
+      get :index
+
+      expect(response.success?).to be_true
+    end
+
+    describe 'permissions' do
+      describe 'for non owners' do
+        before do 
+          session[:user_id] = 2
+          #set the session to an id other than the owner of deck 1
+        end
+
+        it 'will not allow editing a deck' do
+          get :edit, id: @deck.id
+
+          expect(response).to redirect_to(root_url)
+        end
+
+        it 'will not allow updating a deck' do
+          patch :update, id: @deck.id
+
+          expect(response).to redirect_to(root_url)
+        end
+
+        it 'will not allow deleting a deck' do
+          delete :destroy, id: @deck.id
+
+          expect(response).to redirect_to(root_url)
+        end
+      end
+    end
+  end
+end
