@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Creating a new deck' do
 
-  describe 'while signed out' do 
+  describe 'while signed out' do
 
     it 'is not permitted by signed-out users' do
       visit new_deck_url
@@ -15,22 +15,18 @@ describe 'Creating a new deck' do
 
   describe 'while signed in' do 
 
-    before(:each) do
+    before do
       user = create_user
       sign_in(user)
+      visit new_deck_path
     end
 
-    it 'is permitted by signed-in users' do
-      visit new_deck_path
-
+    it 'is permitted' do
       expect(current_path).to eq(new_deck_path)
       expect(page).to have_text("Let's build a deck.")
     end
 
     it 'saves the deck, then goes to the edit page' do
-      visit new_deck_path
-      expect(current_path).to eq(new_deck_path)
-
       fill_in 'deck_title', with: deck_attributes[:title]
       click_button 'Build It'
 
@@ -40,9 +36,7 @@ describe 'Creating a new deck' do
       expect(page).to have_text('Deck built successfully')
     end
 
-    it 'displays validation errors' do
-      visit new_deck_path
-
+    it 'displays validation errors correctly' do
       fill_in 'deck_title', with: "XOX"
 
       expect {click_button 'Build It'}.not_to change(Deck, :count)
