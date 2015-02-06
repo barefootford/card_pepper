@@ -16,8 +16,8 @@ describe 'Deck Index Page' do
   end
 
   it 'is allowed by signed out users' do 
-    visit root_url
-    expect(current_url).to eq(root_url)
+    visit root_path
+    expect(current_path).to eq(root_path)
 
     visit decks_path
     expect(current_path).to eq(decks_path)
