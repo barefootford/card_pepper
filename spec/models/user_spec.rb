@@ -52,9 +52,6 @@ describe 'A user' do
     }.to change(User, :count)
   end
 
-  it 'saves with a valid password'
-  it 'does not save with an invalid password'
-
   describe 'website' do 
     it 'always displays a website with http when website attribute exists' do 
       user = User.new
@@ -71,8 +68,6 @@ describe 'A user' do
       user = User.new(website:'cybiko.com')
       expect(user.website).to eq('http://cybiko.com')  
     end
-    
-    it 'needs an http or https'
   end
 
   describe 'new?' do 
