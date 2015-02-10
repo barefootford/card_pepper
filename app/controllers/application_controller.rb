@@ -6,22 +6,26 @@ class ApplicationController < ActionController::Base
 private
   
   def destroy_session
-    session[:user_id] = nil    
+    session[:user_id] = nil
   end
   
   def users_match?(object1, object2)
     object1 == object2
   end
 
+  def not_permitted
+    destroy_session
+    redirect_to sign_up_path, notice: "Only the creator can edit the deck."
+  end
+
   def require_creator
     unless Deck.find(params[:id]).user == current_user
-      redirect_to root_url,
-      notice: "Only the creator can edit the deck."
-    end 
+      not_permitted
+    end
   end
-  
-  def deck_id
-    params[:deck_id]  
+
+  def current_user_owns(object)
+    current_user && (current_user == object.user)
   end
 
   def current_user
@@ -35,5 +39,5 @@ private
     end
   end
 
-  helper_method :current_user, :destroy_session, :deck_id
+  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns
 end

@@ -1,17 +1,22 @@
 class CardsController < ApplicationController
   before_action :set_deck, only: [ :create ]
+  before_action :require_sign_in, except: [ :show, :index ]
+  before_action :can_create?, only: [ :create ]
 
   def create
     @card = set_deck.cards.new(card_params)
-
+    
     respond_to do |format|
-      format.js { create_card_js } 
+      format.js { create_card_js }
     end
   end
 
   def destroy
     @card = Card.find(destroy_params[:id])
     @deck = Deck.find(@card.deck.id)
+
+    return not_permitted unless current_user_owns(@card)
+
     @card.destroy
 
     respond_to do |format|
@@ -21,13 +26,9 @@ class CardsController < ApplicationController
   end
 
 private
-  
-  def destroy_params
-    params.permit(:id, :deck_id)
-  end
 
-  def card_params
-      params.require(:card).permit(:id, :question, :answer).merge(deck_params)
+  def can_create?
+    not_permitted unless current_user_owns(set_deck)
   end
 
   def create_card_js
@@ -38,11 +39,19 @@ private
     end
   end
 
+  def destroy_params
+    params.permit(:id, :deck_id)
+  end
+
+  def card_params
+    params.require(:card).permit(:id, :question, :answer).merge(deck_params)
+  end
+
   def deck_params
     params.permit(:deck_id)
   end
 
-  def card
+  def set_card
     @card ||= Card.find(card_params[:id])
   end
 
