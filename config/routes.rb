@@ -19,7 +19,7 @@ Pepper::Application.routes.draw do
   get 'dashboard' => 'dashboards#show', as: 'dashboard'
 
   resources :decks do 
-    resources :cards
+    resources :cards, only: [ :create, :destroy ]
     resources :card_suggestions
   end
 end

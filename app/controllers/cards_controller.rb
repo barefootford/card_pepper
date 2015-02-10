@@ -9,10 +9,6 @@ class CardsController < ApplicationController
     end
   end
 
-  def edit
-    @card = card
-  end
-
   def destroy
     @card = Card.find(destroy_params[:id])
     @deck = Deck.find(@card.deck.id)
