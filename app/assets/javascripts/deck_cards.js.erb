@@ -1,0 +1,41 @@
+hideHideable = function() {
+  $('.hideable').hide();
+}
+
+$(document).ready(function(){
+  $('#card-list-toggle-button').click(function(){
+    hideHideable();
+    $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
+    $('#card-list-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+    $('#edit-cards-form').removeClass('hidden')
+    $('#edit-cards-form').show(50);
+  });
+});
+
+$(document).ready(function(){
+  $('#new-card-toggle-button').click(function(){
+    hideHideable();
+    $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
+    $('#new-card-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+    $("#new_card_form").show(50);
+  });
+});
+
+$(document).ready(function(){
+  $("#community-cards-toggle-button").click(function(){
+    hideHideable();
+    $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+    $('#community-cards-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+    $("#card-suggestions-form").show(50).removeClass('hidden');
+  });
+});
+
+$(document).ready(function(){
+  $("#deck-settings-toggle-button").click(function(){
+    hideHideable();
+    $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
+    $('#deck-settings-toggle-button').removeClass('btn-default').addClass('btn-inverse');
+    hideHideable();
+    $('#deck-settings-form').show(50).removeClass('hidden');
+  });
+});
