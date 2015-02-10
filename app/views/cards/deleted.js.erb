@@ -1,0 +1,12 @@
+$('#new-card-answer').val('');
+$('#navigation-id').after('<h5 class="flash card alert card-created" id="card-deleted-success">Card Deleted.</h5>');
+
+console.log("$('<%= "#card#{@card.id}" %>').remove();");
+
+$('<%= "#card#{@card.id}" %>').remove();
+
+$(document).ready( function() {
+    $('#card-deleted-success').delay(6000).fadeOut();
+})
+
+$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %>').fadeOut().fadeIn();

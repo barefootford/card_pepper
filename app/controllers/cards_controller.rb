@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_deck, only: [:create, :destroy, :edit]
+  before_action :set_deck, only: [ :create ]
 
   def create
     @card = set_deck.cards.new(card_params)
@@ -14,16 +14,24 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    @card = card
+    @card = Card.find(destroy_params[:id])
+    @deck = Deck.find(@card.deck.id)
     @card.destroy
-    redirect_to edit_deck_path(@card.deck),
-      notice: 'Card deleted.'
+
+    respond_to do |format|
+      format.js { render :deleted }
+      format.html { redirect_to edit_deck_path(@deck), notice: 'Card deleted.', status: 303 }
+    end
   end
 
 private
+  
+  def destroy_params
+    params.permit(:id, :deck_id)
+  end
 
   def card_params
-    params.require(:card).permit(:id, :question, :answer).merge(deck_params)
+      params.require(:card).permit(:id, :question, :answer).merge(deck_params)
   end
 
   def create_card_js

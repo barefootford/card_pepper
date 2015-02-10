@@ -13,14 +13,3 @@
     <% end %>
   <% end %>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#deck-settings-toggle-button").click(function(){
-      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
-      $('#deck-settings-toggle-button').removeClass('btn-default').addClass('btn-inverse');
-      $('.hideable').hide();
-      $('#deck-settings-form').show(50).removeClass('hidden');
-    });
-  });
-</script>

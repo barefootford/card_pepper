@@ -10,14 +10,3 @@
     <%= f.submit "Save Card", class:"btn btn-block btn-primary", id:'save-card-button' %><br>
   <% end %>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $('#new-card-toggle-button').click(function(){
-      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
-      $('#new-card-toggle-button').removeClass('btn-default').addClass('btn-inverse');
-      $('.hideable').hide();
-      $("#new_card_form").show(50);
-    });
-  });
-</script>

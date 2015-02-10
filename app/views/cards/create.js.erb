@@ -6,6 +6,6 @@ $(document).ready( function() {
 	$('#new-card-success').delay(6000).fadeOut();
 })
 
-$('#cards-table').append('<tr id="card#{@card.id}"><td><%= @card.question %></td><td><%= @card.answer %></td><td><%= @card.user.name %></td><td><div class="label label-danger">X</div></td></tr>');
+$('#cards-table').append('<%= escape_javascript(render partial: 'cards/table_row', locals: { card: @card, deck: @deck }) %>');
 
 $('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %>').fadeOut().fadeIn();

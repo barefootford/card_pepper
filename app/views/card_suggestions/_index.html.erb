@@ -18,14 +18,3 @@
 	<p>No suggested cards for this deck.</p>
 	<% end %>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#community-cards-toggle-button").click(function(){
-			$('.btn-inverse').removeClass('btn-inverse').addClass('btn-default');
-			$('#community-cards-toggle-button').removeClass('btn-default').addClass('btn-inverse');
-	  	$('.hideable').hide();
-      $("#card-suggestions-form").show(50).removeClass('hidden');
-    });
-  });
-</script>
