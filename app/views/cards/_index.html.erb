@@ -9,25 +9,8 @@
       </tr>
 
       <% @cards.each do |card| %>
-        <tr id=<%= "card#{card.id}" %> >
-          <td><%= "#{card.question}" %></td>
-          <td><%= "#{card.answer}" %></td>
-          <td><%= "#{card.user.name}**" %></td>
-          <td><div class='label label-danger'>X</div></td>
-        </tr>
+        <%= render 'cards/table_row', card: card, deck: @deck %>
       <% end %>
     </tbody>
   </table>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $('#card-list-toggle-button').click(function(){
-      $('.btn-inverse').removeClass('btn-inverse').addClass('btn-default')
-      $('#card-list-toggle-button').removeClass('btn-default').addClass('btn-inverse');
-      $('.hideable').hide();
-      $('#edit-cards-form').removeClass('hidden')
-      $('#edit-cards-form').show(50);
-    });
-  });
-</script>
