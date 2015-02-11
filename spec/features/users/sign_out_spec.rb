@@ -1,12 +1,11 @@
 require 'spec_helper'
 
-describe 'Signing out' do 
+describe 'Signing out' do
   it 'removes signed in abilities' do
-    user = User.create!(user_attributes)
-    sign_in(user)
+    sign_in(create_user)
 
-    expect(current_path).to eq(user_path(user))
-    
+    expect(current_path).to eq(user_path(@user))
+
     click_link 'sign-out-button'
 
     expect(page).to have_text("signed out")
