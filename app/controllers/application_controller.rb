@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
 private
-  
+
   def destroy_session
     session[:user_id] = nil
   end
