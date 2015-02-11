@@ -9,13 +9,13 @@ describe CardsController do
   end
 
   context 'when not signed in' do
-    it 'cannot access destroy' do
+    it 'cannot access destroy action' do
       delete :destroy, deck_id: @deck.id, id: @card.id
 
       expect(response).to redirect_to(sign_up_path)
     end
 
-    it 'cannot access create' do
+    it 'cannot access create action' do
       post :create, card: { question: 'Something', answer: "Else" }, deck_id: 1
 
       expect(response).to redirect_to(sign_up_path)
@@ -27,13 +27,13 @@ describe CardsController do
       session[:user_id] = 2
     end
 
-    it 'cannot access destroy' do
+    it 'cannot access destroy action' do
       delete :destroy, id: @card.id, deck_id: @deck.id
 
       expect(response).to redirect_to(sign_up_path)
     end
 
-    it 'cannot access destroy' do
+    it 'cannot access destroy action' do
       delete :destroy, deck_id: @deck.id, id: @card.id
 
       expect(response).to redirect_to(sign_up_path)

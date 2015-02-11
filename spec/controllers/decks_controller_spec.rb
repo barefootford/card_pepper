@@ -9,31 +9,31 @@ describe DecksController do
   end
 
   describe 'signed out users' do
-    it 'can view a deck' do
+    it 'can access show action' do
       get :show, id: @deck.id
 
       expect(response.success?).to be_true
     end
     
-    it 'cannot create decks' do
+    it 'cannot access create action' do
       get :new
 
       expect(response).to redirect_to(sign_up_path)
     end
 
-    it 'cannot edit decks' do 
+    it 'cannot access edit action' do 
       get :edit, id: @deck.id
 
       expect(response).to redirect_to(sign_up_path)
     end
 
-    it 'cannot update decks' do
+    it 'cannot access update action' do
       patch :update, id: @deck.id
 
       expect(response).to redirect_to(sign_up_path)
     end
     
-    it 'cannot delete decks' do
+    it 'cannot access destroy action' do
       delete :destroy, id: @deck.id
 
       expect(response).to redirect_to(sign_up_path)
@@ -45,13 +45,13 @@ describe DecksController do
       session[:user_id] = 99
     end
 
-    it 'users can view individual decks' do
+    it 'users can access show action' do
       get :show, id: @deck.id
 
       expect(response.success?).to be_true
     end
 
-    it 'can view the decks index view' do
+    it 'can access index action' do
       get :index
 
       expect(response.success?).to be_true
@@ -64,19 +64,19 @@ describe DecksController do
           #set the session to an id other than the owner of deck 1
         end
 
-        it 'will not allow editing a deck' do
+        it 'cannot access edit action' do
           get :edit, id: @deck.id
 
           expect(response).to redirect_to(root_url)
         end
 
-        it 'will not allow updating a deck' do
+        it 'cannot access update action' do
           patch :update, id: @deck.id
 
           expect(response).to redirect_to(root_url)
         end
 
-        it 'will not allow deleting a deck' do
+        it 'cannot access destroy action' do
           delete :destroy, id: @deck.id
 
           expect(response).to redirect_to(root_url)
