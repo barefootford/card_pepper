@@ -10,6 +10,12 @@ before_action :deck, only: [:show, :edit, :update, :destroy]
 
   def show
     @card_suggestion = CardSuggestion.new
+    
+    respond_to do |format|
+      format.html
+      format.csv { send_data @deck.to_csv, filename: @deck.file_name }
+    end
+
   end
 
   def edit
