@@ -7,7 +7,7 @@
       <p><%= @deck.instructions %></p>
     <% end %>
 
-    <%= link_to "Download Deck", "#", class:'btn btn-lg btn-block btn-primary' %>
+    <%= link_to "Download Deck", deck_path(@deck, format: 'csv'), class:'btn btn-lg btn-block btn-primary' %>
     <br><hr><br>
   </div>
 
