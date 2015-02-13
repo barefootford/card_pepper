@@ -29,7 +29,7 @@
       <%= f.submit "Update Account", class:'btn btn-block btn-primary' %>
     <% end %>
     <br>
-    
-    <small>Already a member? <%= link_to "Sign in.", sign_in_path %></small>
+
+    <small>Already a member? <%= link_to "Sign in.", sign_in_path, remote: true %></small>
   </div>  
 <% end %>
