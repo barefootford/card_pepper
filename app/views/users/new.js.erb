@@ -1,0 +1,6 @@
+$('#pepper-main').html('<%= escape_javascript(render partial: 'users/new', locals: { }) %>');
+
+$(document).ready( function() {
+  // $('#new-user-partial').removeClass('hidden').show(200);
+     $('#new-user-partial').fadeIn(100).removeClass('hidden');
+})

@@ -1,0 +1,6 @@
+$('#pepper-main').html('<%= escape_javascript(render partial: 'sessions/new', locals: { }) %>');
+
+$(document).ready( function() {
+  // $('#new-session-form').removeClass('hidden').show(200);
+     $('#new-session-form').fadeIn(100).removeClass('hidden');
+})
