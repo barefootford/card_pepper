@@ -4,10 +4,14 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    respond_to do |format|
+      format.html { }
+      format.js { render :new }
+    end
   end
 
   def create
-    @user = User.new(user_params)    
+    @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
       redirect_to decks_path,
@@ -83,7 +87,7 @@ private
   end
 
   def user
-    @user ||= User.find(params[:id])    
+    @user ||= User.find(params[:id])
   end
 
   def password_is_wrong?

@@ -1,14 +1,21 @@
 class SessionsController < ApplicationController
 
   def new
-    if current_user
-      redirect_to root_url, notice: "#{current_user.name} is already signed in. Not you? Click 'Sign Out.'"
+    respond_to do |format|
+      format.html do
+        if current_user
+          redirect_to root_url,
+          notice: "#{current_user.name} is already signed in. Not you? Click 'Sign Out.'"
+        end
+      end
+
+      format.js { render :new }
     end
   end
 
   def create
     user = User.find_by(email: params[:email])
-    
+
     if user = User.authenticate(params[:email], params[:password])
       session[:user_id] = user.id
       flash[:notice] = "Welcome back, #{user.name}."

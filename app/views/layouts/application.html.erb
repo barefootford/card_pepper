@@ -10,15 +10,14 @@
 </head>
 <body>
   <div class='container-fluid'>
-    <% if request.env['PATH_INFO'] != '/users/new' %>
-      <%= render 'layouts/header' %>
-    <% end %>
-    
+    <%= render 'layouts/header' %>
     <%= render "layouts/flashes" %>
 
-    <%= yield %>
+    <div id='pepper-main'>
+      <%= yield %>
+    </div>
 
-    <%= render "layouts/footer" if request.env['PATH_INFO'] != '/users/new' %>
+    <%= render "layouts/footer" %>
   </div>
 </body>
 </html>
