@@ -2,10 +2,10 @@ class CardSuggestion < ActiveRecord::Base
   belongs_to :deck
   belongs_to :user
 
-  validates :question, presence: :true, length: { maximum: 140, minimum: 2 }
-  validates :answer, presence: :true, length: { maximum: 140, minimum: 2 }
-  validates :user_id, presence: :true
-  validates :deck_id, presence: :true
+  validates :question, presence: true, length: { maximum: 140, minimum: 2 }
+  validates :answer, presence: true, length: { maximum: 140, minimum: 2 }
+  validates :user_id, presence: true
+  validates :deck_id, presence: true
 
   scope :unapproved, -> { where(approved: false ) }
 

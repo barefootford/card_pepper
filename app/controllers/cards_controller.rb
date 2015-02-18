@@ -1,11 +1,12 @@
 class CardsController < ApplicationController
   before_action :set_deck, only: [ :create ]
-  before_action :require_sign_in, except: [ :show, :index ]
+  before_action :require_sign_in
   before_action :can_create?, only: [ :create ]
 
   def create
     @card = set_deck.cards.new(card_params)
-    
+    @card.user_id = current_user.id
+
     respond_to do |format|
       format.js { create_card_js }
     end

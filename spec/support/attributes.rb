@@ -14,6 +14,11 @@ def create_card
   @card = @deck.cards.create!(card_attributes)
 end
 
+def create_deck_and_card
+  create_deck
+  create_card
+end
+
 def create_user_and_sign_in
   create_user
   sign_in(@user)
@@ -39,14 +44,16 @@ end
 def deck_attributes(overrides = {})
   {
     title:'Pragmatic Studio Ruby Notes',
-    user_id:1,
+    user_id: 1,
     instructions:"Use this deck promptly after finishing the class and you'll do really well."
   }.merge(overrides)
 end
 
 def card_attributes(overrides = {})
   {
+    deck_id: 1,
     question: 'Is the sky blue?',
-    answer: 'Yes'
+    answer: 'Yes',
+    user_id: deck_attributes[:user_id]
   }.merge(overrides)
 end
