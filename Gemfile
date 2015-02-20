@@ -11,9 +11,7 @@ gem 'jquery-rails'
 gem 'less-rails-bootstrap'
 gem 'less-rails'
 gem 'rails', '4.1.4'
-gem 'sqlite3'
 gem 'therubyracer'
-
 gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do
@@ -21,6 +19,7 @@ group :test, :development do
   gem 'guard-rspec', require: false
   gem 'guard'
   gem 'minitest'
+  gem 'sqlite3'
   gem 'rspec-rails', '2.14.1'
   gem 'spring-commands-rspec'
   gem 'spring'
@@ -31,6 +30,10 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'launchy'
+end
+
+group :production do
+  gem 'pg'
 end
 
 group :doc do
