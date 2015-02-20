@@ -4,4 +4,4 @@
 <%= link_to "View Deck", deck_path(@deck), class: 'label label-default' if @deck.user == current_user %>
 <%= link_to @deck.user.name, user_path(@deck.user), class: 'label label-default' %>
 <%= content_tag :div, pluralize(@deck.cards.count, 'card'), class:'label label-default', id:'card-count-label' %>
-<%= content_tag :div, pluralize(@deck.card_suggestions_count, 'contribution'), class:'label label-default' %>
+<%= content_tag :div, pluralize(@deck.card_suggestions.approved.count, 'contribution'), class:'label label-default' %>
