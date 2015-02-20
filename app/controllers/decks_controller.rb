@@ -1,8 +1,10 @@
 class DecksController < ApplicationController
-
 before_action :require_sign_in, except: [:show, :index]
 before_action :require_creator, only: [:edit, :update, :destroy]
 before_action :deck, only: [:show, :edit, :update, :destroy]
+before_action :dont_show_delete_button, only: [:show]
+before_action :do_show_delete_button, only: [:edit]
+before_action :current_user
 
   def index
     @decks = Deck.all.limit(10)
@@ -10,7 +12,8 @@ before_action :deck, only: [:show, :edit, :update, :destroy]
 
   def show
     @card_suggestion = CardSuggestion.new
-    
+    @cards = deck.cards
+
     respond_to do |format|
       format.html
       format.csv { send_data @deck.to_csv, filename: @deck.file_name }
@@ -19,7 +22,7 @@ before_action :deck, only: [:show, :edit, :update, :destroy]
   end
 
   def edit
-    @card_suggestions = @deck.card_suggestions.unapproved
+    @card_suggestions = @deck.card_suggestions.pending
     @new_card = @deck.cards.build
     @cards = @deck.cards.saved
   end
@@ -48,6 +51,14 @@ before_action :deck, only: [:show, :edit, :update, :destroy]
   end
 
   private
+
+  def dont_show_delete_button
+    @show_delete_button = false
+  end
+
+  def do_show_delete_button
+    @show_delete_button = true
+  end
 
   def require_creator
     unless current_user && current_user == deck.user

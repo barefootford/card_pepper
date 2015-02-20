@@ -29,15 +29,15 @@ private
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]  
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
   def require_sign_in
-    unless current_user
+    unless current_user.present?
       session[:intended_url] = request.url
       redirect_to sign_up_path, alert: 'Card Pepper is free, but only registered users can do that.'
     end
   end
 
-  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns
+  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator
 end
