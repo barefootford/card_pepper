@@ -1,6 +1,8 @@
 <tr id=<%="card#{card.id}" %> >
   <td><%= "#{card.question}" %></td>
   <td><%= "#{card.answer}" %></td>
-  <td><%= "#{card.user.name}**" %></td>
-  <td><%= link_to "X", deck_card_path(deck, card), method: :delete, remote: true, class: 'label label-danger', id:"card-delete-#{card.id}" %></td>
+  <td><%= link_to card.user.name, user_path(card.user) %></td>
+  <% if @show_delete_button %>
+      <td><%= link_to "X", deck_card_path(deck, card), method: :delete, remote: true, class: 'label label-danger', id:"card-delete-#{card.id}" %></td>
+  <% end %>
 </tr>
