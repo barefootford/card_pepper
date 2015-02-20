@@ -1,28 +1,31 @@
 <div class='hideable hidden' id='card-suggestions-form'>
-  <% if @card_suggestions.any? %>
-    <table class='table table-striped'>
-      <tbody id='card-suggestions-table'>
-        <% @card_suggestions.each do |card| %>
-          <tr id=<%="card#{card.id}" %> >
-            <blockquote>
-              Question: <%= "#{card.question}" %>
-              <br>
+  <% if card_suggestions.pending.any? %>
+    <tr><strong><%= deck.title %></strong></tr>
+      <div class='table'>
+        <table class='table table-striped'>
+          <tbody>
+            <tr>
+              <th>Question</th>
+              <th>Answer</th>
+              <th>Approve?</th>
+            </tr>
 
-              Answer: <%= "#{card.answer}" %>
-              <br>
-            </blockquote>
-              <%= button_to "Approve Card", deck_card_suggestion_path(@deck, card,
-                status:'approved'), method: :patch, class: 'btn btn-xs btn-primary mrs', id: "approve-#{card.id}" %>
+            <% card_suggestions.pending.each do |card| %>
+              <tr>
+                <td><%= card.question %></td>
+                <td><%= card.answer %></td>
+                <td>
+                  <%= link_to "Approve Card", deck_card_suggestion_path(deck, card,
+                    status:'approved'), method: :patch, class: 'label label-primary', id: "approve-#{card.id}" %>
 
-              <%= button_to "Reject Card", deck_card_suggestion_path(@deck, card,
-                status:'rejected'), method: :patch, class: 'btn btn-xs btn-inverse mrs', id: "reject-#{card.id}" %>
-              
-              <small>Creator: <%= link_to card.user.name, user_path(card.user) %></small>
-              <hr>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+                  <%= link_to "Reject Card", deck_card_suggestion_path(deck, card,
+                    status:'rejected'), method: :patch, class: 'label label-inverse', id: "reject-#{card.id}" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
   <% else %>
     <p>No suggested cards for this deck.</p>
   <% end %>
