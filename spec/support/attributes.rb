@@ -3,7 +3,7 @@ def create_user
 end
 
 def create_second_user
-  @user2 = User.create!(user_attributes(first_name:'Second', email:'user2@example.com'))
+  @user2 = User.create!(user_attributes(first_name:'Second', last_name:'Swanson', email:'user2@example.com'))
 end
 
 def create_deck
@@ -24,10 +24,14 @@ def create_user_and_sign_in
   sign_in(@user)
 end
 
+def create_card_suggestion
+  @card_suggestion = CardSuggestion.create!(card_attributes(user_id: User.second.id ))
+end
+
 def sign_in(user)
   visit new_session_path
   fill_in 'email', with: user.email
-  fill_in 'password', with: user.password
+  fill_in 'password', with: user_attributes[:password]
   click_on 'sign-in-btn'
 end
 
