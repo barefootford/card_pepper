@@ -2,8 +2,6 @@ Pepper::Application.routes.draw do
 
   root 'decks#index'
 
-  get 'dashboards/example' => 'dashboards#example'
-  
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
   get 'users/:id/delete' => 'users#delete', as: 'user_delete'
