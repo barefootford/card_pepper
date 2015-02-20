@@ -1,0 +1,33 @@
+<div class='row'>
+  <div class='col-md-8'>
+    <h4>Your Decks:</h4>
+    <% if @decks.any? %>
+      <% @decks.each do |deck| %>
+        <%= render 'decks/title', deck: deck %>
+      <% end %>
+    <% end %>
+    
+    <p><br><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %></p>
+
+    <% if @card_suggestions_pending.any? %>
+      <hr>
+      <h4> Cards Awaiting Approval:</h4>
+      <% @decks.each do |deck| %>
+        <% if deck.card_suggestions.pending.any? %>
+          <%= render 'card_suggestions/index', deck: deck, card_suggestions: deck.card_suggestions %>
+        <% end %>
+      <% end %>
+      <hr>
+    <% end %>
+  </div>
+
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.hideable').removeClass('hidden');
+  });
+</script>

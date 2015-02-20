@@ -15,7 +15,7 @@ describe 'Managing card suggestions' do
     it 'works through the deck#edit page' do
       expect(page).to have_button('Card Suggestions')
       click_button('Card Suggestions')
-      click_button("approve-#{@card_suggestion.id}")
+      click_link("approve-#{@card_suggestion.id}")
 
       expect(current_path).to eq(edit_deck_path(@deck))
       expect(CardSuggestion.first.status).to eq('approved')
@@ -27,7 +27,7 @@ describe 'Managing card suggestions' do
       expect(page).to have_text('Card Suggestions')
       click_button('Card Suggestions')
 
-      expect(page).to have_button('Reject')
+      expect(page).to have_link('Reject')
       click_button('Reject')
     end
   end

@@ -1,6 +1,6 @@
 <div class='row'>
   <div class='col-md-8'>
-    <%= render 'decks/title' %>
+    <%= render 'decks/title', deck: @deck %>
     <hr>
     <div>
       <button class='btn btn-sm btn-inverse' id='new-card-toggle-button'>New Card</button>
@@ -11,7 +11,7 @@
     <br>
     <%= render 'cards/new' %>
     <%= render 'cards/index' %>
-    <%= render 'card_suggestions/index' %>
+    <%= render 'card_suggestions/index', card_suggestions: @card_suggestions, deck: @deck %>
     <%= render 'decks/settings' %>
   	<hr>
   </div>
