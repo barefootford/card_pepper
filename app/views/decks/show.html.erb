@@ -2,9 +2,14 @@
   <div class='col-md-8'>
     <%= render 'decks/title' %>
 
-    <% unless @deck.instructions.blank? %>
+    <% if @deck.instructions.present? %>
       <h5>Instructions:</h5>
       <p><%= @deck.instructions %></p>
+    <% end %>
+
+    <h5>Cards:</h5>
+    <% if @cards.any? %>
+      <%= render 'cards/index' %>
     <% end %>
 
     <%= link_to "Download Deck", deck_path(@deck, format: 'csv'), class:'btn btn-lg btn-block btn-primary' %>
@@ -12,7 +17,7 @@
   </div>
 
   <div class='col-md-4'>
-    <% if current_user && not_owner_of(@deck)  %>
+    <% if current_user && (@deck.owner != current_user) %>
       <%= render 'card_suggestions/new' %>
     <% end %>
 
@@ -23,3 +28,9 @@
     <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.hideable').removeClass('hidden');
+  });
+</script>
