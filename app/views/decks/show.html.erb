@@ -3,11 +3,11 @@
     <%= render 'decks/title', deck: @deck %>
 
     <% if @deck.instructions.present? %>
-      <h5>Instructions:</h5>
+      <h6>Instructions:</h6>
       <p><%= @deck.instructions %></p>
     <% end %>
 
-    <h5>Cards:</h5>
+    <h6>Cards:</h6>
     <% if @cards.any? %>
       <%= render 'cards/index' %>
     <% end %>
