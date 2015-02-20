@@ -4,7 +4,7 @@ class Card < ActiveRecord::Base
 
   has_many :versions
 
-  validates :question, :answer, presence: :true, length: { maximum: 140, minimum: 1 }
+  validates :question, :answer, presence: :true, length: { maximum: 140, minimum: 2 }
   validates :deck_id, presence: true
   validates :user_id, presence: true
 
