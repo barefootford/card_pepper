@@ -30,7 +30,7 @@
                   <tr>
                     <td><%= card.question %></td>
                     <td><%= card.answer %></td>
-                    <td><%= link_to 'Approve', card_approve_path(deck, card), method: :patch, class:'label label-primary' %></td>
+                    <td><%= link_to 'Approve', deck_card_suggestion_path(deck, card, approve: true), method: :patch, class:'label label-primary' %></td>
                   </tr>
                 <% end %>
                 

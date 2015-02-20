@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
 
   def new
     respond_to do |format|
+      
       format.html do
         if current_user
           redirect_to root_url,

@@ -20,6 +20,6 @@ Pepper::Application.routes.draw do
 
   resources :decks do 
     resources :cards, only: [ :create, :destroy ]
-    resources :card_suggestions
+    resources :card_suggestions, only: [ :create, :update ]
   end
 end

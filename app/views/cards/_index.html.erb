@@ -5,7 +5,9 @@
         <th>Question</th>
         <th>Answer</th>
         <th>Creator</th>
-        <th>Delete</th>
+        <% if @show_delete_button == true %>
+          <th>Delete</th>
+        <% end %>
       </tr>
 
       <% @cards.each do |card| %>

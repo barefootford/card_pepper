@@ -1,20 +1,29 @@
 <div class='hideable hidden' id='card-suggestions-form'>
-	<% if @card_suggestions.any? %>
-			<% @card_suggestions.each do |card| %>
-				<div>
-					<strong>Q: </strong><%= card.question %><br>
-					<strong>A: </strong><%= card.answer %><br>
-					<small>
-					  <%= link_to "#{card.user.first_name.capitalize} #{card.user.last_name.capitalize}", user_path(card.user) %>
-					</small>
-					<br>
-					<button class='btn btn-xs'>
-					  <%= link_to "Approve and Add Card", card_approve_path(@deck, card), method: :patch %>
-					</button>
-				  <hr>
-				</div>
-			<% end %>
-	<% else %>
-	<p>No suggested cards for this deck.</p>
-	<% end %>
+  <% if @card_suggestions.any? %>
+    <table class='table table-striped'>
+      <tbody id='card-suggestions-table'>
+        <% @card_suggestions.each do |card| %>
+          <tr id=<%="card#{card.id}" %> >
+            <blockquote>
+              Question: <%= "#{card.question}" %>
+              <br>
+
+              Answer: <%= "#{card.answer}" %>
+              <br>
+            </blockquote>
+              <%= button_to "Approve Card", deck_card_suggestion_path(@deck, card,
+                status:'approved'), method: :patch, class: 'btn btn-xs btn-primary mrs', id: "approve-#{card.id}" %>
+
+              <%= button_to "Reject Card", deck_card_suggestion_path(@deck, card,
+                status:'rejected'), method: :patch, class: 'btn btn-xs btn-inverse mrs', id: "reject-#{card.id}" %>
+              
+              <small>Creator: <%= link_to card.user.name, user_path(card.user) %></small>
+              <hr>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No suggested cards for this deck.</p>
+  <% end %>
 </div>

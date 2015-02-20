@@ -4,11 +4,13 @@
 <%= form_for [@deck, @card_suggestion] do |f| %>  
   <small>Question:</small>
   <%= f.text_area :question, placeholder:'Question',
-  rows:1, class:'form-control', id:'card-question' %>
+  rows:1, class:'form-control', id:'card-suggestion-question' %>
 
   <small>Answer:</small>
-  <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-answer', prompt: true %>
+  <%= f.text_area :answer, placeholder:'Answer', rows:1, class:'form-control', id:'card-suggestion-answer', prompt: true %>
+  <small>Creator: <%= link_to current_user.name, user_path(current_user) %></small>
 
+  <br>
 	<%= f.submit "Save", class:"btn btn-block btn-primary", id:'save-card-suggestion' %>
   <br>
 <% end %>

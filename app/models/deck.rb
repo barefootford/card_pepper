@@ -12,6 +12,10 @@ class Deck < ActiveRecord::Base
   # There has gotta be an AR scope for this. No?
   scope :saved, lambda { where('id > 0') }   
 
+  def owner
+    self.user
+  end
+
   def card_count
     cards.count
   end

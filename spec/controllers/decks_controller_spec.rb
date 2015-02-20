@@ -42,7 +42,7 @@ describe DecksController do
 
   describe 'while signed in' do
     before do
-      session[:user_id] = 99
+      session[:user_id] = 1
     end
 
     it 'users can access show action' do
