@@ -4,7 +4,7 @@ describe 'Signing out' do
   it 'removes signed in abilities' do
     sign_in(create_user)
 
-    expect(current_path).to eq(user_path(@user))
+    expect(current_path).to eq(dashboard_path)
 
     click_link 'sign-out-button'
 
