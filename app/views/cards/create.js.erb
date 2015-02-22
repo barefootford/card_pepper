@@ -3,9 +3,9 @@ $('#new-card-answer').val('');
 $('#navigation-id').after('<h5 class="flash card alert card-created" id="new-card-success">Card Added</h5>');
 
 $(document).ready( function() {
-	$('#new-card-success').delay(6000).fadeOut();
+	$('#new-card-success').delay(6000).fadeOut(300);
 })
 
 $('#cards-table').append('<%= escape_javascript(render partial: 'cards/table_row', locals: { card: @card, deck: @deck }) %>');
 
-$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %>').fadeOut().fadeIn();
+$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %> |').fadeOut(200).fadeIn(200);
