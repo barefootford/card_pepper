@@ -23,7 +23,7 @@ describe 'Creating a new card' do
         expect(find_field('new-card-question').value).to eq('')
         expect(find_field('new-card-answer').value).to eq('')
 
-        expect(find_by_id('card-count-label').text).to eq('1 card')
+        expect(find_by_id('card-count-label').text).to include('1 card')
       end
 
       it 'adds the cards to the cards#_index partial', js: true do
