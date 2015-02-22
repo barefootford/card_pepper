@@ -2,12 +2,7 @@
   <div class='col-md-8'>
     <h3 class='text-center'>Top Decks</h3>
     <% @decks.each do |deck| %>
-      <h6 class='head-with-author no-link-color'><%= link_to deck.title, deck %></h6>
-      
-      <%= link_to deck.user.name, user_path(deck.user), class:'label label-default' %>  
-      <%= link_to "Language", "#", class:'label label-default' %>
-      <%= link_to pluralize(deck.cards.count, 'card'), '#', class:'label label-default' %>
-
+      <%= render 'decks/title', deck: deck %>
     <% end %><br>
   </div>
   <br>
