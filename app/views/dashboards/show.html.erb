@@ -1,24 +1,19 @@
 <div class='row'>
   <div class='col-md-8'>
-    <small>Your Decks:</small>
+    <p>Your Decks:</p>
     <% if @decks.any? %>
       <% @decks.each do |deck| %>
         <%= render 'decks/title', deck: deck %>
+        <% if deck.card_suggestions.pending.count > 0 %>
+          <br><small>
+                <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
+                </small>
+        <% end %>
+        <hr>
       <% end %>
     <% end %>
     
     <p><br><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %></p>
-
-    <% if @card_suggestions_pending.any? %>
-      <hr>
-      <small>Cards Awaiting Approval:</small>
-      <% @decks.each do |deck| %>
-        <% if deck.card_suggestions.pending.any? %>
-          <%= render 'card_suggestions/index', deck: deck, card_suggestions: deck.card_suggestions %>
-        <% end %>
-      <% end %>
-      <hr>
-    <% end %>
   </div>
 
   <div class='col-md-4'>
