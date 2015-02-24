@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
 private
 
+  def must_be_beta_approved
+    redirect_to beta_path unless (current_user && current_user.approved?)
+  end
+
   def destroy_session
     session[:user_id] = nil
   end
@@ -39,5 +43,5 @@ private
     end
   end
 
-  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator
+  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator, :must_be_beta_approved
 end
