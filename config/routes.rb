@@ -2,14 +2,8 @@ Pepper::Application.routes.draw do
 
   root 'decks#index'
 
-  get 'pages/beta' => 'pages#beta', as: 'beta'
-
-  #SESSIONS
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
-  
-
-  # Get these outta here newb. 
   get 'users/:id/delete' => 'users#delete', as: 'user_delete'
   get 'users/:id/edit_password' => 'users#edit_password', as: 'edit_password'
 
