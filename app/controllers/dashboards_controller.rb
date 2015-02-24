@@ -1,5 +1,6 @@
 class DashboardsController < ApplicationController
   before_action :require_sign_in
+  before_action :must_be_beta_approved
 
   def show
     @user = current_user
