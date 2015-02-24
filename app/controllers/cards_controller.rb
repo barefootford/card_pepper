@@ -2,6 +2,7 @@ class CardsController < ApplicationController
   before_action :set_deck, only: [ :create ]
   before_action :require_sign_in
   before_action :can_create?, only: [ :create ]
+  before_action :must_be_beta_approved
 
   def create
     @card = set_deck.cards.new(card_params)
