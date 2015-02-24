@@ -2,7 +2,7 @@ Pepper::Application.routes.draw do
 
   root 'decks#index'
 
-  get 'pages/beta' => 'pages#beta', as: 'beta'
+  get 'beta' => 'pages#beta', as: 'beta'
 
   #SESSIONS
   get 'sign_in' => 'sessions#new'
