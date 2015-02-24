@@ -1,10 +1,11 @@
 class DecksController < ApplicationController
-before_action :require_sign_in, except: [:show, :index]
-before_action :require_creator, only: [:edit, :update, :destroy]
-before_action :deck, only: [:show, :edit, :update, :destroy]
-before_action :dont_show_delete_button, only: [:show]
-before_action :do_show_delete_button, only: [:edit]
-before_action :current_user
+  before_action :require_sign_in, except: [:show, :index]
+  before_action :require_creator, only: [:edit, :update, :destroy]
+  before_action :deck, only: [:show, :edit, :update, :destroy]
+  before_action :dont_show_delete_button, only: [:show]
+  before_action :do_show_delete_button, only: [:edit]
+  before_action :current_user
+  before_action :must_be_beta_approved
 
   def index
     @decks = Deck.all.limit(10)
@@ -18,7 +19,6 @@ before_action :current_user
       format.html
       format.csv { send_data @deck.to_csv, filename: @deck.file_name }
     end
-
   end
 
   def edit
@@ -50,7 +50,7 @@ before_action :current_user
     end
   end
 
-  private
+private
 
   def dont_show_delete_button
     @show_delete_button = false
