@@ -1,0 +1,14 @@
+<% if current_user  && current_user.pending? %>
+  <h6>Thanks for signing up for early access to Card Pepper.</h6>
+  <p>We'll email you as soon as another slot opens up.</p>
+
+<% elsif current_user == nil %>
+  <h1>Card Pepper</h1>
+  <p>Stronger, smarter, faster flashcards.</p>
+
+  <%= link_to "Sign Up for Early Access", new_user_path, remote: true, class:'btn btn-primary' %>
+    <%= link_to "Sign In", new_session_path, remote: true, class:'btn btn-inverse' %>
+  <br>
+<% end %>
+
+<%#= image_tag "bag.svg" %>

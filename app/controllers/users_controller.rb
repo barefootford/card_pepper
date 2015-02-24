@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-
   before_action :require_correct_user, only: [:edit, :update, :delete, :destroy]
+  before_action :must_be_beta_approved, only: [:show]
 
   def new
     @user = User.new
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-    @user = user    
+    @user = user
   end
 
 private

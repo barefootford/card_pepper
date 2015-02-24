@@ -42,6 +42,19 @@ describe 'A user' do
     expect(user.errors[:email].any?).to be_true
   end
 
+  it 'is pending when first created' do 
+    user = User.create!(user_attributes(beta_status: 0))
+
+    expect(user.pending?).to be_true
+  end
+
+  it 'can be approved' do
+    user = User.create!(user_attributes(beta_status: :approved))
+
+    expect(user.approved?).to be_true
+  end
+
+
   it 'is valid with demo attributes' do
     user = User.new(user_attributes)
     

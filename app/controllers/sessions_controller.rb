@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
           notice: "#{current_user.name} is already signed in. Not you? Click 'Sign Out.'"
         end
       end
-
       format.js { render :new }
     end
   end

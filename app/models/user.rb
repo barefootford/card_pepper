@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  enum beta_status: [:pending, :approved]
+
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
   has_secure_password

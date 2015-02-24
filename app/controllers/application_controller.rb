@@ -2,8 +2,13 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_action :current_user
 
 private
+
+  def must_be_beta_approved
+    redirect_to beta_path unless (current_user && current_user.approved?)
+  end
 
   def destroy_session
     session[:user_id] = nil
@@ -39,5 +44,5 @@ private
     end
   end
 
-  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator
+  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator, :must_be_beta_approved
 end

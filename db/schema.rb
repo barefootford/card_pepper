@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220015204) do
+ActiveRecord::Schema.define(version: 20150223231934) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20150220015204) do
     t.datetime "updated_at"
     t.string   "last_name"
     t.string   "website"
+    t.integer  "beta_status",     default: 0
   end
 
   create_table "versions", force: true do |t|
