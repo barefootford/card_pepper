@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'Deleting a card' do
   describe 'while signed in' do
     before(:each) do
-      sign_in(create_user)
+      create_user
+      sign_in(@user)
       create_deck
       create_card
       visit edit_deck_path(@deck)
@@ -14,8 +15,10 @@ describe 'Deleting a card' do
       expect(page).to have_text(card_attributes[:question])
       expect(page).to have_text(card_attributes[:answer])
 
-      click_link("card-delete-1")
-      expect(page).to have_text('Card Deleted.')
+      find_by_id("toggle-card-edit-#{@card.id}").click
+      find_by_id("card-delete-#{@card.id}").click
+
+      expect(page).to have_text('Card deleted.')
       expect(page).not_to have_text(card_attributes[:question])
       expect(Card.count).to eq(0)
     end

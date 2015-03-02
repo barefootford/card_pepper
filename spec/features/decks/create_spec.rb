@@ -15,7 +15,7 @@ describe 'Creating a new deck' do
 
   describe 'while signed in' do 
 
-    before do
+    before(:each) do
       user = create_user
       sign_in(user)
       visit new_deck_path
@@ -38,10 +38,11 @@ describe 'Creating a new deck' do
 
     it 'displays validation errors correctly' do
       fill_in 'deck_title', with: "XOX"
+      find_by_id('submit-deck').click
 
-      expect {click_button 'Build It'}.not_to change(Deck, :count)
       expect(page).to have_text('Please fix')
       expect(page).to have_text('too short')
+      expect(Deck.count).to eq(0)
     end
   end
 end
