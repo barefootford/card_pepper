@@ -1,11 +1,19 @@
-$('#new-card-question').val('');
-$('#new-card-answer').val('');
+// Show flash that a new card has been created.
 $('#navigation-id').after('<h5 class="flash card alert card-created" id="new-card-success">Card Added</h5>');
 
-$(document).ready( function() {
-	$('#new-card-success').delay(6000).fadeOut(300);
-})
+// Set new card form to be empty
+$('#new-card-question').val('');
+$('#new-card-answer').val('');
 
+// Update _title label for card count
+$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %> |').fadeOut(200).fadeIn(200);
+
+// Add card to cards table
 $('#cards-table').append('<%= escape_javascript(render partial: 'cards/table_row', locals: { card: @card, deck: @deck }) %>');
 
-$('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %> |').fadeOut(200).fadeIn(200);
+// Hide flashes/notices after 6 seconds
+$(document).ready( function() {
+  $('#new-card-success').delay(6000).fadeOut(300);
+  $('.notice').delay(6000).fadeOut(300);
+  $('.alert').delay(6000).fadeOut(300);
+})
