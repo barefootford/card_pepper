@@ -1,2 +1,9 @@
+// Hide all flahses to make room for new error messages
 $('.flash').fadeOut();
-$("#navigation-id").after("<%= escape_javascript(render partial: 'layouts/card_errors', locals: {} ) %>");
+$("#navigation-id").after("<%= escape_javascript(render partial: 'layouts/card_errors') %>");
+
+// Hide all new notices and alerts since page does not get full reload
+$(document).ready( function() {
+  $('.notice').delay(6000).fadeOut(300);
+  $('.alert').delay(6000).fadeOut(300);
+})

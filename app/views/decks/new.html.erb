@@ -1,12 +1,12 @@
 <div class='row'>
   <div class='col-md-8'>
-        <%= render "shared/errors", object: @deck %>
+        <%= render "shared/errors", object: @new_deck %>
     <h1>Let's build a deck.</h1>
     <p class='lead'>First, give it a title:</p>  
-    <%= form_for @deck do |f| %>
+    <%= form_for @new_deck do |f| %>
       <%= f.text_area :title, placeholder:'Michel Thomas Beginner Spanish', class:'form-control', rows:1 %>
       <br>
-      <%= f.submit "Build It", class:'btn btn-lg btn-block btn-primary' %>
+      <%= f.submit "Build It", id:'submit-deck', class:'btn btn-lg btn-block btn-primary' %>
       <br>
     <% end %>
   </div>

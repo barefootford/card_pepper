@@ -5,17 +5,12 @@ class ApplicationController < ActionController::Base
   before_action :current_user
 
 private
-
   def must_be_beta_approved
     redirect_to beta_path unless (current_user && current_user.approved?)
   end
 
   def destroy_session
     session[:user_id] = nil
-  end
-  
-  def users_match?(object1, object2)
-    object1 == object2
   end
 
   def not_permitted
@@ -34,7 +29,7 @@ private
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.find(session[:user_id]) if session[:user_id].present?
   end
 
   def require_sign_in

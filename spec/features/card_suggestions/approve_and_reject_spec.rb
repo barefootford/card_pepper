@@ -15,20 +15,23 @@ describe 'Managing card suggestions' do
     it 'works through the deck#edit page' do
       expect(page).to have_button('Card Suggestions')
       click_button('Card Suggestions')
-      click_link("approve-#{@card_suggestion.id}")
+      find_by_id("approve-#{@card_suggestion.id}").click
 
-      expect(current_path).to eq(edit_deck_path(@deck))
+      expect(page).to have_text('Card approved and added to deck.')
+      expect(CardSuggestion.first.status).not_to eq('pending')
       expect(CardSuggestion.first.status).to eq('approved')
     end
   end
 
   describe 'rejecting card suggestions' do
-    xit 'works through the deck#edit page', js: true do
+    it 'works through the deck#edit page', js: true do
       expect(page).to have_text('Card Suggestions')
       click_button('Card Suggestions')
+      find_by_id("reject-#{@card_suggestion.id}").click
 
-      expect(page).to have_link('Reject')
-      click_button('Reject')
+      expect(page).to have_text('Card rejected and not added to deck.')
+      expect(CardSuggestion.first.status).not_to eq('pending')
+      expect(CardSuggestion.first.status).to eq('rejected')
     end
   end
 end

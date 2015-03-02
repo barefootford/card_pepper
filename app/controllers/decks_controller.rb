@@ -2,8 +2,8 @@ class DecksController < ApplicationController
   before_action :require_sign_in, except: [:show, :index]
   before_action :require_creator, only: [:edit, :update, :destroy]
   before_action :deck, only: [:show, :edit, :update, :destroy]
-  before_action :dont_show_delete_button, only: [:show]
-  before_action :do_show_delete_button, only: [:edit]
+  before_action :dont_show_edit_button, only: [:show]
+  before_action :do_show_edit_button, only: [:edit]
   before_action :current_user
   before_action :must_be_beta_approved
 
@@ -38,13 +38,13 @@ class DecksController < ApplicationController
   end
 
   def new
-    @deck = current_user.decks.new
+    @new_deck = current_user.decks.build
   end
 
   def create
-    @deck = current_user.decks.new(deck_params)
-    if @deck.save
-       redirect_to edit_deck_path(@deck), notice: "Deck built successfully."
+    @new_deck = current_user.decks.new(deck_params)
+    if @new_deck.save
+       redirect_to edit_deck_path(@new_deck), notice: "Deck built successfully."
     else
       render :new
     end
@@ -52,12 +52,12 @@ class DecksController < ApplicationController
 
 private
 
-  def dont_show_delete_button
-    @show_delete_button = false
+  def dont_show_edit_button
+    @show_edit_button = false
   end
 
-  def do_show_delete_button
-    @show_delete_button = true
+  def do_show_edit_button
+    @show_edit_button = true
   end
 
   def require_creator
