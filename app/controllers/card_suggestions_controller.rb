@@ -23,12 +23,12 @@ class CardSuggestionsController < ApplicationController
     case @card_suggestion.status
     when 'approved'
       @card_suggestion.add_to_deck
-      redirect_to edit_deck_path(@deck), notice: "Card approved and added to deck."
+      redirect_to edit_deck_path(@deck), notice: 'Card approved and added to deck.'
     when 'rejected'
       @card_suggestion.reject_from_deck
-      redirect_to edit_deck_path(@deck), notice: "Card rejected and not added to deck."
+      redirect_to edit_deck_path(@deck), notice: 'Card rejected and not added to deck.'
     else
-      redirect_to edit_deck_path(@deck), notice: "Invalid card status."
+      redirect_to edit_deck_path(@deck), notice: 'Invalid card status.'
     end
   end
 
