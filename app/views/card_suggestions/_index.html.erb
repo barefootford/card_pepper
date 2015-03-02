@@ -16,10 +16,10 @@
                 <td><%= card.answer %></td>
                 <td>
                   <%= link_to "Approve Card", deck_card_suggestion_path(deck, card,
-                    status:'approved'), method: :patch, class: 'label label-primary', id: "approve-#{card.id}" %>
+                    status:'approved'), method: :patch, class: 'label label-primary', id:"approve-#{card.id}" %>
 
                   <%= link_to "Reject Card", deck_card_suggestion_path(deck, card,
-                    status:'rejected'), method: :patch, class: 'label label-inverse', id: "reject-#{card.id}" %>
+                    status:'rejected'), method: :patch, class: 'label label-inverse', id:"reject-#{card.id}" %>
                 </td>
               </tr>
             <% end %>
