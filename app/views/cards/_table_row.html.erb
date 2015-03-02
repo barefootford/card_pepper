@@ -1,8 +1,47 @@
-<tr id=<%="card#{card.id}" %> >
-  <td><%= "#{card.question}" %></td>
-  <td><%= "#{card.answer}" %></td>
-  <td><%= link_to card.user.name, user_path(card.user), class:'no-link-primary' %></td>
-  <% if @show_delete_button %>
-      <td><%= link_to "X", deck_card_path(deck, card), method: :delete, remote: true, class: 'label label-danger', id:"card-delete-#{card.id}" %></td>
+<tr id=<%="tr-card-#{card.id}" %> >
+  <td>
+    <div><%= "#{card.question}" %></div>
+    <hr>
+
+    <div><%= "#{card.answer}" %></div>
+
+    <% if @show_edit_button %>
+      <div class='hideable card-edit-form' id='<%= "edit-form-#{card.id}" %>'>
+        <%= render 'shared/errors', object: card %>
+        <%= form_for([deck, card], method: :patch) do |f| %>
+
+          <hr>
+          <p>Question:</p>
+          <%= f.text_area :question, placeholder:'Question',
+          rows:3, class:'form-control', id:"edit-card-q-#{card.id}" %>
+          <small class='light-text'>140 character maximum</small><br><br>
+
+          <p>Answer:</p>
+          <%= f.text_area :answer, placeholder:'Answer', rows:3, class:'form-control', id:"edit-card-a-#{card.id}", prompt: true %>
+          <small class='light-text'>140 character maximum</small><br><br>
+
+          <%= f.submit "Save Changes",  class:"btn btn-xs btn-primary", id:"save-card-#{card.id}" %>
+          <%= link_to 'Delete Card', deck_card_path(deck, card), method: :delete, class: 'btn btn-xs btn-default', id:"card-delete-#{card.id}" %>
+        <% end %>
+      </div>
+    <% end %>
+  </td>
+
+  <td>
+    <%= link_to card.user.name, user_path(card.user), class:'no-link-primary' %>
+  </td>
+
+  <% if @show_edit_button %>
+    <td>
+      <%= content_tag('a','', class:'fui-list', id: "toggle-card-edit-#{card.id}" ) %>
+    </td>
   <% end %>
 </tr>
+
+<script>
+  $(document).ready(function(){
+    $('<%= "#toggle-card-edit-#{card.id}" %>').click(function(){
+      $('<%= "#edit-form-#{card.id}" %>').toggle(300);
+    });
+  });
+</script>
