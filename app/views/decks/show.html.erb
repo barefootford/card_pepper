@@ -7,13 +7,26 @@
       <p><%= @deck.instructions %></p>
     <% end %>
 
+    <br><br>
+    <%= link_to "Download Deck", deck_path(@deck, format: 'csv'),
+     class:'btn btn-lg btn-block btn-primary', id:'dl-deck' %>
+    <br>
+
+    <div id='deck-now-downloading' class='hidden'>
+      <p>
+        <%= @deck.title %> should begin downloading soon.
+        <em>
+          <%= link_to 'Download again.', deck_path(@deck, format: 'csv') %>
+        </em>
+      <p>
+      <%= link_to "Anki Import Instructions", anki_import_path, remote: true, class: 'btn btn-lg btn-default' %>
+      <br><br>
+    </div>
+
     <h6>Cards:</h6>
     <% if @cards.any? %>
       <%= render 'cards/index' %>
     <% end %>
-
-    <%= link_to "Download Deck", deck_path(@deck, format: 'csv'), class:'btn btn-lg btn-block btn-primary' %>
-    <br><hr><br>
   </div>
 
   <div class='col-md-4'>
@@ -28,6 +41,14 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#dl-deck').click(function(){
+      $('#deck-now-downloading').fadeIn(500).removeClass('hidden');
+    });
+  });
+</script>
 
 <script type="text/javascript">
   $(document).ready(function(){
