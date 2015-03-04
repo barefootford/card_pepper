@@ -6,10 +6,12 @@ gem 'bcrypt'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'faker'
 gem 'jbuilder', '~> 1.2'
-gem 'jquery-rails'
 
+gem 'jquery-rails'
 gem 'less-rails-bootstrap'
 gem 'less-rails'
+gem 'newrelic_rpm'
+
 gem 'rails', '4.1.4'
 gem 'therubyracer'
 gem 'uglifier', '>= 1.3.0'
