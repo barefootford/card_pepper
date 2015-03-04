@@ -19,7 +19,7 @@ class CardsController < ApplicationController
     @card = Card.find(deck_params[:id])
     @deck = Deck.find(@card.deck.id)
 
-    return not_permitted unless current_user_owns(@card)
+    return not_permitted unless current_user_owns(@card.deck)
 
     @card.destroy
 
