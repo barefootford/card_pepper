@@ -1,11 +1,18 @@
 class DecksController < ApplicationController
   before_action :require_sign_in, except: [:show, :index]
   before_action :require_creator, only: [:edit, :update, :destroy]
-  before_action :deck, only: [:show, :edit, :update, :destroy]
+  before_action :deck, only: [:show, :edit, :update, :destroy, :download ]
   before_action :dont_show_edit_button, only: [:show]
   before_action :do_show_edit_button, only: [:edit]
   before_action :current_user
   before_action :must_be_beta_approved
+
+
+  def anki_import
+    respond_to do |format|
+      format.js { render :anki_import }
+    end
+  end
 
   def index
     @decks = Deck.all.limit(10)
@@ -17,7 +24,7 @@ class DecksController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data @deck.to_csv, filename: @deck.file_name }
+      format.csv { download_csv }
     end
   end
 
@@ -51,6 +58,9 @@ class DecksController < ApplicationController
   end
 
 private
+  def download_csv
+    send_data @deck.to_csv, filename: @deck.file_name
+  end
 
   def dont_show_edit_button
     @show_edit_button = false

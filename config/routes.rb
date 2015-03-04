@@ -3,6 +3,7 @@ Pepper::Application.routes.draw do
   root 'decks#index'
 
   get 'beta' => 'pages#beta', as: 'beta'
+  get 'anki-import' => 'decks#anki_import', as: 'anki-import'
 
   #SESSIONS
   get 'sign_in' => 'sessions#new'
