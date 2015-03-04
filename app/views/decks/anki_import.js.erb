@@ -1,0 +1,3 @@
+if ($('#anki-import-partial').length == 0 ) {
+  $('#deck-now-downloading').after('<%= escape_javascript(render partial: 'decks/anki_import_instructions') %>');
+}
