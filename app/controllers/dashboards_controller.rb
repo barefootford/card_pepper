@@ -5,20 +5,10 @@ class DashboardsController < ApplicationController
   def show
     @user = current_user
     @decks = current_user.decks
-    card_suggestions_pending?
+    @deck_subscriptions = current_user.deck_subscriptions
   end
 
 private
-  def card_suggestions_pending?
-    @card_suggestions_pending ||= []
-
-    @decks.each do |d|
-      return true if @card_suggestions_pending.any?
-      @card_suggestions_pending << d.card_suggestions.pending
-    end
-
-    @card_suggestions_pending
-  end
 
   def dashboard_params
     params.permit(:card_suggestion_id)
