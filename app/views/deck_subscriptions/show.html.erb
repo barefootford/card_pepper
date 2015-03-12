@@ -1,0 +1,8 @@
+<h3 class='less-bottom-margin'><%= @deck.title %></h3>
+  <small>
+    Editor: <%= link_to "#{@deck.user.name}", user_path(@deck.user), class:'no-link-primary' %>
+  </small><br>
+<p>23 Study Sessions</p>
+<p>320 Cards Learned</p>
+
+<%= render 'study_and_deck_status' %>
