@@ -6,10 +6,10 @@ class DashboardsController < ApplicationController
     @user = current_user
     @decks = current_user.decks
     @deck_subscriptions = current_user.deck_subscriptions
+    @inactive_deck_subscriptions = current_user.deck_subscriptions.unscoped.inactive
   end
 
 private
-
   def dashboard_params
     params.permit(:card_suggestion_id)
   end
