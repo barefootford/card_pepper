@@ -1,0 +1,8 @@
+$('#navigation-id').after('<h5 class="flash card alert card-created" id="new-card-success">Deck Subscription status changed to <%= @deck_subscription.status %>.</h5>');
+$('#study-button').html('<%= escape_javascript(render partial: 'study_and_deck_status') %>');
+
+$(document).ready( function() {
+  $('.notice').delay(6000).fadeOut(300);
+  $('.alert').delay(6000).fadeOut(300);
+  $('.deck-status').fadeOut(300).fadeIn(300);
+})

@@ -6,7 +6,7 @@ Pepper::Application.routes.draw do
   get 'dashboard' => 'dashboards#show', as: 'dashboard'
 
   resources :users do
-    resources :deck_subscriptions, only: [:show, :create, :update, :destroy]
+    resources :deck_subscriptions, only: [:create, :edit, :show, :update]
   end
   get 'users/:id/delete' => 'users#delete', as: 'user_delete'
   get 'users/:id/edit_password' => 'users#edit_password', as: 'edit_password'
