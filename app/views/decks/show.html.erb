@@ -6,10 +6,23 @@
       <h6>Instructions:</h6>
       <p><%= @deck.instructions %></p>
     <% end %>
-
     <br><br>
-    <%= link_to "Download Deck", deck_path(@deck, format: 'csv'),
-     class:'btn btn-lg btn-block btn-primary', id:'dl-deck' %>
+
+    <% if current_user && @deck_subscription %>
+      <%= link_to "Study this Deck", user_deck_subscription_path(current_user, @deck_subscription), 
+        class:'btn btn-lg btn-block btn-primary', id:'add-to-my-decks' %>
+      <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
+        class:'label label-default', id:'dl-deck' %>
+    <% elsif current_user %>
+      <%= link_to "Add to My Decks", user_deck_subscriptions_path(current_user.id,
+        deck_id: @deck.id), method: :post, class:'btn btn-lg btn-block btn-primary',
+        id:'add-to-my-decks' %>
+      <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
+        class:'label label-default', id:'dl-deck' %>
+    <% else %>
+      <%= link_to "Sign In to Study or Download", "#",
+        class:'btn btn-lg btn-block btn-primary' %>
+    <% end %>
     <br>
 
     <div id='deck-now-downloading' class='hidden'>
@@ -19,7 +32,7 @@
           <%= link_to 'Download again.', deck_path(@deck, format: 'csv') %>
         </em>
       <p>
-      <%= link_to "Anki Import Instructions", anki_import_path, remote: true, class: 'btn btn-lg btn-default' %>
+      <%= link_to "Anki Import Instructions", anki_import_path, remote: true, class: 'label label-default' %>
       <br><br>
     </div>
 
