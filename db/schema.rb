@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309062912) do
+ActiveRecord::Schema.define(version: 20150311030414) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150309062912) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status",     default: 0
   end
 
   add_index "deck_subscriptions", ["deck_id"], name: "index_deck_subscriptions_on_deck_id"
