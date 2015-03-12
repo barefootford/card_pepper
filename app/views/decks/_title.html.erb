@@ -1,6 +1,8 @@
 <h4 class='head-with-author'><%= link_to deck.title, deck_path(deck), class:'no-link-primary' %></h4>
 
-<small><%= link_to "#{deck.user.name} | ", user_path(deck.user), class: '' %></small>
+<small>
+  Editor: <%= link_to "#{deck.user.name} | ", user_path(deck.user), class: '' %>
+</small>
 <small><%= link_to "Edit | ", edit_deck_path(deck), class: 'no-link-primary' if deck.user == current_user %></small>
 <%= content_tag :small, "#{pluralize(deck.cards.count, 'card')} | ", class:'a', id:'card-count-label' %>
 <%= content_tag :small, "#{pluralize(deck.card_suggestions.approved.count, 'contribution')}", class:'' %>
