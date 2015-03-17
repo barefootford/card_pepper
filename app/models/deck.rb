@@ -16,16 +16,16 @@ class Deck < ActiveRecord::Base
     self.user
   end
 
+  def any_card_suggestions_pending?
+    card_suggestions.pending.any?
+  end
+
   def card_count
     cards.count
   end
 
   def file_name
     "#{self.title.delete(' ')}.csv"
-  end
-
-  def any_card_suggestions?
-    @any_card_suggestions ||= card_suggestions.count > 0
   end
 
   def card_suggestions_count
