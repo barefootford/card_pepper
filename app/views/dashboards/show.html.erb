@@ -4,10 +4,11 @@
     <% if @decks.any? %>
       <% @decks.each do |deck| %>
         <%= render 'decks/title', deck: deck %>
-        <% if deck.card_suggestions.pending.count > 0 %>
-          <br><small>
-                <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
-                </small>
+        <% if deck.any_card_suggestions_pending? %>
+          <br>
+            <small>
+              <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
+            </small>
         <% end %>
         <hr>
       <% end %>
