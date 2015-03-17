@@ -18,8 +18,8 @@ describe 'Managing card suggestions' do
       find_by_id("approve-#{@card_suggestion.id}").click
 
       expect(page).to have_text('Card approved and added to deck.')
-      expect(CardSuggestion.first.status).not_to eq('pending')
-      expect(CardSuggestion.first.status).to eq('approved')
+      expect(CardSuggestion.first).not_to be_pending
+      expect(CardSuggestion.first).to be_approved
     end
   end
 
@@ -30,8 +30,8 @@ describe 'Managing card suggestions' do
       find_by_id("reject-#{@card_suggestion.id}").click
 
       expect(page).to have_text('Card rejected and not added to deck.')
-      expect(CardSuggestion.first.status).not_to eq('pending')
-      expect(CardSuggestion.first.status).to eq('rejected')
+      expect(CardSuggestion.first).not_to be_pending
+      expect(CardSuggestion.first).to be_rejected
     end
   end
 end
