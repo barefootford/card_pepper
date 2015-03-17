@@ -1,7 +1,7 @@
 class CardSuggestionsController < ApplicationController
   before_action :require_sign_in
   before_action :set_deck, only: [:create]
-  before_action :set_card_suggestion_and_deck, only: [:update]
+  before_action :set_deck_and_card_suggestion, only: [:update]
 
   def create
     @card_suggestion = CardSuggestion.new(create_params)
@@ -18,14 +18,13 @@ class CardSuggestionsController < ApplicationController
 
   def update
     not_permitted unless current_user_owns(@deck)
-    set_card_suggestion_status
 
-    case @card_suggestion.status
+    case update_params[:status]
     when 'approved'
-      @card_suggestion.add_to_deck
+      @card_suggestion.approve!
       redirect_to edit_deck_path(@deck), notice: 'Card approved and added to deck.'
     when 'rejected'
-      @card_suggestion.reject_from_deck
+      @card_suggestion.reject!
       redirect_to edit_deck_path(@deck), notice: 'Card rejected and not added to deck.'
     else
       redirect_to edit_deck_path(@deck), notice: 'Invalid card status.'
@@ -33,18 +32,13 @@ class CardSuggestionsController < ApplicationController
   end
 
 private
-  def set_card_suggestion_and_deck
-    @card_suggestion ||= CardSuggestion.find(update_params[:id])
-    @deck            ||= Deck.find(update_params[:deck_id])
+  def set_deck_and_card_suggestion
+    @deck            ||= current_user.decks.find(update_params[:deck_id])
+    @card_suggestion ||= @deck.card_suggestions.find(update_params[:id])
   end
 
   def set_deck
     @deck ||= Deck.find(create_params[:deck_id])
-  end
-
-  def set_card_suggestion_status
-    return @card_suggestion.approved! if update_params[:status] == 'approved'
-    return @card_suggestion.rejected! if update_params[:status] == 'rejected'
   end
 
   def update_params

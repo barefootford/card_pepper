@@ -25,7 +25,7 @@ def create_user_and_sign_in
 end
 
 def create_card_suggestion
-  @card_suggestion = CardSuggestion.create!(card_attributes(user_id: User.second.id ))
+  @card_suggestion = CardSuggestion.create!(card_attributes)
 end
 
 def sign_in(user)
@@ -52,6 +52,10 @@ def deck_attributes(overrides = {})
     user_id: 1,
     instructions:"Use this deck promptly after finishing the class and you'll do really well."
   }.merge(overrides)
+end
+
+def card_suggestion_attributes
+  card_attributes(user_id: 2)
 end
 
 def card_attributes(overrides = {})
