@@ -29,10 +29,11 @@ group :test, :development do
 end
 
 group :test do
-  gem "capybara", "2.2.1"
+  gem 'capybara', '2.2.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'launchy'
+  gem 'shoulda-matchers', require: false
 end
 
 group :production do
