@@ -24,11 +24,11 @@
       <p>Manage Decks:</p>
       <% @decks.each do |deck| %>
         <%= render 'decks/title', deck: deck %>
-        <% if deck.card_suggestions.pending.count > 0 %>
+        <% if deck.any_card_suggestions_pending? %>
           <br>
-          <small>
-            <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
-          </small>
+            <small>
+              <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
+            </small>
         <% end %>
       <% end %>
     <% end %>

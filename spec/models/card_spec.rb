@@ -1,40 +1,29 @@
 require 'spec_helper'
 
-describe 'A card' do
+describe Card do
 
-  it 'saves with the default card_attributes values' do
-    card = Card.new(card_attributes)
+  it { should_not be_valid }
 
-    expect(card.valid?).to be_true
-  end
+  it { should validate_presence_of :deck_id }
+  it { should belong_to :deck }
 
-  it 'cannot be saved without a parent deck' do
-    card = Card.new
+  it { should belong_to :user }
+  it { should validate_presence_of :user_id }
 
-    expect(card.valid?).to be_false
-    expect(card.errors[:deck_id].any?).to be_true
-  end
+  it { should validate_presence_of :question }
+  it { should validate_length_of(:question).is_at_least(2) }
+  it { should validate_length_of(:question).is_at_most(140) }
 
-  it 'saves with a parent deck' do
-    card = Card.new(deck_id: 1)
-    card.valid?
+  it { should validate_presence_of :answer }
+  it { should validate_length_of(:answer).is_at_most(140) }
+  it { should validate_length_of(:answer).is_at_least(2) }
 
-    expect(card.errors[:deck_id].any?).to be_false
-  end
+  context 'a card with card_attributes' do
+    let(:card_with_attributes) { Card.new(card_attributes) }
+    
+    subject { card_with_attributes }
 
-  it 'cannot be saved without a valid question and answer' do
-    card = Card.new
-
-    expect(card.valid?).to be_false
-    expect(card.errors[:question]).to be_true
-    expect(card.errors[:answer]).to be_true
-  end
-
-  it 'has a user attribute' do
-    create_user
-    card = Card.new(card_attributes)
-
-    expect(card.user_id).to eq(@user.id)
+    it { should be_valid }
   end
 
   describe 'after saving' do
