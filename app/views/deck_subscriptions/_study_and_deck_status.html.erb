@@ -1,6 +1,6 @@
 <div id='study-button'>
   <% if @deck_subscription.status == 'active' %>
-    <%= link_to 'Study', '#', class:'btn btn-primary btn-lg btn-block' %>
+    <%= link_to 'Study', study_sessions_path(deck_subscription_id: @deck_subscription.id), method: :post, class:'btn btn-primary btn-lg btn-block' %>
     <%= link_to 'Pause Subscription', user_deck_subscription_path(current_user, @deck_subscription, status: 'paused'), remote: true, method: :patch, class:'label label-default deck-status' %>
 
     <%= link_to 'End Subscription', user_deck_subscription_path(current_user, @deck_subscription, status: 'archived'), remote: true, method: :patch, class:'label label-default deck-status' %>

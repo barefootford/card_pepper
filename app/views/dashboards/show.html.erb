@@ -5,7 +5,7 @@
       <% @deck_subscriptions.each do |ds| %>
         <h4>
           <span>
-            <%= link_to 'Study', '#', class:'btn btn-primary' %>
+            <%= link_to 'Study', study_sessions_path(deck_subscription_id: ds), method: :post, class:'btn btn-primary' %>
           </span>
             <%= link_to ds.deck.title, user_deck_subscription_path(current_user, ds), class:'no-link-primary' %>
         </h4>
