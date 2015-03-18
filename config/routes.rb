@@ -1,5 +1,7 @@
 Pepper::Application.routes.draw do
 
+  resources :study_sessions
+
   root 'decks#index'
   get 'beta' => 'pages#beta', as: 'beta'
   get 'anki-import' => 'decks#anki_import', as: 'anki-import'
