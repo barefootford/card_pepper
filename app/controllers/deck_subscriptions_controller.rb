@@ -16,6 +16,7 @@ class DeckSubscriptionsController < ApplicationController
 
   def show
     @deck = @deck_subscription.deck
+    @study_sessions_count = @deck_subscription.study_sessions.count
   end
 
   def update
@@ -36,10 +37,8 @@ private
     case deck_subscription_params[:status]
     when 'paused'
       @deck_subscription.paused!
-
     when 'active'
       @deck_subscription.active!
-    
     when 'archived'
       @deck_subscription.archived!
     end
