@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223231934) do
+ActiveRecord::Schema.define(version: 20150408001716) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -34,10 +34,22 @@ ActiveRecord::Schema.define(version: 20150223231934) do
     t.string   "question"
     t.string   "answer"
     t.integer  "user_id"
+    t.integer  "status",     default: 0
   end
 
   add_index "cards", ["deck_id"], name: "index_cards_on_deck_id"
   add_index "cards", ["user_id"], name: "index_cards_on_user_id"
+
+  create_table "deck_subscriptions", force: true do |t|
+    t.integer  "deck_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "status",     default: 0
+  end
+
+  add_index "deck_subscriptions", ["deck_id"], name: "index_deck_subscriptions_on_deck_id"
+  add_index "deck_subscriptions", ["user_id"], name: "index_deck_subscriptions_on_user_id"
 
   create_table "decks", force: true do |t|
     t.datetime "created_at"
@@ -49,6 +61,35 @@ ActiveRecord::Schema.define(version: 20150223231934) do
   end
 
   add_index "decks", ["user_id"], name: "index_decks_on_user_id"
+
+  create_table "study_sessions", force: true do |t|
+    t.integer  "deck_subscription_id"
+    t.integer  "deck_id"
+    t.integer  "user_id"
+    t.integer  "new_card_goal",        default: 5
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "user_card_ids",        default: "--- []\n"
+  end
+
+  add_index "study_sessions", ["deck_id"], name: "index_study_sessions_on_deck_id"
+  add_index "study_sessions", ["deck_subscription_id"], name: "index_study_sessions_on_deck_subscription_id"
+  add_index "study_sessions", ["user_id"], name: "index_study_sessions_on_user_id"
+
+  create_table "user_cards", force: true do |t|
+    t.integer  "deck_subscription_id"
+    t.integer  "card_id"
+    t.datetime "last_view"
+    t.datetime "first_view"
+    t.float    "efficiency"
+    t.integer  "view_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "next_view"
+  end
+
+  add_index "user_cards", ["card_id"], name: "index_user_cards_on_card_id"
+  add_index "user_cards", ["deck_subscription_id"], name: "index_user_cards_on_deck_subscription_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"

@@ -5,7 +5,7 @@ $('#navigation-id').after('<h5 class="flash card alert card-created" id="new-car
 $('#new-card-question').val('');
 $('#new-card-answer').val('');
 
-// Update _title label for card count
+// Update label for card count
 $('#card-count-label').text('<%= pluralize(@deck.cards.count, 'card') %> |').fadeOut(200).fadeIn(200);
 
 // Add card to cards table

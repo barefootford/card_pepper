@@ -66,3 +66,10 @@ def card_attributes(overrides = {})
     user_id: deck_attributes[:user_id]
   }.merge(overrides)
 end
+
+def deck_subscription_attributes(overrides = {})
+  {
+    user_id: 1,
+    deck_id: 1
+  }.merge(overrides)
+end

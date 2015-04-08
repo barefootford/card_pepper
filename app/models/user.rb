@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
+  has_many :deck_subscriptions
+
   has_secure_password
 
   validates :email, presence: true,
@@ -14,6 +16,10 @@ class User < ActiveRecord::Base
   def self.authenticate(email, password)
     user = User.find_by(email: email)
     user && user.authenticate(password)
+  end
+
+  def subscribes_to(deck)
+    deck_subscriptions.pluck(:deck_id).include?(deck.id)
   end
 
   def card_suggestions

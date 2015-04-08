@@ -7,7 +7,6 @@ class DecksController < ApplicationController
   before_action :current_user
   before_action :must_be_beta_approved
 
-
   def anki_import
     respond_to do |format|
       format.js { render :anki_import }
@@ -21,6 +20,7 @@ class DecksController < ApplicationController
   def show
     @card_suggestion = CardSuggestion.new
     @cards = deck.cards
+    set_deck_subscription if current_user.present?
 
     respond_to do |format|
       format.html
@@ -58,6 +58,14 @@ class DecksController < ApplicationController
   end
 
 private
+  def set_deck_subscription
+    if current_user.deck_subscriptions.where(deck: deck).any?
+      @deck_subscription = current_user.deck_subscriptions.where(deck: deck).first
+    else
+      @new_deck_subscription = current_user.deck_subscriptions.new(deck: deck) 
+    end
+  end
+
   def download_csv
     send_data @deck.to_csv, filename: @deck.file_name
   end
@@ -74,6 +82,10 @@ private
     unless current_user && current_user == deck.user
       redirect_to root_url, notice: "Only the deck's creator can edit the deck."
     end
+  end
+
+  def set_deck
+    deck
   end
 
   def deck

@@ -1,0 +1,13 @@
+<h3 class='less-bottom-margin'><%= @deck.title %></h3>
+  <small>
+    Editor: <%= link_to "#{@deck.user.name}", user_path(@deck.user), class:'no-link-primary' %> |
+  </small>
+  <small>
+    <%= @deck.cards.active.count %> cards |
+  </small>
+  <small>
+    <%= @deck_subscription.user_cards_to_study.count %> cards to study
+  </small>
+<p><%= study_session_count_for(@study_sessions_count) %></p>
+
+<%= render 'study_and_deck_status' %>

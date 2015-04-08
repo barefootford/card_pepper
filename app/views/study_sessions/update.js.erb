@@ -1,0 +1,9 @@
+<% if @study_session.user_card_ids.any? %>
+  $('#card-partial').html('<%= j render partial: 'cards/card' %>')
+  $('#response').html('<%= j render partial: 'user_cards/response' %>')
+<% else %>
+  $('#pepper-main').html('<%= j render partial: 'study_sessions/session_complete' %>');  
+  $(document).ready(function(){
+    $('#navigation-id').show();
+  });
+<% end %>
