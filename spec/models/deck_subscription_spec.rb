@@ -1,40 +1,20 @@
 require 'spec_helper'
 
-describe 'A Deck Subscription' do
-  before(:each) do
-    @ds = DeckSubscription.new
-  end
+describe DeckSubscription do
+  let(:user) { User.create!(user_attributes) }
+  let(:ds)   { DeckSubscription.create!(deck_subscription_attributes) }
+
+  it { should validate_presence_of :user_id }
+  it { should belong_to :user }
+  it { should have_many :user_cards }
+
+  it { should validate_presence_of :deck_id }
+  it { should belong_to :deck }
+
+  it { should have_many :study_sessions }
 
   it 'has a default scope of active' do
-    create_user
-    @user.deck_subscriptions.create!(deck_subscription_attributes)
-
-    expect(@user.deck_subscriptions.count).to eq(1)
-    expect(@user.deck_subscriptions.archived.count).to eq(0)
-    expect(@user.deck_subscriptions.active.count).to eq(1)
-  end
-
-  it 'requires a user id' do
-    expect(@ds.valid?).to eq(false)
-    expect(@ds.errors[:user_id]).to be_present
-  end
-
-  it 'requires a deck id' do
-    expect(@ds.valid?).to eq(false)
-    expect(@ds.errors[:deck_id]).to be_present
-  end
-
-  it 'saves with deck_subscription_attributes' do
-    @ds.assign_attributes(deck_subscription_attributes)
-
-    expect(@ds.valid?).to be_true
-    expect(@ds.active?).to be_true
-  end
-
-  it 'belongs to a user' do
-    create_user
-    @user.deck_subscriptions.create!(deck_subscription_attributes)
-
-    expect(@user.deck_subscriptions.count).to eq(1)
+    expect(ds).to be_active
+    expect(DeckSubscription.inactive).not_to include(ds)
   end
 end

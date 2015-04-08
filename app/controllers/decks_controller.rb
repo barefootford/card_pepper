@@ -20,7 +20,7 @@ class DecksController < ApplicationController
   def show
     @card_suggestion = CardSuggestion.new
     @cards = deck.cards
-    set_deck_subscription
+    set_deck_subscription if current_user.present?
 
     respond_to do |format|
       format.html
@@ -59,7 +59,7 @@ class DecksController < ApplicationController
 
 private
   def set_deck_subscription
-    if current_user.present? && current_user.deck_subscriptions.where(deck: deck).any?
+    if current_user.deck_subscriptions.where(deck: deck).any?
       @deck_subscription = current_user.deck_subscriptions.where(deck: deck).first
     else
       @new_deck_subscription = current_user.deck_subscriptions.new(deck: deck) 

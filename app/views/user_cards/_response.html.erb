@@ -1,0 +1,17 @@
+<p id='response-btns' class='hidden' >
+  <%= link_to 'Got it', deck_subscription_study_session_path(@deck_subscription, @study_session, user_card_id: @user_card.id, user_response: 'got-it'), method: :patch, remote: true,
+    class: 'btn btn-primary btn-lg', id: 'got-it-btn' %>
+  <%= link_to 'Again', deck_subscription_study_session_path(@deck_subscription, @study_session, user_card_id: @user_card.id, user_response: 'again'), method: :patch, remote: true,
+    class: 'btn btn-default btn-lg', id: 'again-btn' %>
+</p>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#navigation-id').hide();
+    $('#show-btn').click(function(){
+      $('#show-btn').addClass('disabled');
+      $('#card-answer').fadeIn().text('<%= @card.answer %>');
+      $('#response-btns').fadeIn().removeClass('hidden');
+    });
+  });
+</script>

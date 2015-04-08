@@ -15,6 +15,8 @@ gem 'less-rails'
 gem 'newrelic_rpm'
 gem 'rails', '4.1.4'
 gem 'therubyracer'
+gem 'time_difference', '0.4.2'
+
 gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do

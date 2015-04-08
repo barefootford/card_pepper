@@ -6,8 +6,8 @@ describe 'A deck' do
 
     expect(deck.valid?).to be_false
     expect(deck.errors[:title].any?).to be_true
-  end 
-  
+  end
+
   it 'requires a creator' do 
     deck = Deck.new(user_id: nil)
 

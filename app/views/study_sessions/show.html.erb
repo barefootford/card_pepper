@@ -1,9 +1,7 @@
-<p>What URL would you use to visit a Rails App that's running in Terminal through your browser?</p>
-  <hr>
-<p>
-<p>http://localhost:3000</p>
+<div id='card-partial'>
+  <%= render @card %>
+</div>
 
-<button class='btn btn-default btn-hg' id='show-btn'>Show Answer</button>
-<br><br>
-<button class="btn btn-primary btn-hg" id='got-it-btn'>Got it</button>
-<button class="btn btn-default btn-hg" id='again-btn'>Again</button>
+<div id='response'>
+  <%= render 'user_cards/response' %>
+</div>

@@ -1,13 +1,13 @@
 <div class='row'>
   <div class='col-md-8'>
-    <p>Study Decks:</p>
+    <p>Study:</p>
     <% if @deck_subscriptions.any?  %>
       <% @deck_subscriptions.each do |ds| %>
         <h4>
           <span>
-            <%= link_to 'Study', study_sessions_path(deck_subscription_id: ds), method: :post, class:'btn btn-primary' %>
+            <%= link_to "Study (#{pluralize(ds.user_cards_to_study.count, 'card')})", deck_subscription_study_sessions_path(ds), method: :post, class:"btn #{ds.primary_or_disabled}" %>
           </span>
-            <%= link_to ds.deck.title, user_deck_subscription_path(current_user, ds), class:'no-link-primary' %>
+            <%= link_to ds.deck.title, deck_subscription_path(ds), class:"no-link-primary" %>
         </h4>
       <% end %>
     <% end %>
@@ -21,7 +21,7 @@
     <hr>
 
     <% if @decks.any? %>
-      <p>Manage Decks:</p>
+      <p>Manage:</p>
       <% @decks.each do |deck| %>
         <%= render 'decks/title', deck: deck %>
         <% if deck.any_card_suggestions_pending? %>

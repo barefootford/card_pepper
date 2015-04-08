@@ -1,21 +1,18 @@
 <div class='row'>
   <div class='col-md-8'>
     <%= render 'decks/title', deck: @deck %>
-
-    <% if @deck.instructions.present? %>
       <h6>Instructions:</h6>
-      <p><%= @deck.instructions %></p>
-    <% end %>
+      <p><%= @deck._instructions %></p>
     <br><br>
 
     <% if current_user && @deck_subscription %>
-      <%= link_to "Study this Deck", user_deck_subscription_path(current_user, @deck_subscription), 
-        class:'btn btn-lg btn-block btn-primary', id:'add-to-my-decks' %>
+      <%= link_to "Study this Deck", deck_subscription_study_sessions_path(@deck_subscription), method: :post, 
+        class:'btn btn-lg btn-block btn-primary' %>
+
       <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
         class:'label label-default', id:'dl-deck' %>
     <% elsif current_user %>
-      <%= link_to "Add to My Decks", user_deck_subscriptions_path(current_user.id,
-        deck_id: @deck.id), method: :post, class:'btn btn-lg btn-block btn-primary',
+      <%= link_to "Add to My Decks", deck_subscriptions_path(deck_id: @deck.id), method: :post, class:'btn btn-lg btn-block btn-primary',
         id:'add-to-my-decks' %>
       <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
         class:'label label-default', id:'dl-deck' %>

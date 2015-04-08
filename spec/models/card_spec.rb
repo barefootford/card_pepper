@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Card do
+  let(:card_with_attributes) { Card.new(card_attributes) }
 
   it { should_not be_valid }
 
@@ -19,11 +20,7 @@ describe Card do
   it { should validate_length_of(:answer).is_at_least(2) }
 
   context 'a card with card_attributes' do
-    let(:card_with_attributes) { Card.new(card_attributes) }
-    
-    subject { card_with_attributes }
-
-    it { should be_valid }
+    it { expect(card_with_attributes).to be_valid }
   end
 
   describe 'after saving' do

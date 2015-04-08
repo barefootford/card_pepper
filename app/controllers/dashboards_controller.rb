@@ -5,8 +5,9 @@ class DashboardsController < ApplicationController
   def show
     @user = current_user
     @decks = @user.decks
-    @deck_subscriptions = @user.deck_subscriptions
-    @inactive_deck_subscriptions = @user.deck_subscriptions.unscoped.inactive
+    @deck_subscriptions = @user.deck_subscriptions.active
+    @deck_subscriptions.each { |ds| ds.sync }
+    @inactive_deck_subscriptions = @user.deck_subscriptions.inactive
   end
 
 private

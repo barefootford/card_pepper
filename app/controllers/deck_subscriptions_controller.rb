@@ -1,5 +1,6 @@
 class DeckSubscriptionsController < ApplicationController
   before_action :require_sign_in, only: [:create, :show, :update]
+  before_action :must_be_beta_approved
   before_action :set_deck_subscription, only: [:show, :update]
 
   def create
@@ -24,7 +25,7 @@ class DeckSubscriptionsController < ApplicationController
     if set_deck_subscription_status == true
       respond_to do |format|
         format.js { render :update }
-        format.html do redirect_to user_deck_subscription_path(current_user, @deck_subscription),
+        format.html do redirect_to deck_subscription_path(@deck_subscription),
           notice: 'Deck subscription updated.'
         end
       end
@@ -49,7 +50,7 @@ private
   end
 
   def set_deck_subscription
-    @deck_subscription ||= current_user.deck_subscriptions.unscoped.find(deck_subscription_params[:id])
+    @deck_subscription ||= current_user.deck_subscriptions.find(deck_subscription_params[:id])
   end
 
   def deck_subscription_params

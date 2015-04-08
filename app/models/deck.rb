@@ -12,6 +12,14 @@ class Deck < ActiveRecord::Base
   # There has gotta be an AR scope for this. No?
   scope :saved, lambda { where('id > 0') }   
 
+  def _instructions
+    if instructions.present?
+      instructions
+    else
+      "This deck doesn't have instructions yet."
+    end
+  end
+
   def owner
     self.user
   end
