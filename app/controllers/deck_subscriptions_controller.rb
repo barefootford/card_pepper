@@ -36,8 +36,6 @@ private
 
   def set_deck_subscription_status
     case deck_subscription_params[:status]
-    when 'paused'
-      @deck_subscription.paused!
     when 'active'
       @deck_subscription.active!
     when 'archived'
