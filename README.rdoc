@@ -1,26 +1,24 @@
 == README
 
-CardPepper aims to make collaborative flashcard decks fast and simple. I think too much time is spent creating flashcard decks individually. There's almost no reuse, no community iteration and no way to pay for decks that have taken a lot of time.
+CardPepper makes collaborative flashcard decks fast and simple. I think too much time is spent creating flashcard decks individually. There's almost no reuse, no community iteration and no way to pay for decks that have taken a lot of time.
 
-There is a lot left to build, but I think the basics could be done by the end of February 2015.
-
-Done:
+Done: 
 
 [x] Download files
 [x] Build/Edit Decks
 [x] Create Cards
 [x] User/sessions boilerplate
 [x] Ajaxify Deck editing for snappy editing
+[x] Rewire adding card suggestions
+[x] Add Study Engine
 
 To Do:
-
-[ ] Rewire adding card suggestions
+[ ] Migrate Dev DB to PG.
+[ ] Remove serializing on deck subscriptions and instead make a todo model. 
 [ ] Create Super Decks (Related decks combined into one)
 [ ] Add ability to import Anki Packages
 [ ] Add ability to import CSVs
 
 Would be nice:
-
-[ ] Add payments. Good decks are an asset as good as any other educational resource.
-[ ] Track when people download decks, then offer small updated deck files when cards get added.
+[ ] Add payments/ability to buy decks (requires private decks.)
 [ ] I'd love to be able to offer downloadable Anki packages, but for now you can download as CSVs and import into Anki. Anki packages ('Anki Decks') are saved in a sqlite file, so it's doable, but their schema looks like a mess.
