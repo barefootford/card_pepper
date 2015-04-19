@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150418021215) do
+ActiveRecord::Schema.define(version: 20150419055330) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(version: 20150418021215) do
     t.integer  "new_card_goal",        default: 5
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "user_card_ids",        default: "--- []\n"
   end
 
   add_index "study_sessions", ["deck_id"], name: "index_study_sessions_on_deck_id"
