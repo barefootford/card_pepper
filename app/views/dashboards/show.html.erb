@@ -3,12 +3,20 @@
     <p>Study:</p>
     <% if @deck_subscriptions.any?  %>
       <% @deck_subscriptions.each do |ds| %>
-        <h4>
-          <span>
-            <%= link_to "Study (#{pluralize(ds.user_cards_to_study.count, 'card')})", deck_subscription_study_sessions_path(ds), method: :post, class:"btn #{ds.primary_or_disabled}" %>
-          </span>
-            <%= link_to ds.deck.title, deck_subscription_path(ds), class:"no-link-primary" %>
+        <h4 class='head-with-author'>
+          <%= link_to ds.deck.title, deck_subscription_path(ds), class:"no-link-primary" %>
         </h4>
+        <% if ds.user_cards_to_study.any? %>
+          <%= link_to "Study", deck_subscription_study_sessions_path(ds, ), method: :post, id:"study-#{ds.id}", class:'label label-primary' %>
+          <small><%= pluralize(ds.user_cards_to_study.count, 'card') %> to study.</small>
+        <% elsif ds.user_cards && ds.user_cards_to_study %>
+          <small>
+            No cards to study.
+            <%= "Will need studying on: #{ds.needs_studying_on }" if ds.needs_studying_on.present? %>
+          </small>
+        <% else %>
+          <small>No cards to study.</small>
+        <% end %>
       <% end %>
     <% end %>
     <% if @inactive_deck_subscriptions.any? %>
