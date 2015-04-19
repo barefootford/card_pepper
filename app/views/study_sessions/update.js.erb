@@ -1,4 +1,4 @@
-<% if @study_session.user_card_ids.any? %>
+<% if @study_session.to_dos.any? %>
   $('#card-partial').html('<%= j render partial: 'cards/card' %>')
   $('#response').html('<%= j render partial: 'user_cards/response' %>')
 <% else %>

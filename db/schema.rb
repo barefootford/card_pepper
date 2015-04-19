@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408001716) do
+ActiveRecord::Schema.define(version: 20150418021215) do
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -75,6 +75,16 @@ ActiveRecord::Schema.define(version: 20150408001716) do
   add_index "study_sessions", ["deck_id"], name: "index_study_sessions_on_deck_id"
   add_index "study_sessions", ["deck_subscription_id"], name: "index_study_sessions_on_deck_subscription_id"
   add_index "study_sessions", ["user_id"], name: "index_study_sessions_on_user_id"
+
+  create_table "to_dos", force: true do |t|
+    t.integer  "study_session_id"
+    t.integer  "user_card_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "to_dos", ["study_session_id"], name: "index_to_dos_on_study_session_id"
+  add_index "to_dos", ["user_card_id"], name: "index_to_dos_on_user_card_id"
 
   create_table "user_cards", force: true do |t|
     t.integer  "deck_subscription_id"

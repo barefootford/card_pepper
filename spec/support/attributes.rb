@@ -10,6 +10,18 @@ def create_deck
   @deck = Deck.create!(deck_attributes)
 end
 
+def create_user_deck_cards
+  create_user
+  create_deck
+  create_cards_for(Deck.last)
+end
+
+def create_cards_for(deck)
+  1.upto(3) do deck.cards.create!(user_id: User.first.id, deck_id: User.first.id,
+    question: "Who is the CTO of #{Faker::Company.name}?", answer: Faker::Name.name)
+  end
+end
+ 
 def create_card
   @card = @deck.cards.create!(card_attributes)
 end
@@ -72,4 +84,8 @@ def deck_subscription_attributes(overrides = {})
     user_id: 1,
     deck_id: 1
   }.merge(overrides)
+end
+
+def create_deck_subscription(user, deck)
+  DeckSubscription.create!(user_id: user.id, deck_id: deck.id)
 end
