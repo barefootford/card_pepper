@@ -13,7 +13,7 @@ end
 def create_user_deck_cards
   create_user
   create_deck
-  create_cards
+  create_cards_for(Deck.last)
 end
 
 def create_cards_for(deck)

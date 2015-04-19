@@ -20,10 +20,10 @@ describe 'Attributes.rb' do
     end
   end
 
-  describe '.create_cards' do
+  describe '.create_cards_for' do
     let!(:user) { create_user }
     let!(:deck) { create_deck }
 
-    it { expect { create_cards }.to change(Card, :count).from(0).to(3) }
+    it { expect { create_cards_for(Deck.last) }.to change(Card, :count).from(0).to(3) }
   end
 end
