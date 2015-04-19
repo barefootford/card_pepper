@@ -10,7 +10,7 @@
     $('#navigation-id').hide();
     $('#show-btn').click(function(){
       $('#show-btn').addClass('disabled');
-      $('#card-answer').fadeIn().text('<%= @card.answer %>');
+      $('#card-answer').fadeIn().text('<%=h @card.answer %>');
       $('#response-btns').fadeIn().removeClass('hidden');
     });
   });
