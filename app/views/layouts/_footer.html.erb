@@ -12,9 +12,9 @@
     <span> | </span>
     
     <% if current_user %>
-      <%= link_to 'Sign Out', session_path, method: :delete, id:'sign-out-button', class: 'button' if current_user %>
+      <%= link_to 'Sign Out', session_path, method: :delete, id:'sign-out-button', class: 'button' %>
       <span> | </span>
-      <%= link_to 'Account', edit_user_path(current_user) if current_user  %>
+      <%= link_to 'Account', edit_user_path(current_user) %>
     <% else %>
       <%= link_to "Sign In", new_session_path, remote: true %>
       <span> | </span>
