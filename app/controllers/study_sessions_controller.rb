@@ -9,8 +9,8 @@ class StudySessionsController < ApplicationController
   before_action :does_deck_need_studying?, only: [:create]
 
   def create
-    @study_session = @deck_subscription.study_sessions.new(deck_id: @deck_subscription.deck_id)
-    @study_session.add_user_card_ids
+    @study_session = @deck_subscription.study_sessions.create!(deck_id: @deck_subscription.deck_id)
+    @study_session.add_to_dos
 
     if @study_session.save
       redirect_to deck_subscription_study_session_path(@deck_subscription, @study_session)
@@ -20,7 +20,7 @@ class StudySessionsController < ApplicationController
   end
 
   def show
-    if @study_session.user_card_ids.any?
+    if @study_session.to_dos.any?
       set_user_card_and_card
     else
       redirect_to dashboard_path, status: 303, notice: 'Study Session over. All cards learned.'
@@ -32,8 +32,8 @@ class StudySessionsController < ApplicationController
       not_permitted
     else
       update_user_card
-      remove_user_card_from_session if study_session_params[:user_response] == 'got-it'
-      set_user_card_and_card if @study_session.user_card_ids.any?
+      remove_user_card_from_study_session if study_session_params[:user_response] == 'got-it'
+      set_user_card_and_card if @study_session.to_dos.any?
 
       respond_to do |format|
         format.js
@@ -47,8 +47,8 @@ private
     redirect_to dashboard_path, status: 303, notice: 'No more cards to study in this deck. Study another deck or come back tomorrow.' unless @deck_subscription.needs_studying?
   end
   
-  def remove_user_card_from_session
-    @study_session.user_card_ids.delete(@user_card.id)
+  def remove_user_card_from_study_session
+    @study_session.to_dos.where(user_card_id: @user_card.id).first.destroy
     @study_session.save!
   end
 
@@ -74,7 +74,7 @@ private
   end
 
   def set_deck_subscription
-    @deck_subscription ||= current_user.deck_subscriptions.find(study_session_params[:deck_subscription_id])
+    @deck_subscription ||= DeckSubscription.find(study_session_params[:deck_subscription_id])
   end
 
   def study_session_params
