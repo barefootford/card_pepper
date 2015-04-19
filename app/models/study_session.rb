@@ -1,5 +1,4 @@
 class StudySession < ActiveRecord::Base
-  serialize :user_card_ids
   belongs_to :deck_subscription
   belongs_to :deck
   has_many   :to_dos
