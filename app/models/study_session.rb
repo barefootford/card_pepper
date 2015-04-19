@@ -2,21 +2,24 @@ class StudySession < ActiveRecord::Base
   serialize :user_card_ids
   belongs_to :deck_subscription
   belongs_to :deck
+  has_many   :to_dos
 
   validates :deck_subscription_id, presence: true
   validates :deck_id, presence: true
 
   def next_card
-    @next_card ||= UserCard.includes(:card).find(user_card_ids.sample)
+    @next_card ||= self.to_dos.sample.user_card
   end
 
   def cards_remain?
-    user_card_ids.any?
+    self.to_dos.any?
   end
 
-  def add_user_card_ids
+  def add_to_dos
     deck_subscription.user_cards_to_study.each do |uc|
-      self.user_card_ids.push(uc.id)
+      self.to_dos.new(user_card_id: uc.id, study_session_id: self.id )
     end
+
+    self.save
   end
 end

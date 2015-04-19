@@ -16,6 +16,18 @@ class DeckSubscription < ActiveRecord::Base
     create_user_cards
   end
 
+  def needs_studying_on
+    @sorted ||= self.user_cards.sort_by {|uc| uc.next_view }
+    #sorts user_cards by :next_view that is soonest.
+    
+    if @sorted.count == 0
+      return false 
+    else
+      user_card_time = @sorted.first.next_view + 1.hour
+      user_card_time.strftime('%B %-d at%l%P.')
+    end
+  end
+
   def primary_or_disabled
     if needs_studying?
       'btn-primary'
@@ -28,10 +40,6 @@ class DeckSubscription < ActiveRecord::Base
     @user_cards_to_study ||= user_cards.includes(:card).select do |uc|
       uc.needs_studying?
     end
-  end
-
-  def study_session_ids
-    user_cards_to_study.collect {|uc| uc.id }
   end
 
   def needs_studying?
