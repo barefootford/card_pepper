@@ -4,7 +4,7 @@ class Card < ActiveRecord::Base
   belongs_to :deck
   belongs_to :user
 
-  has_many :user_cards
+  has_many :user_cards, dependent: :destroy
   has_many :versions
 
   validates :deck_id, presence: true
