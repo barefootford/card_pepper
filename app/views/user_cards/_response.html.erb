@@ -5,12 +5,12 @@
     class: 'btn btn-default btn-lg', id: 'again-btn' %>
 </p>
 
-<script type="text/javascript">
+<script type='text/javascript'>
   $(document).ready(function(){
     $('#navigation-id').hide();
     $('#show-btn').click(function(){
       $('#show-btn').addClass('disabled');
-      $('#card-answer').fadeIn().text('<%=h @card.answer %>');
+      $('#card-answer').html("<%=j render 'cards/card_answer' %>");
       $('#response-btns').fadeIn().removeClass('hidden');
     });
   });
