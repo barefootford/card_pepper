@@ -6,7 +6,7 @@ class UserCard < ActiveRecord::Base
   validates :card_id, presence: true
 
   def active?
-    card.active?
+    card && card.active? 
   end
 
   def answer
