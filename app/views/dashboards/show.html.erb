@@ -7,12 +7,13 @@
           <%= link_to ds.deck.title, deck_subscription_path(ds), class:"no-link-primary" %>
         </h4>
         <% if ds.user_cards_to_study.any? %>
-          <%= link_to "Study", deck_subscription_study_sessions_path(ds, ), method: :post, id:"study-#{ds.id}", class:'label label-primary' %>
+          <%= link_to "Study", deck_subscription_study_sessions_path(ds), method: :post, id:"study-#{ds.id}", class:'btn btn-xs btn-primary' %>
           <small><%= pluralize(ds.user_cards_to_study.count, 'card') %> to study.</small>
         <% elsif ds.user_cards && ds.user_cards_to_study %>
+          <%= link_to "Study", "#", class:'btn btn-xs btn-default disabled'  %>
+
           <small>
-            No cards to study.
-            <%= "Will need studying on: #{ds.needs_studying_on }" if ds.needs_studying_on.present? %>
+            <%= "Next Study: #{ds.needs_studying_on }" if ds.needs_studying_on.present? %>
           </small>
         <% else %>
           <small>No cards to study.</small>
