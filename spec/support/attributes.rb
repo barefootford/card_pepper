@@ -17,8 +17,11 @@ def create_user_deck_cards
 end
 
 def create_cards_for(deck)
-  1.upto(3) do deck.cards.create!(user_id: User.first.id, deck_id: User.first.id,
-    question: "Who is the CTO of #{Faker::Company.name}?", answer: Faker::Name.name)
+  1.upto(3) do
+    deck.cards.create!(user_id: User.first.id,
+                       deck_id: User.first.id,
+                       question: "Who is the CTO of #{Faker::Company.name}?",
+                       answer: Faker::Name.name)
   end
 end
  
