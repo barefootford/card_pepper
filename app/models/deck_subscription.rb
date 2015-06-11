@@ -16,15 +16,18 @@ class DeckSubscription < ActiveRecord::Base
     create_user_cards
   end
 
-  def needs_studying_on
+  def sorted_user_cards
     @sorted ||= self.user_cards.sort_by {|uc| uc.next_view }
-    #sorts user_cards by :next_view that is soonest.
-    
-    if @sorted.count == 0
-      return false 
-    else
+  end
+
+  def needs_studying_on
+    @sorted = sorted_user_cards
+
+    if @sorted.any?
       user_card_time = @sorted.first.next_view + 1.hour
-      user_card_time.strftime('%B %-d at%l%P.')
+      user_card_time.strftime('%B %-d, %Y at%l%P.')
+    else
+      false
     end
   end
 

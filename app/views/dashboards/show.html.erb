@@ -11,7 +11,6 @@
           <small><%= pluralize(ds.user_cards_to_study.count, 'card') %> to study.</small>
         <% elsif ds.user_cards && ds.user_cards_to_study %>
           <%= link_to "Study", "#", class:'btn btn-xs btn-default disabled'  %>
-
           <small>
             <%= "Next Study: #{ds.needs_studying_on }" if ds.needs_studying_on.present? %>
           </small>
