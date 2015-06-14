@@ -27,6 +27,7 @@ describe UserCard do
       it { should eq(card_attributes[:answer]) }
     end
 
+
     describe '.increased_efficiency' do
       subject { user_card.increased_efficiency }
       it { should eq(1.7) }
@@ -48,10 +49,23 @@ describe UserCard do
       it { expect(subject.to_f).to be > DateTime.new.to_f - 1.hour.seconds }
     end
 
-    describe '.time_gap' do
-    #   subject { user_card.now_plus_time_gap }
-    #   it { should be_instance_of(DateTime) }
-    #   it { expect(subject.to_f).to be >(DateTime.new.to_f + 11.hours.seconds) }
+    ##############
+    ##############
+    ##############
+    ##############
+    ##############
+    ##############
+    ##############
+
+    describe '.view_count_plus_1' do
+      subject { user_card.view_count_plus_1 }
+      it { should eq(1) }
+    end
+
+    describe '.next_view_strftime' do
+      before { user_card.update_for_correct_response }
+      subject { user_card.next_view_strftime }
+      it { should include('at')}
     end
 
     describe '.question' do
@@ -72,7 +86,6 @@ describe UserCard do
     describe '.update_for_incorrect_response' do
       subject { user_card.update_for_incorrect_response; user_card }
 
-      it { puts "subject.next_view: #{subject.next_view}" }
       it { expect(subject.needs_studying?).to be_true }
       it { expect(subject.first_view).to be_instance_of(ActiveSupport::TimeWithZone) }
       it { expect(subject.last_view).to be_instance_of(ActiveSupport::TimeWithZone) }

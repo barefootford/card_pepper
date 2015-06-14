@@ -21,11 +21,11 @@ class DeckSubscription < ActiveRecord::Base
   end
 
   def needs_studying_on
-    @sorted = sorted_user_cards
+    sorted_cards = sorted_user_cards
 
-    if @sorted.any?
+    if sorted_cards.any?
       user_card_time = @sorted.first.next_view + 1.hour
-      user_card_time.strftime('%B %-d, %Y at%l%P.')
+      user_card_time.strftime('%B %-d, %Y at %l%P.')
     else
       false
     end

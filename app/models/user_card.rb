@@ -21,7 +21,7 @@ class UserCard < ActiveRecord::Base
     end
   end
 
-  def incremented_view_count
+  def view_count_plus_1
     if self.view_count.present?
       self.view_count + 1
     else
@@ -51,41 +51,50 @@ class UserCard < ActiveRecord::Base
     view_count.blank?
   end
 
-  def now
-    @now ||= DateTime.now
+  def next_view_strftime
+    if next_view.present?
+      next_view.strftime('%B %-d, %Y at %l%P.')
+    else
+      "Card hasn't been studied yet."
+    end
   end
 
-  def time_gap
-    if self.last_view.present?
-      time_gap = now.to_i - self.last_view.to_i
-      # if gap is too small, set to 8 hours
-      time_gap = 8.hours.to_i if (time_gap < 8.hours.to_i)
-    else
-      time_gap = 8.hours.to_i
-    end
+  def now
+    @now ||= DateTime.now
   end
 
   def question
     card.question
   end
 
+  def ideal_next_view
+    time_difference = TimeDifference.between(self.last_view, now).in_hours
+    ideal_next_view = now + ((time_difference * efficiency).hours)
+
+    if TimeDifference.between(ideal_next_view, now).in_hours < 12
+      ideal_next_view = now + 12.hours
+    else
+      ideal_next_view
+    end
+  end
+
   def update_for_correct_response
     if self.never_viewed?
       self.update!(next_view: now + 12.hours, first_view: now, last_view: now,
-        efficiency: increased_efficiency, view_count: incremented_view_count)
+        efficiency: increased_efficiency, view_count: view_count_plus_1)
     else
-      self.update!(next_view: now + (time_gap.to_f * increased_efficiency.to_f), last_view: now,
-        efficiency: increased_efficiency, view_count: incremented_view_count)
+      self.update!(next_view: ideal_next_view, last_view: now,
+        efficiency: increased_efficiency, view_count: view_count_plus_1)
     end
   end
 
   def update_for_incorrect_response
     if self.never_viewed?
-      self.update!(efficiency: decreased_efficiency, view_count: incremented_view_count,
+      self.update!(efficiency: decreased_efficiency, view_count: view_count_plus_1,
         next_view: now, first_view: now, last_view: now)
     else
       self.update!(efficiency: decreased_efficiency, next_view: now, last_view: now,
-         view_count: incremented_view_count)
+         view_count: view_count_plus_1)
     end
   end
 
