@@ -65,8 +65,7 @@ describe UserCard do
     describe '.next_view_strftime' do
       before { user_card.update_for_correct_response }
       subject { user_card.next_view_strftime }
-      it { should include("at")}
-      it { should include("pm")}
+      it { should include('at')}
     end
 
     describe '.question' do
