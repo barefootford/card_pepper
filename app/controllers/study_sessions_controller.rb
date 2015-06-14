@@ -42,7 +42,6 @@ class StudySessionsController < ApplicationController
   end
 
 private
-  
   def does_deck_need_studying?
     redirect_to dashboard_path, status: 303, notice: 'No more cards to study in this deck. Study another deck or come back tomorrow.' unless @deck_subscription.needs_studying?
   end

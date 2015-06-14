@@ -27,6 +27,7 @@ describe UserCard do
       it { should eq(card_attributes[:answer]) }
     end
 
+
     describe '.increased_efficiency' do
       subject { user_card.increased_efficiency }
       it { should eq(1.7) }
@@ -52,6 +53,10 @@ describe UserCard do
     #   subject { user_card.now_plus_time_gap }
     #   it { should be_instance_of(DateTime) }
     #   it { expect(subject.to_f).to be >(DateTime.new.to_f + 11.hours.seconds) }
+    end
+
+    describe '.view_count_plus_1' do
+      expect(user_card.view_count).to eq 100
     end
 
     describe '.question' do
