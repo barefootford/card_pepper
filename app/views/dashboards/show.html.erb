@@ -23,7 +23,7 @@
       <hr>
       <p>Inactive Study Decks:</p>
       <% @inactive_deck_subscriptions.each do |ds| %>
-        <small><%= link_to ds.deck.title, user_deck_subscription_path(current_user, ds), class: 'no-link-primary' %></small><br>
+        <small><%= link_to ds.deck.title, deck_subscription_path(ds), class: 'no-link-primary' %></small><br>
       <% end %>
     <% end %>
     <hr>
