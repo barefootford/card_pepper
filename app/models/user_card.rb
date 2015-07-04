@@ -105,7 +105,7 @@ class UserCard < ActiveRecord::Base
     when 'again'
       update_for_incorrect_response
     else
-      raise StandardError
+      Raise("UserCard#update_with unable to update. Response: #{user_response}")
     end
   end
 end
