@@ -14,6 +14,7 @@ gem 'less-rails'
 
 gem 'newrelic_rpm'
 gem 'rails', '4.1.4'
+gem 'react-rails', '~> 1.0'
 gem 'therubyracer'
 gem 'time_difference', '0.4.2'
 
