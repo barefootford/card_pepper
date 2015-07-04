@@ -15,7 +15,8 @@ class StudySessionsController < ApplicationController
     if @study_session.save
       redirect_to deck_subscription_study_session_path(@deck_subscription, @study_session)
     else
-      raise StandardError
+      Raise("Unable to save @study_session in StudySessionsController#create.")
+      redirect_to dashboard_path
     end
   end
 
@@ -31,12 +32,17 @@ class StudySessionsController < ApplicationController
     if @user_card.deck_subscription.user_id != current_user.id
       not_permitted
     else
-      update_user_card
+      @user_card.update_with(study_session_params[:user_response])
       remove_user_card_from_study_session if study_session_params[:user_response] == 'got-it'
-      set_user_card_and_card if @study_session.to_dos.any?
-
-      respond_to do |format|
-        format.js
+ 
+      if @study_session.to_dos.any?
+        set_user_card_and_card
+        render json: {
+          card: @card, userCard: @user_card, deckSubscriptionId: @deck_subscription.id,
+          studySessionId: @study_session.id
+        }
+      else
+        render json: {status: 'complete'}
       end
     end
   end
@@ -58,10 +64,6 @@ private
   def set_user_card_and_card
     @user_card = @study_session.next_card
     @card = @user_card.card
-  end
-
-  def update_user_card
-    @user_card.update_with(study_session_params[:user_response])
   end
 
   def set_study_session
