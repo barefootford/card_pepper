@@ -17,10 +17,6 @@ class Card < ActiveRecord::Base
 
   scope :saved, -> { where('id > 0') }
 
-  def answer_preview
-    '-----------------------'
-  end
-
   def create_version(user_id=self.user_id)
     self.versions.create(question: self.question, answer: self.answer, user_id: user_id)
   end

@@ -1,7 +1,10 @@
 <div id='card-partial'>
-  <%= render @card %>
-</div>
-
-<div id='response'>
-  <%= render 'user_cards/response' %>
+  <%= react_component('CardViewContainer',
+    { 
+      initialCard: @card,
+      initialUserCard: @user_card,
+      initialDeckSubscriptionId: @deck_subscription.id,
+      initialStudySessionId: @study_session.id
+    })
+  %>
 </div>
