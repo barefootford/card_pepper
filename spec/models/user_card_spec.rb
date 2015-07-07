@@ -49,14 +49,6 @@ describe UserCard do
       it { expect(subject.to_f).to be > DateTime.new.to_f - 1.hour.seconds }
     end
 
-    ##############
-    ##############
-    ##############
-    ##############
-    ##############
-    ##############
-    ##############
-
     describe '.view_count_plus_1' do
       subject { user_card.view_count_plus_1 }
       it { should eq(1) }
