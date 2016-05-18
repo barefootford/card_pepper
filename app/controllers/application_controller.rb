@@ -39,5 +39,6 @@ private
     end
   end
 
+  # makes these controller methods available inside views
   helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator, :must_be_beta_approved
 end

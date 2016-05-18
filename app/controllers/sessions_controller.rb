@@ -14,6 +14,8 @@ class SessionsController < ApplicationController
   end
 
   def create
+    # I think we can remove this.
+    # But give it another second before deleting it.
     user = User.find_by(email: params[:email])
 
     if user = User.authenticate(params[:email], params[:password])
@@ -24,7 +26,7 @@ class SessionsController < ApplicationController
     else
       flash.now[:alert] = 'Invalid email/password combination'
       render :new
-    end 
+    end
   end
 
   def destroy

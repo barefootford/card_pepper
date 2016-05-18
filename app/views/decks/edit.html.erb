@@ -2,6 +2,12 @@
   <div class='col-md-8'>
     <%= render 'decks/title', deck: @deck %>
     <hr>
+
+    <%= react_component('DeckEditView', deckID: @deck.id, cards: @new_style_cards, editor: true) %>
+    <%#= move this to be just 'cards instead of 'newcards' %>
+
+    <hr>
+    <h3>Old Version:</h3>
     <div>
       <button class='btn btn-sm btn-inverse' id='new-card-toggle-button'>New Card</button>
       <button class='btn btn-sm btn-default' id='card-list-toggle-button'>Card List</button>
@@ -16,4 +22,3 @@
   	<hr>
   </div>
 </div>
-

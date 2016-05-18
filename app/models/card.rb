@@ -17,6 +17,18 @@ class Card < ActiveRecord::Base
 
   scope :saved, -> { where('id > 0') }
 
+  def self.addClientSideAttributes(card)
+    client_side_only_attributes = {
+      editing: false,
+      consideringDeleting: false,
+      errors: [],
+      edited_question: card.question,
+      edited_answer: card.answer,
+      user_name: card.user.name
+     }
+    card.attributes.merge(client_side_only_attributes)
+  end
+
   def create_version(user_id=self.user_id)
     self.versions.create(question: self.question, answer: self.answer, user_id: user_id)
   end

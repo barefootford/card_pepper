@@ -1,10 +1,9 @@
 class DecksController < ApplicationController
   before_action :require_sign_in, except: [:show, :index]
   before_action :require_creator, only: [:edit, :update, :destroy]
-  before_action :deck, only: [:show, :edit, :update, :destroy, :download ]
+  before_action :deck, only: [:show, :edit, :update, :destroy, :download]
   before_action :dont_show_edit_button, only: [:show]
   before_action :do_show_edit_button, only: [:edit]
-  before_action :current_user
   before_action :must_be_beta_approved
 
   def anki_import
@@ -31,7 +30,10 @@ class DecksController < ApplicationController
   def edit
     @card_suggestions = @deck.card_suggestions.pending
     @new_card = @deck.cards.build
-    @cards = @deck.cards.saved
+    @cards = @deck.cards.saved.includes(:user)
+    @new_style_cards = @cards.collect do |card|
+      card = Card.addClientSideAttributes(card)
+    end
   end
 
   def update
