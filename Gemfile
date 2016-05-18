@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'jquery-rails'
 gem 'less-rails-bootstrap'
 gem 'less-rails'
+gem 'lodash-rails', '~> 4.6', '>= 4.6.1'
 
 gem 'newrelic_rpm'
 gem 'rails', '4.1.4'
