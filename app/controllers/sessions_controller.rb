@@ -14,10 +14,6 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # I think we can remove this.
-    # But give it another second before deleting it.
-    user = User.find_by(email: params[:email])
-
     if user = User.authenticate(params[:email], params[:password])
       session[:user_id] = user.id
       flash[:notice] = "Welcome back, #{user.name}."

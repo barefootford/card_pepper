@@ -28,22 +28,39 @@ class DecksController < ApplicationController
   end
 
   def edit
-    @card_suggestions = @deck.card_suggestions.pending
+    @card_suggestions = @deck.card_suggestions.pending.includes(:user)
+    @card_suggestions_with_client_side_attributes = @card_suggestions.collect do |card|
+      card = CardSuggestion.addClientSideAttributes(card)
+    end
+
     @new_card = @deck.cards.build
     @cards = @deck.cards.saved.includes(:user)
-    @new_style_cards = @cards.collect do |card|
+    @cards_with_client_side_attributes = @cards.collect do |card|
       card = Card.addClientSideAttributes(card)
     end
   end
 
   def update
-    @deck.update(deck_params)
-    redirect_to edit_deck_path(@deck), notice: "Deck updated successfully."
+    if @deck.update(deck_params)
+      payload = {
+        errors: [],
+        flash: "Deck updated successfully.",
+        deck: { title: @deck.title, instructions: @deck.instructions}
+      }
+      status = 200
+    else
+      payload = {
+        errors: @deck.errors.messages,
+        flash: ""
+      }
+      status = 422
+    end
+    render json: payload, status: status
   end
 
   def destroy
     @deck.destroy
-    redirect_to root_url, notice: 'Deck deleted successfully.'
+    redirect_to root_url, notice: "#{@deck.title} deck deleted successfully."
   end
 
   def new

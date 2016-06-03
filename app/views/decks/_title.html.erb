@@ -4,5 +4,8 @@
   Editor: <%= link_to "#{deck.user.name} | ", user_path(deck.user), class: '' %>
 </small>
 <small><%= link_to "Edit | ", edit_deck_path(deck), class: 'no-link-primary' if deck.user == current_user %></small>
+
+
+<%#= this should all go. Obviously:  %>
 <%= content_tag :small, "#{pluralize(deck.cards.count, 'card')} | ", class:'a', id:'card-count-label' %>
 <%= content_tag :small, "#{pluralize(deck.card_suggestions.approved.count, 'contribution')}", class:'' %>

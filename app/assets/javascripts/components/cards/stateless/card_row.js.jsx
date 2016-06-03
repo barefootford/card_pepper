@@ -13,8 +13,6 @@ CardRow = React.createClass({
       width: '100%'
     };
 
-
-
     var card = this.props.card;
     var that = this;
 
@@ -36,7 +34,7 @@ CardRow = React.createClass({
       that.props.handleEditedCardSave(card.id)
     };
     var handleDeleteCard = function() {
-      that.props.handleDeleteCard(card.id)
+      that.props.handleDeleteCard(card)
     };
     var handleConsideringDeletingCardClick = function() {
       that.props.handleConsideringDeletingCardClick(card.id);
@@ -45,6 +43,8 @@ CardRow = React.createClass({
       that.props.handleCancelConsideringDeletingCardClick(card.id);
     };
 
+
+    // we should change it so card.status === "consideringDeleting" || "editing" || "none"
     if (card.consideringDeleting) {
       return(
         <tr key={card.question}>
@@ -60,14 +60,16 @@ CardRow = React.createClass({
           </td>
         </tr>
       )
-    } else if (card.editing === true) {
+    } else if (card.editing) {
       return(
         <tr key={card.question}>
           <td>
+            <small>Question:</small>
             <textarea className='form-control' style={textAreaStyle}
              onChange={handleEditCardQuestionChange}
              value={card.edited_question}/>
              <br/><hr/>
+            <small>Answer:</small>
             <textarea className='form-control' style={textAreaStyle}
              onChange={handleEditCardAnswerChange}
              value={card.edited_answer}/>

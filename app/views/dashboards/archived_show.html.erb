@@ -1,0 +1,59 @@
+<!-- This includes the dashboard when studying in the same app was still a feature. -->
+<div class='row'>
+  <div class='col-md-8'>
+    <p>Study:</p>
+    <% if @deck_subscriptions.any?  %>
+      <% @deck_subscriptions.each do |ds| %>
+        <h4 class='head-with-author'>
+          <%= link_to ds.deck.title, deck_subscription_path(ds), class:"no-link-primary" %>
+        </h4>
+        <% if ds.user_cards_to_study.any? %>
+          <%= link_to "Study", deck_subscription_study_sessions_path(ds), method: :post, id:"study-#{ds.id}", class:'btn btn-xs btn-primary' %>
+          <small><%= pluralize(ds.user_cards_to_study.count, 'card') %> to study.</small>
+        <% elsif ds.user_cards && ds.user_cards_to_study %>
+          <%= link_to "Study", "#", class:'btn btn-xs btn-default disabled'  %>
+          <small>
+            <%= "Next Study: #{ds.needs_studying_on }" if ds.needs_studying_on.present? %>
+          </small>
+        <% else %>
+          <small>No cards to study.</small>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if @inactive_deck_subscriptions.any? %>
+      <hr>
+      <p>Inactive Study Decks:</p>
+      <% @inactive_deck_subscriptions.each do |ds| %>
+        <small><%= link_to ds.deck.title, deck_subscription_path(ds), class: 'no-link-primary' %></small><br>
+      <% end %>
+    <% end %>
+    <hr>
+
+    <% if @decks.any? %>
+      <p>Manage:</p>
+      <% @decks.each do |deck| %>
+        <%= render 'decks/title', deck: deck %>
+        <% if deck.any_card_suggestions_pending? %>
+          <br>
+            <small>
+              <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
+            </small>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <p>
+      <br><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %>
+    </p>
+  </div>
+
+  <div class='col-md-4'>
+    <%= render 'shared/sidebar' %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.hideable').removeClass('hidden');
+  });
+</script>

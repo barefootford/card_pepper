@@ -16,3 +16,5 @@
 /tmp
 
 to_do.txt
+
+config/secrets.yml

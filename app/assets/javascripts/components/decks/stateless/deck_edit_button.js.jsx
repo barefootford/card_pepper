@@ -19,11 +19,19 @@ DeckEditButton = React.createClass({
 
   render: function() {
     var that = this;
-    var handleDeckEditButtonClick = function() { that.props.handleDeckEditButtonClick(that.props.text) }
+
+    cardCountText = "";
+    if (this.props.cardSuggestionsCount > 0) {
+      var cardCountText = " (" + this.props.cardSuggestionsCount + ")";
+    }
+
+    var handleDeckEditButtonClick = function() {
+      that.props.handleDeckEditButtonClick(that.props.text)
+    };
     return(
       <button onClick={handleDeckEditButtonClick}
        className={"btn btn-sm " + this.btnStatus()} style={this.style}>
-        {this.props.text}
+        {this.props.text + cardCountText}
       </button>
     )
   }

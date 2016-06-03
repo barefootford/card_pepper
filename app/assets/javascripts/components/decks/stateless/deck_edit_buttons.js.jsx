@@ -1,11 +1,11 @@
 var DeckEditButtons = React.createClass({
   render: function() {
-    var componentSelectorStyle = {
-      marginBottom: '20px'
-    }
+    var style = {
+      marginBottom: '10px'
+    };
 
     return (
-      <div>
+      <div style={style} >
         <DeckEditButton
           text="New Card"
           active={this.props.activeComponent === "New Card"}
@@ -19,6 +19,12 @@ var DeckEditButtons = React.createClass({
         <DeckEditButton
           text="Card Suggestions"
           active={this.props.activeComponent === "Card Suggestions"}
+          handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
+          cardSuggestionsCount={this.props.cardSuggestionsCount}
+        />
+        <DeckEditButton
+          text="Deck Settings"
+          active={this.props.activeComponent === "Deck Settings"}
           handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
         />
       </div>
