@@ -9,6 +9,15 @@ class CardSuggestion < ActiveRecord::Base
   validates :user_id, presence: true
   validates :deck_id, presence: true
 
+  def self.addClientSideAttributes(card)
+    client_side_only_attributes = {
+      userID: card.user.id,
+      username: card.user.name
+    }
+
+    card.attributes.merge(client_side_only_attributes)
+  end
+
   def self.saved
     where('id > 0')
   end
@@ -20,7 +29,11 @@ class CardSuggestion < ActiveRecord::Base
 
   def approve!
     self.approved!
-    Card.create!(question: self.question, answer: self.answer, deck_id: self.deck_id, user_id: self.user_id)
-    self
+    Card.create({
+      question: self.question,
+      answer: self.answer,
+      deck_id: self.deck_id,
+      user_id: self.user_id
+    })
   end
 end

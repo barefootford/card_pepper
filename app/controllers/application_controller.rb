@@ -18,12 +18,6 @@ private
     redirect_to sign_up_path, notice: "Only the creator can edit the deck."
   end
 
-  def require_creator
-    unless Deck.find(params[:id]).user == current_user
-      not_permitted
-    end
-  end
-
   def current_user_owns(object)
     current_user && (current_user == object.user)
   end
@@ -39,5 +33,6 @@ private
     end
   end
 
-  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :require_creator, :must_be_beta_approved
+  # makes these controller methods available inside views
+  helper_method :current_user, :destroy_session, :deck_id, :current_user_owns, :must_be_beta_approved
 end

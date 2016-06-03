@@ -2,15 +2,15 @@ require 'csv'
 
 class Deck < ActiveRecord::Base
   belongs_to :user
-  has_many :cards
-  has_many :card_suggestions
-  has_many :cards
+  has_many :card_suggestions, dependent: :destroy
+  has_many :cards, dependent: :destroy
 
   validates :title, length: { minimum: 5, maximum: 65 }
+  validates :instructions, length: { minimum: 0, maximum: 3000 }, allow_blank: true
   validates :user_id, presence: :true
 
-  # There has gotta be an AR scope for this. No?
-  scope :saved, lambda { where('id > 0') }   
+  # There has gotta be an Active Record method scope for this
+  scope :saved, lambda { where('id > 0') }
 
   def _instructions
     if instructions.present?

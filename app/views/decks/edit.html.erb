@@ -2,18 +2,7 @@
   <div class='col-md-8'>
     <%= render 'decks/title', deck: @deck %>
     <hr>
-    <div>
-      <button class='btn btn-sm btn-inverse' id='new-card-toggle-button'>New Card</button>
-      <button class='btn btn-sm btn-default' id='card-list-toggle-button'>Card List</button>
-      <button class='btn btn-sm btn-default' id='card-suggestions-toggle-button'>Card Suggestions<%= card_suggestions_count %></button>
-			<button class='btn btn-sm btn-default' id='deck-settings-toggle-button'>Deck Settings</button>
-    </div>
-    <br>
-    <%= render 'cards/new' %>
-    <%= render 'cards/index' %>
-    <%= render 'card_suggestions/index', card_suggestions: @card_suggestions, deck: @deck %>
-    <%= render 'decks/settings' %>
-  	<hr>
+    <%= react_component('DeckEditView', title: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards_with_client_side_attributes, cardSuggestions: @card_suggestions_with_client_side_attributes, editor: true) %>
+
   </div>
 </div>
-

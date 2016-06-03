@@ -15,7 +15,11 @@ Pepper::Application.routes.draw do
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
 
+  resources :cards, only: [ :create, :destroy, :update ]
+
+  get 'decks/:id/destroy' => 'decks#destroy'
   resources :decks do
+    # let's try and remove this after adding in the card resource routes
     resources :cards, only: [ :create, :destroy, :update ]
     resources :card_suggestions, only: [ :create, :update ]
   end

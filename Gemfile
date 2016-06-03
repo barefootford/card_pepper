@@ -2,22 +2,25 @@ source 'https://rubygems.org'
 
 ruby '2.2.0'
 
+gem 'rails', '4.1.4'
+
 gem 'awesome_print'
 gem 'bcrypt'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'faker'
 
+gem 'faker'
 gem 'jbuilder', '~> 1.2'
 gem 'jquery-rails'
+
 gem 'less-rails-bootstrap'
 gem 'less-rails'
+gem 'lodash-rails', '~> 4.6', '>= 4.6.1'
 
 gem 'newrelic_rpm'
-gem 'rails', '4.1.4'
 gem 'react-rails', '~> 1.0'
 gem 'therubyracer'
-gem 'time_difference', '0.4.2'
 
+gem 'time_difference', '0.4.2'
 gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do

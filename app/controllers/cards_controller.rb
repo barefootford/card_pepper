@@ -9,9 +9,11 @@ class CardsController < ApplicationController
     @show_edit_button = true
     @card = set_deck.cards.new(card_params)
     @card.user_id = current_user.id
+    @card.save
 
     respond_to do |format|
       format.js { create_card_js }
+      format.json { @card.save; render json: Card.addClientSideAttributes(card_or_errors) }
     end
   end
 
@@ -21,29 +23,45 @@ class CardsController < ApplicationController
 
     return not_permitted unless current_user_owns(@card.deck)
 
-    @card.destroy
-
-    respond_to do |format|
-      format.js { render :deleted }
-      format.html { redirect_to edit_deck_path(@deck), notice: 'Card deleted.', status: 303 }
+    if @card.destroy
+      respond_to do |format|
+        format.json { render json: @card, status: 200}
+        format.js { render :deleted }
+        format.html { redirect_to edit_deck_path(@deck), notice: 'Card deleted.', status: 303 }
+      end
+    else
+      respond_to :json, :js, :html
+      respond_with(@card, status: 400)
     end
   end
 
   def update
     if @card.update(question: card_params[:question], answer: card_params[:answer])
       respond_to do |format|
+        format.json {
+          card = Card.addClientSideAttributes(@card)
+          render json: card
+        }
         format.html { redirect_to edit_deck_path(@card.deck), notice: "Card successfully updated." }
       end
     else
       set_update_objects
       respond_to do |format|
+        format.json { byebug }
         format.html { render template: 'decks/edit' }
       end
     end
   end
 
 private
-  
+  def card_or_errors
+    if @card.try(:errors).try(:any?)
+      @card.errors
+    else
+      @card
+    end
+  end
+
   def set_update_objects
     @card_suggestions = @deck.card_suggestions.pending
     @new_card = @deck.cards.build
