@@ -1,5 +1,5 @@
 class CardSuggestion < ActiveRecord::Base
-  enum status: [:pending, :approved, :rejected]
+  enum status: { pending: 0, approved: 1, rejected: 2 }
 
   belongs_to :deck
   belongs_to :user

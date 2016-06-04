@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  enum beta_status: [:pending, :approved]
+  enum beta_status: { pending: 0, approved: 1 }
 
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
