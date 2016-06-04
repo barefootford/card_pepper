@@ -60,7 +60,7 @@ class UsersController < ApplicationController
     @user.destroy
     destroy_session
     redirect_to root_url,
-      notice: 'Account deleted. We promise not to text you anymore.'
+      notice: 'Account deleted successfuly.'
   end
 
   def edit_password
