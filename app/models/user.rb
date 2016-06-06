@@ -13,6 +13,14 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }
   validates :password, length: { minimum: 6, maximum: 20, allow_blank: true }
 
+  def client_side
+    {
+      name: self.name,
+      id: self.id,
+      website: self.website
+    }
+  end
+
   def self.authenticate(email, password)
     user = User.find_by(email: email)
     user && user.authenticate(password)

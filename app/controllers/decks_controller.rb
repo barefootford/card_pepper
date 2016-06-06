@@ -33,6 +33,8 @@ class DecksController < ApplicationController
       card = CardSuggestion.addClientSideAttributes(card)
     end
 
+    @current_user = current_user
+    @deck_editor = @deck.user
     @new_card = @deck.cards.build
     @cards = @deck.cards.saved.includes(:user)
     @cards_with_client_side_attributes = @cards.collect do |card|
@@ -108,7 +110,7 @@ private
   end
 
   def deck
-    @deck ||= Deck.find(params[:id])
+    @deck ||= Deck.includes(:user).find(params[:id])
   end
 
   def deck_params

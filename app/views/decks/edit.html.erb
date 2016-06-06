@@ -2,7 +2,7 @@
   <div class='col-md-8'>
     <%= render 'decks/title', deck: @deck %>
     <hr>
-    <%= react_component('DeckEditView', title: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards_with_client_side_attributes, cardSuggestions: @card_suggestions_with_client_side_attributes, editor: true) %>
+    <%= react_component('DeckEditView', initialTitle: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards_with_client_side_attributes, cardSuggestions: @card_suggestions_with_client_side_attributes, currentUser: @current_user.client_side, deckEditor: @deck.user.client_side, editingPage: true) %>
 
   </div>
 </div>
