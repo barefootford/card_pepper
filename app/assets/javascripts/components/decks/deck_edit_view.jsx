@@ -394,7 +394,7 @@ DeckEditView = React.createClass({
           deckEditor={this.props.deckEditor}
           currentUser={this.props.currentUser}
           cards={this.state.cards}
-          editingView={this.props.editingView}
+          currentPage={this.props.currentPage}
         />
         <FlashList flashes={this.state.flashes} />
         <DeckEditButtons

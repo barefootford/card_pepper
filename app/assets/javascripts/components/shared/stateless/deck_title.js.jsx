@@ -1,18 +1,24 @@
 var DeckTitle = React.createClass({
   editLink: function() {
+    var editStyle = {
+      // make it a 'silent' link
+      color: '#34495e'
+    };
     // move this into a component
+
     var deckEditorIsCurrentUser = this.props.deckEditor.id === this.props.currentUser.id;
-    if ((this.props.editingView === false) && deckEditorIsCurrentUser ) {
-      var editStyle = {
-        color: '#34495e'
-        // make it a 'silent' link
-      };
+    if ((this.props.currentPage !== 'edit') && deckEditorIsCurrentUser ) {
       return(
         <span>
         | <a href={"/decks/" + this.props.deckID + "/edit"} style={editStyle}> edit</a>
         </span>
       )
-
+    } else {
+      return (
+        <span>
+          | <a href={"/decks/" + this.props.deckID} style={editStyle}>view</a>
+        </span>
+      )
     }
   },
   render: function() {
@@ -33,6 +39,8 @@ var DeckTitle = React.createClass({
           {' | ' + contributionString }
           { this.editLink() }
         </small>
+        <br/>
+        <hr/>
       </div>
     )
   }

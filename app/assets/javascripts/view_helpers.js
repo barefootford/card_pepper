@@ -34,14 +34,14 @@ var ViewHelpers = {
 
     if ( _.isNumber(number) ) {
       if (number === 1) {
-        return '1 community contribution'
+        return '1 community contribution '
       } else if (number > 1) {
-        return (_.toString(number) + ' community contributions')
+        return (_.toString(number) + ' community contributions ')
       } else {
-        return '0 community contributions'
+        return '0 community contributions '
       }
     } else {
-      return '0 community contributions'
+      return '0 community contributions '
     }
   }
 };
