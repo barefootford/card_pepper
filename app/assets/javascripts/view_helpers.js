@@ -3,10 +3,11 @@ var ViewHelpers = {
     // Community contributions are any cards where the
     // card's user_id is not the deck editor's id.
     // That means the card was created by someone else.
-    return(_.filter(cardsArray, function(card) {
+    var count = _.filter(cardsArray, function(card) {
       return card.user_id !== deckEditorID
-    }).length)
+    }).length;
 
+    return count
   },
 
   pluralizeCard: function(number) {
