@@ -1,12 +1,7 @@
 var DeckTitle = React.createClass({
   editLink: function() {
-    // move this into a component
-    // var editStyle = {
-    //   // make it a 'silent' link
-    //   color: '#34495e'
-    // };
-
     var deckEditorIsCurrentUser = this.props.deckEditor.id === this.props.currentUser.id;
+
     if (deckEditorIsCurrentUser && (this.props.currentPage === 'show')) {
       return(
         <span>
