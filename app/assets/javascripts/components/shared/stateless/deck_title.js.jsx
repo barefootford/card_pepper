@@ -1,24 +1,26 @@
 var DeckTitle = React.createClass({
   editLink: function() {
-    var editStyle = {
-      // make it a 'silent' link
-      color: '#34495e'
-    };
     // move this into a component
+    // var editStyle = {
+    //   // make it a 'silent' link
+    //   color: '#34495e'
+    // };
 
     var deckEditorIsCurrentUser = this.props.deckEditor.id === this.props.currentUser.id;
-    if ((this.props.currentPage !== 'edit') && deckEditorIsCurrentUser ) {
+    if (deckEditorIsCurrentUser && (this.props.currentPage === 'show')) {
       return(
         <span>
-        | <a href={"/decks/" + this.props.deckID + "/edit"} style={editStyle}> edit</a>
+        | <a href={"/decks/" + this.props.deckID + "/edit"}> edit deck</a>
+        </span>
+      )
+    } else if (deckEditorIsCurrentUser && this.props.currentPage === 'edit'){
+      return (
+        <span>
+          | <a href={"/decks/" + this.props.deckID}>view deck</a>
         </span>
       )
     } else {
-      return (
-        <span>
-          | <a href={"/decks/" + this.props.deckID} style={editStyle}>view</a>
-        </span>
-      )
+      return null
     }
   },
   render: function() {
@@ -34,7 +36,7 @@ var DeckTitle = React.createClass({
       <div>
         <h3 style={headStyle}>{this.props.deckTitle}</h3>
         <small>
-          Editor: <a href={"/users/" + this.props.deckEditor.id}>{this.props.deckEditor.name}</a>
+          by <a href={"/users/" + this.props.deckEditor.id}>{this.props.deckEditor.name}</a>
           {' | ' + cardCountString}
           {' | ' + contributionString }
           { this.editLink() }
