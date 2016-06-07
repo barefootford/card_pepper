@@ -14,8 +14,8 @@ DeckEditView = React.createClass({
 
         // Call deckSettingsSaved() to modify deckSettingsSavedRecently
         deckSettingsSavedRecently: false,
-        deckTitle: this.props.title,
-        deckTitleUpdated: this.props.title,
+        deckTitle: this.props.initialTitle,
+        deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
         deckInstructions: this.props.instructions,
         deckInstructionsUpdated: this.props.instructions,
@@ -388,6 +388,14 @@ DeckEditView = React.createClass({
   render: function() {
     return(
       <div>
+        <DeckTitle
+          deckID={this.props.deckID}
+          deckTitle={this.state.deckTitle}
+          deckEditor={this.props.deckEditor}
+          currentUser={this.props.currentUser}
+          cards={this.state.cards}
+          currentPage={this.props.currentPage}
+        />
         <FlashList flashes={this.state.flashes} />
         <DeckEditButtons
           activeComponent={this.state.activeComponent}
