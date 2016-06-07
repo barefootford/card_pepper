@@ -1,4 +1,4 @@
-DeckEditView = React.createClass({
+DecksEditView = React.createClass({
   getInitialState: function() {
     return(
       {
