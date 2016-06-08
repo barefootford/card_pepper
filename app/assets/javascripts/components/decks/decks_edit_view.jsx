@@ -397,7 +397,7 @@ DecksEditView = React.createClass({
           currentPage={this.props.currentPage}
         />
         <FlashList flashes={this.state.flashes} />
-        <DeckEditButtons
+        <DeckEditTabs
           activeComponent={this.state.activeComponent}
           handleDeckEditButtonClick={this.handleDeckEditButtonClick}
           cardSuggestionsCount={this.state.cardSuggestions.length}
