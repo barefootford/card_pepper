@@ -36,7 +36,6 @@ var DeckTitle = React.createClass({
           {' | ' + contributionString }
           { this.editLink() }
         </small>
-        <br/>
         <hr/>
       </div>
     )
