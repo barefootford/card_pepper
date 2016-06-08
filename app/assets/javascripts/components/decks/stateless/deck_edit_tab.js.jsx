@@ -28,7 +28,7 @@ DeckEditTab = React.createClass({
     };
 
     var handleDeckEditButtonClick = function() {
-      that.props.handleDeckEditButtonClick(that.props.`te`xt)
+      that.props.handleDeckEditButtonClick(that.props.text);
     };
     return(
       // <li className=""><a href="#">Deck Settings</a></li>
