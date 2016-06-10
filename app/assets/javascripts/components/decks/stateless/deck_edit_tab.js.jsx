@@ -19,10 +19,10 @@ DeckEditTab = React.createClass({
       marginRight: '10px'
     };
     var linkStyle = {
-      color: (this.props.active ? "#1abc9c" : "")
+      color: (this.props.active ? '#34495e' : '')
     };
 
-    var cardCountText = "";
+    var cardCountText = '';
     if (this.props.cardSuggestionsCount > 0) {
       cardCountText = " (" + this.props.cardSuggestionsCount + ")";
     };
