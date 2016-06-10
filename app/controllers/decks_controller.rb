@@ -12,9 +12,10 @@ class DecksController < ApplicationController
     end
   end
 
-  def index
-    @decks = Deck.all.limit(10)
-  end
+  # def index
+  #   # not currently in use
+  #   @decks = Deck.all.limit(10)
+  # end
 
   def show
     @card_suggestion = CardSuggestion.new

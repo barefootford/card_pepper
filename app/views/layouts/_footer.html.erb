@@ -2,17 +2,11 @@
 <br>
 <div class="row bottom-menu bottom-menu">
   <div class='col-md-12'>
-    <%= link_to "CardPepper", root_url, class:'text-primary text-center' %>
-    <span> | </span>
-    
-    <%= link_to 'Decks', root_path %>
-    <span> | </span>
-    
     <%= link_to "Home", root_path %>
     <span> | </span>
-    
+
     <% if current_user %>
-      <%= link_to 'Sign Out', session_path, method: :delete, id:'sign-out-button', class: 'button' %>
+      <%= link_to 'Sign Out', session_destroy_path, id:'sign-out-button', class: 'button' %>
       <span> | </span>
       <%= link_to 'Account', edit_user_path(current_user) %>
     <% else %>

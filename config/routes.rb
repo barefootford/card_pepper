@@ -1,6 +1,6 @@
 Pepper::Application.routes.draw do
 
-  root 'decks#index'
+  root 'dashboards#show'
   get 'beta' => 'pages#beta', as: 'beta'
   get 'anki-import' => 'decks#anki_import', as: 'anki-import'
   get 'dashboard' => 'dashboards#show', as: 'dashboard'
