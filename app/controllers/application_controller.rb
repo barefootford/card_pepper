@@ -6,11 +6,17 @@ class ApplicationController < ActionController::Base
 
 private
   def must_be_beta_approved
-    redirect_to beta_path unless (current_user && current_user.approved?)
+    if current_user
+      notice = "We hope to include more people in the Card Pepper beta as soon as possible. Watch your email for when you're in."
+    else 
+      notice = "You'll need to first sign in to do that."
+    end
+
+    redirect_to beta_path, notice: notice unless (current_user && current_user.approved?)
   end
 
   def destroy_session
-    session[:user_id] = nil
+    cookies.signed[:user_id] = nil
   end
 
   def not_permitted
@@ -23,7 +29,7 @@ private
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id].present?
+    @current_user ||= User.find(cookies.signed[:user_id]) if cookies.signed[:user_id].present?
   end
 
   def require_sign_in

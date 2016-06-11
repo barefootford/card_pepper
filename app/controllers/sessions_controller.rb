@@ -15,7 +15,8 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate(params[:email], params[:password])
-      session[:user_id] = user.id
+      cookies.signed[:user_id] = { value: user.id, expires: 6.months.from_now }
+
       flash[:notice] = "Welcome back, #{user.name}."
       redirect_to(session[:intended_url] || dashboard_path )
       session[:intended_url] = nil
@@ -26,7 +27,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    cookies.signed[:user_id] = nil
     redirect_to sign_in_path, notice: "You're signed out."
   end
 end
