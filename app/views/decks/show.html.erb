@@ -41,18 +41,11 @@
   </div>
 
   <div class='col-md-4'>
-    <% if current_user && (@deck.owner != current_user) %>
-      <%= render 'card_suggestions/new' %>
-    <% end %>
-
-    <% if !current_user %>
-      <br>
-        <p><%= link_to 'Login', new_session_path %> or <%= link_to 'Sign Up', new_user_path %> to suggest cards.</p>  
-      <br>
-    <% end %>
+    <%= react_component('CardSuggestionView', currentUser: current_user.client_side, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
   </div>
 </div>
 
+<%# remove these scripts after changing studying --> downloading %>
 <script>
   $(document).ready(function(){
     $('#dl-deck').click(function(){
@@ -60,9 +53,6 @@
     });
   });
 </script>
-
-<%# I love how at one point these script tags seemed like a good idea. What do these do?
-  Probably easier to just rebuild these pages in React and toss them.  %>
 
 <script type="text/javascript">
   $(document).ready(function(){

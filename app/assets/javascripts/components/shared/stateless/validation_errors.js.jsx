@@ -1,10 +1,6 @@
 var ValidationErrors = React.createClass({
   render: function() {
     if (this.props.errors.length > 0) {
-      // var style = {
-      //   marginTop: '-15px'
-      // };
-
       return(
         <ol>
           {

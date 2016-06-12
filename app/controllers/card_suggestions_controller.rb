@@ -7,20 +7,24 @@ class CardSuggestionsController < ApplicationController
   def create
     @card_suggestion = CardSuggestion.new(create_params)
     @card_suggestion.user_id = current_user.id
-    @card_suggestion.pending!
 
     if @card_suggestion.save
-      redirect_to @deck,
-      notice: "Card suggestion added. The deck's editor will be notified."
+      payload = {
+        errors: [],
+        status: "Card suggestion created. The deck's editor will be notified."
+      }
+      status = 201
     else
-      render 'decks/show'
+      payload = {
+        errors: @card_suggestion.errors,
+        status: "Card Suggestion validation errors"
+      }
+      status = 422
     end
+    render json: payload, status: status
   end
 
   def update
-
-    # test this works now that we've added statuses.
-
     case update_params[:status]
     when 'approved'
       if @newly_approved_card = @card_suggestion.approve!
@@ -29,31 +33,36 @@ class CardSuggestionsController < ApplicationController
           status: 'card approval success',
           errors: [],
           newlyApprovedCard: @newly_approved_card
-        }; status = 200;
+        }
+        status = 200;
       else
         payload = {
           status: 'card approval fail',
           errors: [].push(@newly_approved_card.try(:errors)).flatten,
-        }; status = 422;
+        }
+        status = 422;
       end
     when 'rejected'
       if @card_suggestion.reject!
         payload = {
           status: "card rejected success",
           errors: []
-        }; status = 200;
+        }
+        status = 200;
       else
         payload = {
           status: "card rejected fail",
           errors: [].push(@card_suggestion.try(:errors)).flatten
-        }; status = 422;
+        }
+        status = 422;
       end
     else
       payload = {
         status: "update_params[:status] should be 'approved' or 'rejected. status: #{params[:status]}",
         errors: [ "Unknown error" ],
         id: @card_suggestion.id
-      }; status = 422;
+      }
+      status = 422;
     end
     render json: payload, status: status
   end
