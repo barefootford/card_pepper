@@ -1,6 +1,7 @@
 CardList = React.createClass({
   render: function() {
     if (this.props.active === true) {
+      var callbacks = this.props.callbacks;
       var that = this;
 
       return(
@@ -17,13 +18,13 @@ CardList = React.createClass({
                     return (
                       <CardRow
                         card={card} key={card.id}
-                        handleCancelEditClick={that.props.handleCancelEditClick}
-                        handleEditCardClick={that.props.handleEditCardClick}
-                        handleEditCardChange={that.props.handleEditCardChange}
-                        handleEditedCardSave={that.props.handleEditedCardSave}
-                        handleCancelConsideringDeletingCardClick={that.props.handleCancelConsideringDeletingCardClick}
-                        handleConsideringDeletingCardClick={that.props.handleConsideringDeletingCardClick}
-                        handleDeleteCard={that.props.handleDeleteCard}
+                        handleCancelEditClick={callbacks.handleCancelEditClick}
+                        handleEditCardClick={callbacks.handleEditCardClick}
+                        handleEditCardChange={callbacks.handleEditCardChange}
+                        handleEditedCardSave={callbacks.handleEditedCardSave}
+                        handleCancelConsideringDeletingCardClick={callbacks.handleCancelConsideringDeletingCardClick}
+                        handleConsideringDeletingCardClick={callbacks.handleConsideringDeletingCardClick}
+                        handleDeleteCard={callbacks.handleDeleteCard}
                       />
                     )
                   })

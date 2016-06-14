@@ -10,23 +10,23 @@ var DeckEditTabs = React.createClass({
           <DeckEditTab
             text="New Card"
             active={this.props.activeComponent === "New Card"}
-            handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
+            handleSwitchTab={this.props.handleSwitchTab}
           />
           <DeckEditTab
             text="Card List"
             active={this.props.activeComponent === "Card List"}
-            handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
+            handleSwitchTab={this.props.handleSwitchTab}
           />
           <DeckEditTab
             text="Card Suggestions"
             active={this.props.activeComponent === "Card Suggestions"}
-            handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
+            handleSwitchTab={this.props.handleSwitchTab}
             cardSuggestionsCount={this.props.cardSuggestionsCount}
           />
           <DeckEditTab
             text="Deck Settings"
             active={this.props.activeComponent === "Deck Settings"}
-            handleDeckEditButtonClick={this.props.handleDeckEditButtonClick}
+            handleSwitchTab={this.props.handleSwitchTab}
           />
         </ul>
       </div>

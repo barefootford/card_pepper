@@ -2,7 +2,7 @@ DeckEditTab = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
     text: React.PropTypes.string,
-    handleDeckEditButtonClick: React.PropTypes.func
+    handleSwitchTab: React.PropTypes.func
   },
 
   btnStatus: function() {
@@ -10,6 +10,18 @@ DeckEditTab = React.createClass({
       return('active')
     } else {
       return('')
+    }
+  },
+
+  anyCardSuggestions: function() {
+    return this.props.cardSuggestionsCount > 0
+  },
+
+  cardCountText: function() {
+    if (this.anyCardSuggestions()) {
+      return(" (" + this.props.cardSuggestionsCount + ")")
+    } else {
+      return ''
     }
   },
 
@@ -21,21 +33,16 @@ DeckEditTab = React.createClass({
     var linkStyle = {
       color: (this.props.active ? '#34495e' : '')
     };
-
-    var cardCountText = '';
-    if (this.props.cardSuggestionsCount > 0) {
-      cardCountText = " (" + this.props.cardSuggestionsCount + ")";
+    var handleSwitchTab = function() {
+      that.props.handleSwitchTab(that.props.text);
     };
 
-    var handleDeckEditButtonClick = function() {
-      that.props.handleDeckEditButtonClick(that.props.text);
-    };
     return(
       <li
-        onClick={handleDeckEditButtonClick}
+        onClick={handleSwitchTab}
         className={this.btnStatus()}
         style={style}>
-        <a style={linkStyle}>{this.props.text + cardCountText}</a>
+        <a style={linkStyle}>{this.props.text + this.cardCountText()}</a>
       </li>
     )
   }

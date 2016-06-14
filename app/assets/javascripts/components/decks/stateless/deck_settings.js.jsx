@@ -1,6 +1,8 @@
 var DeckSettings = React.createClass({
   render: function() {
-    if (this.props.active) {
+    var data = this.props.deckSettingsData;
+
+    if (data.componentActive) {
       var style = {
         marginBottom: '15px'
       };
@@ -14,7 +16,7 @@ var DeckSettings = React.createClass({
         }
       };
 
-      if (this.props.deckSettingsSavedRecently) {
+      if (data.settingsSavedRecently) {
         var buttonSaveText = "Deck Saved."
       } else {
         var buttonSaveText = "Save"
@@ -24,30 +26,30 @@ var DeckSettings = React.createClass({
         <div id='deckSettings'>
           <small>Title:</small>
           <div
-            className={'form-group ' + needsAttention(this.props.deckTitleUpdatedErrors)}
+            className={'form-group ' + needsAttention(data.titleUpdatedErrors)}
           >
             <textarea
               className='form-control'
               rows={'1'}
-              value={this.props.deckTitleUpdated}
+              value={data.titleUpdated}
               onChange={this.props.handleEditDeckTitle}
             />
           </div>
-          <ValidationErrors errors={this.props.deckTitleUpdatedErrors} />
+          <ValidationErrors errors={data.titleUpdatedErrors} />
 
           <small>Instructions:</small>
           <div
-            className={'form-group ' + needsAttention(this.props.deckInstructionsUpdatedErrors)}
+            className={'form-group ' + needsAttention(data.instructionsUpdatedErrors)}
           >
             <textarea
               className='form-control'
               rows={'5'}
-              value={this.props.deckInstructionsUpdated}
+              value={data.instructionsUpdated}
               onChange={this.props.handleEditDeckInstructions}
               style={style}
             />
           </div>
-          <ValidationErrors errors={this.props.deckInstructionsUpdatedErrors} />
+          <ValidationErrors errors={data.instructionsUpdatedErrors} />
 
           <div
             onClick={this.props.saveUpdatedDeckSettings}
@@ -56,8 +58,8 @@ var DeckSettings = React.createClass({
             {buttonSaveText}
           </div>
           <DeleteDeckButtons
-            deckID={this.props.deckID}
-            deckUserConsideringDeleting={this.props.deckUserConsideringDeleting}
+            deckID={data.id}
+            deckUserConsideringDeleting={data.deckUserConsideringDeleting}
             handleDeckUserConsideringDeleting={this.props.handleDeckUserConsideringDeleting}
           />
         </div>
@@ -65,6 +67,5 @@ var DeckSettings = React.createClass({
     } else {
       return null
     }
-    
   }
 });

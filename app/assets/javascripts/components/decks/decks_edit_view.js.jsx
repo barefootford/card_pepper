@@ -2,19 +2,18 @@ DecksEditView = React.createClass({
   getInitialState: function() {
     return(
       {
-        // Only call addToFlashes() to add flashes
+        // Use addToFlashes() so flashes are auto removed
         flashes: [],
         activeComponent: 'New Card',
+        // Use deckSettingsSaved() so 'recently' is managed.
+        deckSettingsSavedRecently: false,
 
         newCard: this.newCard(),
-        // server-provided cards
+        // Use sortedCards()
         cards: this.props.cards,
-
         cardSuggestions: this.props.cardSuggestions,
 
-        // Call deckSettingsSaved() to modify deckSettingsSavedRecently
-        deckSettingsSavedRecently: false,
-        deckTitle: this.props.initialTitle,
+        deckTitle: this.props.initialTitle, 
         deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
         deckInstructions: this.props.instructions,
@@ -25,10 +24,14 @@ DecksEditView = React.createClass({
     )
   },
 
+  sortedCards: function() {
+    return _.sortBy(this.state.cards, function(c) { return c.id })
+  },
+
   deckSettingsSaved: function() {
-    var that = this;
     this.setState({deckSettingsSavedRecently: true});
 
+    var that = this;
     window.setTimeout(function() {
       that.setState({deckSettingsSavedRecently: false})
     }, 5000)
@@ -104,7 +107,6 @@ DecksEditView = React.createClass({
         }
       }.bind(this),
       error: function(response) {
-        debugger
         if (response.status === 422) {
           var errors = response.responseJSON.errors;
           if (errors['title']) {
@@ -121,31 +123,12 @@ DecksEditView = React.createClass({
     });
   },
 
-  addCardToState: function(card, cardType) {
-    if (cardType === 'Card') {
-      var cards = _.concat(this.state.cards, card);
-      this.setState({cards: cards});
-    } else if (cardType === 'CardSuggestion') {
-      var cards = _.concat(this.state.cardSuggestions, card)
-    } else {
-      console.log("cardType must be given in addCardToState(). Given cardType: " + cardType);
-    }
+  addCardToState: function(card) {
+    this.setState({cards: _.concat(this.state.cards, card)});
   },
 
-  removeCardFromState: function(card, cardType) {
-    // handleCards
-    if (cardType === 'Card') {
-      var cards = this.state.cards;
-      var updatedCards = _.without(cards, card);
-      this.setState({cards: updatedCards})
-    // handleCardSuggestions
-    } else if (cardType === 'CardSuggestion') {
-      var cards = this.state.cardSuggestions;
-      var updatedCards = _.without(cards, card);
-      this.setState({cardSuggestions: updatedCards});
-    } else {
-      console.log("cardType must be either 'Card' or 'CardSuggestion' in removeCardFromState(). Given cardType: " + cardType);
-    }
+  removeCardSuggestionFromState: function(card) {
+    this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
   },
 
   findCardByID: function(cardID) {
@@ -170,25 +153,23 @@ DecksEditView = React.createClass({
         status: status
       },
       error: function(response) {
-        // cardSuggestion.error = "An error updating the card..."
         console.log('An error updating the card...');
       }.bind(this),
       success: function(response) {
-          if (that.noErrorsIn(response) && (response.status === "card approval success")) {
-            var newlyApprovedCard = response.newlyApprovedCard;
+        if (that.noErrorsIn(response) && (response.status === "card approval success")) {
+          var newlyApprovedCard = response.newlyApprovedCard;
 
-            this.addCardToState(newlyApprovedCard, 'Card');
-            this.removeCardFromState(cardSuggestion, 'CardSuggestion');
-
-            this.addToFlashes(newlyApprovedCard.question.substr(0, 30) + "... was approved and added to the deck.");
-          } else if (that.noErrorsIn(response) && (response.status === "card rejected success") ) {
-            this.removeCardFromState(cardSuggestion, 'CardSuggestion');
-            this.addToFlashes(cardSuggestion.question.substr(0, 30) + "... was rejected and will not be added to the deck.")
-          } else {
-            console.log('Error in updateCardSuggestion(). Response: ');
-            console.log(response);
-            this.addToFlashes("We're having trouble connecting to Card Pepper. Try again or refresh the page.")
-          }
+          this.setState({cards: _.concat(this.state.cards, newlyApprovedCard)});
+          this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
+          this.addToFlashes(newlyApprovedCard.question.substr(0, 30) + "... was approved and added to the deck.");
+        } else if (that.noErrorsIn(response) && (response.status === "card rejected success") ) {
+          this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
+          this.addToFlashes(cardSuggestion.question.substr(0, 30) + "... was rejected and will not be added to the deck.");
+        } else {
+          console.log('Error in updateCardSuggestion(). Response: ');
+          console.log(response);
+          this.addToFlashes("We're having trouble connecting to Card Pepper. Try again or refresh the page.");
+        }
       }.bind(this)
     })
   },
@@ -205,7 +186,7 @@ DecksEditView = React.createClass({
     var cards = this.state.cards;
     var cardToUpdateIndex = _.findIndex(cards, function(c) { return(c.id === cardID) });
     var card = this.findCardByID(cardID);
-    card.consideringDeleting = true;
+    card.consideringDeleting = true; 
 
     if (cardToUpdateIndex === -1) {
       console.log("Card wasn't found in current cards state")
@@ -237,7 +218,6 @@ DecksEditView = React.createClass({
         }
       },
       error: function(response) {
-        // ~NewRelic.error(response)
       }.bind(this),
       success: function(response) {
         if (response.id) {
@@ -249,15 +229,15 @@ DecksEditView = React.createClass({
   },
 
   newCard: function() {
-    return({
+    return {
       question:'',
       answer:'',
       questionErrors: [],
       answerErrors: []
-    })
+    }
   },
 
-  handleDeckEditButtonClick: function(event) {
+  handleSwitchTab: function(event) {
     this.setState({activeComponent: event })
   },
 
@@ -316,14 +296,14 @@ DecksEditView = React.createClass({
 
   handleNewCardChange: function(event) {
     if (event.target.placeholder === 'Question') {
-      // handle question update
       var newCard = this.state.newCard;
-      newCard.question = event.target.value;
+
+      newCard.question = event.target.value.substr(0, 140);
       this.setState({newCard: newCard});
     } else if (event.target.placeholder === 'Answer') {
-      // handle answer update
       var newCard = this.state.newCard;
-      newCard.answer = event.target.value;
+
+      newCard.answer = event.target.value.substr(0, 140);
       this.setState({newCard: newCard});
     }
   },
@@ -340,7 +320,21 @@ DecksEditView = React.createClass({
         }
       },
       error: function(response) {
-      },
+        var response = response.responseJSON;
+
+        if ( _.has(response.errors, 'answer','question') ) {
+          var newCard = this.state.newCard;
+          var cardErrors = {
+            questionErrors: response.errors.question,
+            answerErrors: response.errors.answer
+          };
+
+          newCard = _.assign(newCard, cardErrors);
+          this.setState({newCard: newCard});
+        } else {
+          this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
+        }
+      }.bind(this),
       success: function(response) {
         if (response.id) {
           // handle created card
@@ -349,6 +343,7 @@ DecksEditView = React.createClass({
           cards = cards.concat(card);
 
           this.setState({cards: cards, newCard: this.newCard()});
+          this.addToFlashes(card.question.substr(0, 50) + "..." + " has been saved and added to the deck.");
         }
       }.bind(this)
     })
@@ -385,64 +380,80 @@ DecksEditView = React.createClass({
     this.setState({cards: cards});
   },
 
+  deckTitleData: function() {
+    return {
+      deckID: this.props.deckID,
+      deckTitle: this.state.deckTitle,
+      deckEditor: this.props.deckEditor,
+      currentUser: this.props.currentUser,
+      cards: this.state.cards,
+      currentPage: this.props.currentPage
+    }
+  },
+
+  deckSettingsData: function() {
+    return {
+      // maybe remove all these deck labels
+      id: this.props.deckID,
+      componentActive: ("Deck Settings" === this.state.activeComponent),
+      settingsSavedRecently: this.state.deckSettingsSavedRecently,
+      titleUpdated: this.state.deckTitleUpdated,
+      titleUpdatedErrors: this.state.deckTitleUpdatedErrors,
+      instructionsUpdated: this.state.deckInstructionsUpdated,
+      instructionsUpdatedErrors: this.state.deckInstructionsUpdatedErrors,
+      deckUserConsideringDeleting: this.state.deckUserConsideringDeleting
+    }
+  },
+
+  cardListCallbacks: function() {
+    return {
+      handleConsideringDeletingCardClick: this.handleConsideringDeletingCardClick,
+      handleCancelConsideringDeletingCardClick: this.handleCancelConsideringDeletingCardClick,
+      handleEditedCardSave: this.handleEditedCardSave,
+      handleEditCardClick: this.handleEditCardClick,
+      handleCancelEditClick: this.handleCancelEditClick,
+      handleEditCardChange: this.handleEditCardChange,
+      handleDeleteCard: this.handleDeleteCard
+    }
+  },
+
   render: function() {
     return(
       <div>
         <DeckTitle
-          deckID={this.props.deckID}
-          deckTitle={this.state.deckTitle}
-          deckEditor={this.props.deckEditor}
-          currentUser={this.props.currentUser}
-          cards={this.state.cards}
-          currentPage={this.props.currentPage}
+          data={this.deckTitleData()}
         />
         <FlashList flashes={this.state.flashes} />
         <DeckEditTabs
           activeComponent={this.state.activeComponent}
-          handleDeckEditButtonClick={this.handleDeckEditButtonClick}
           cardSuggestionsCount={this.state.cardSuggestions.length}
+
+          handleSwitchTab={this.handleSwitchTab}
         />
         <NewCard
           active={"New Card" === this.state.activeComponent}
-          question={this.state.newCard.question}
+          card={this.state.newCard}
+
           onSaveClick={this.handleNewCardSave}
-          answer={this.state.newCard.answer}
           onChange={this.handleNewCardChange}
         />
         <CardList
           active={"Card List" === this.state.activeComponent}
-          cards={this.state.cards}
-          editor={this.props.editor}
-          handleCancelConsideringDeletingCardClick={this.handleCancelConsideringDeletingCardClick}
-          handleEditedCardSave={this.handleEditedCardSave}
-          handleEditCardClick={this.handleEditCardClick}
-          handleCancelEditClick={this.handleCancelEditClick}
-          handleEditCardChange={this.handleEditCardChange}
-          handleConsideringDeletingCardClick={this.handleConsideringDeletingCardClick}
-          handleDeleteCard={this.handleDeleteCard}
+          cards={this.sortedCards()}
+
+          callbacks={this.cardListCallbacks()}
         />
         <CardSuggestionsList
           active={"Card Suggestions" === this.state.activeComponent}
           cardSuggestions={this.state.cardSuggestions}
+
           handleApproveCardSuggestionClick={this.handleApproveCardSuggestionClick}
           handleDeclineCardSuggestionClick={this.handleDeclineCardSuggestionClick}
         />
         <DeckSettings
-          active={"Deck Settings" === this.state.activeComponent}
-          deckSettingsSavedRecently={this.state.deckSettingsSavedRecently}
-          deckID={this.props.deckID}
+          deckSettingsData={this.deckSettingsData()}
 
-          deckTitle={this.state.deckTitle}
-          deckInstructions={this.state.deckInstructions}
-
-          deckTitleUpdated={this.state.deckTitleUpdated}
-          deckTitleUpdatedErrors={this.state.deckTitleUpdatedErrors}
-          deckInstructionsUpdated={this.state.deckInstructionsUpdated}
-          deckInstructionsUpdatedErrors={this.state.deckInstructionsUpdatedErrors}
-
-          deckUserConsideringDeleting={this.state.deckUserConsideringDeleting}
           handleDeckUserConsideringDeleting={this.handleDeckUserConsideringDeleting}
-
           saveUpdatedDeckSettings={this.saveUpdatedDeckSettings}
           handleEditDeckTitle={this.handleEditDeckTitle}
           handleEditDeckInstructions={this.handleEditDeckInstructions}

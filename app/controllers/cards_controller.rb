@@ -6,15 +6,18 @@ class CardsController < ApplicationController
   before_action :must_be_beta_approved
 
   def create
-    @show_edit_button = true
     @card = set_deck.cards.new(card_params)
     @card.user_id = current_user.id
-    @card.save
 
-    respond_to do |format|
-      format.js { create_card_js }
-      format.json { @card.save; render json: Card.addClientSideAttributes(card_or_errors) }
+    if @card.save
+      payload = Card.addClientSideAttributes(@card)
+      status  = 201
+    else
+      payload = { errors: @card.errors }
+      status  = 422
     end
+
+    render json: payload, status: status
   end
 
   def destroy
@@ -42,13 +45,11 @@ class CardsController < ApplicationController
           card = Card.addClientSideAttributes(@card)
           render json: card
         }
-        format.html { redirect_to edit_deck_path(@card.deck), notice: "Card successfully updated." }
       end
     else
       set_update_objects
       respond_to do |format|
         format.json { byebug }
-        format.html { render template: 'decks/edit' }
       end
     end
   end
@@ -70,14 +71,6 @@ private
 
   def can_create?
     not_permitted unless current_user_owns(set_deck)
-  end
-
-  def create_card_js
-    if @card.save
-      render :create
-    else
-      render :errors
-    end
   end
 
   def card_params
