@@ -11,9 +11,31 @@ NewCard = React.createClass({
       return(
         <form className='new_card'>
           <small>Question:</small>
-          <textarea style={style} className='form-control' placeholder="Question" value={this.props.question} onChange={this.props.onChange} rows='4'/>
+          <textarea
+            style={style}
+            className='form-control'
+            placeholder="Question"
+            value={this.props.card.question}
+            onChange={this.props.onChange}
+            rows='4'
+          />
+          <ValidationsOrRequirements
+            errors={this.props.card.questionErrors}
+            text={this.props.card.question}
+          />
           <small>Answer:</small>
-          <textarea style={style} className='form-control' placeholder="Answer" value={this.props.answer} onChange={this.props.onChange} rows='4'/>
+          <textarea
+            style={style}
+            className='form-control'
+            placeholder="Answer"
+            value={this.props.card.answer}
+            onChange={this.props.onChange}
+            rows='4'
+          />
+          <ValidationsOrRequirements
+            errors={this.props.card.answerErrors}
+            text={this.props.card.answer}
+          />
           <WideButton onSaveClick={this.props.onSaveClick} text='Save Card'/>
         </form>
       )

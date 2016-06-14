@@ -16,8 +16,8 @@ CardRow = React.createClass({
     var card = this.props.card;
     var that = this;
 
-    // these could probably all be combined, then adding a field_type argumnet, eg;
-    // 'question', 'answer', 'change_to_editing', 'change_to_not_editing'
+    // change the card to have an editing_status:
+    // 'none', 'editing', or 'considering_deleting'
     var handleEditCardClick = function(event) {
       that.props.handleEditCardClick(event, card.id)
     };
@@ -42,7 +42,6 @@ CardRow = React.createClass({
     var handleCancelConsideringDeletingCardClick = function() {
       that.props.handleCancelConsideringDeletingCardClick(card.id);
     };
-
 
     // we should change it so card.status === "consideringDeleting" || "editing" || "none"
     if (card.consideringDeleting) {

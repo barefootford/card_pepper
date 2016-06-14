@@ -1,17 +1,18 @@
 var DeckTitle = React.createClass({
   editLink: function() {
-    var deckEditorIsCurrentUser = this.props.deckEditor.id === this.props.currentUser.id;
+    var data = this.props.data;
+    var deckEditorIsCurrentUser = data.deckEditor.id === data.currentUser.id;
 
-    if (deckEditorIsCurrentUser && (this.props.currentPage === 'show')) {
+    if (deckEditorIsCurrentUser && (data.currentPage === 'show')) {
       return(
         <span>
-        | <a href={"/decks/" + this.props.deckID + "/edit"}> edit deck</a>
+        | <a href={"/decks/" + data.deckID + "/edit"}> edit deck</a>
         </span>
       )
-    } else if (deckEditorIsCurrentUser && this.props.currentPage === 'edit'){
+    } else if (deckEditorIsCurrentUser && data.currentPage === 'edit'){
       return (
         <span>
-          | <a href={"/decks/" + this.props.deckID}>view deck</a>
+          | <a href={"/decks/" + data.deckID}>view deck</a>
         </span>
       )
     } else {
@@ -19,19 +20,20 @@ var DeckTitle = React.createClass({
     }
   },
   render: function() {
+    var data = this.props.data;
     var headStyle = {
       marginBottom: '-4px'
     };
 
-    var cardCountString = ViewHelpers.pluralizeCard(this.props.cards.length);
-    var contributionCount = ViewHelpers.communityContributionsCount(this.props.cards, this.props.deckEditor.id);
+    var cardCountString = ViewHelpers.pluralizeCard(data.cards.length);
+    var contributionCount = ViewHelpers.communityContributionsCount(data.cards, data.deckEditor.id);
     var contributionString = ViewHelpers.pluralizeContrib(contributionCount);
 
     return (
       <div>
-        <h3 style={headStyle}>{this.props.deckTitle}</h3>
+        <h3 style={headStyle}>{data.deckTitle}</h3>
         <small>
-          by <a href={"/users/" + this.props.deckEditor.id}>{this.props.deckEditor.name}</a>
+          by <a href={"/users/" + data.deckEditor.id}>{data.deckEditor.name}</a>
           {' | ' + cardCountString}
           {' | ' + contributionString }
           { this.editLink() }

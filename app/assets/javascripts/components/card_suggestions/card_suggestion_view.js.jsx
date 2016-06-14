@@ -93,8 +93,10 @@ var CardSuggestionView = React.createClass({
             onChange={this.handleEnteredQuestionChange}
             rows='2'
           />
-          <ValidationsOrRequirements text={this.state.question} errors={this.state.questionErrors} />
-          <br/>
+          <ValidationsOrRequirements
+            text={this.state.question}
+            errors={this.state.questionErrors}
+          />
 
           <small>Answer:</small>
           <textarea
@@ -103,8 +105,10 @@ var CardSuggestionView = React.createClass({
             onChange={this.handleEnteredAnswerChange}
             rows='2'
           />
-          <ValidationsOrRequirements text={this.state.answer} errors={this.state.answerErrors} />
-          <br/>
+          <ValidationsOrRequirements
+            text={this.state.answer}
+            errors={this.state.answerErrors}
+          />
 
           <CardSuggestionSubmittedBy
             id={this.props.currentUser.id}

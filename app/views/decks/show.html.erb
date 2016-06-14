@@ -1,7 +1,7 @@
 <div class='row'>
   <div class='col-md-8'>
-    <%= react_component('DeckTitle', deckTitle: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards, currentUser: @current_user.client_side, deckEditor: @deck.user.client_side, currentPage: 'show') %>
-    <%#= render 'decks/title', deck: @deck %>
+
+    <%= react_component('DeckTitle', data: { deckID: @deck.id, deckTitle: @deck.title.to_s, deckEditor: @deck.user.client_side, currentUser: @current_user.client_side, cards: @cards, currentPage: 'show'}) %>
       <h6>Instructions:</h6>
       <p><%= @deck._instructions %></p>
     <br><br>
