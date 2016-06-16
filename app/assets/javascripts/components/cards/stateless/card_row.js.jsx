@@ -1,11 +1,36 @@
 CardRow = React.createClass({
-  getInitialState: function() {
-    return({thinkingAboutDeleting: false})
+  propTypes: {
+    card: React.PropTypes.object,
+    key: React.PropTypes.string,
+    handleChangeCardStatusClick: React.PropTypes.func,
+    handleEditCardChange: React.PropTypes.func,
+    handleEditedCardSave: React.PropTypes.func
   },
-  handleCancelThinkingAboutDeletingClick: function() {
-    this.setState({thinkingAboutDeleting: false});
+
+  handleSetCardStatusToViewing: function () {
+    this.props.handleChangeCardStatusClick(this.props.card, 'viewing');
   },
+  handleSetCardStatusToEditing: function () {
+    this.props.handleChangeCardStatusClick(this.props.card, 'editing');
+  },
+  handleSetCardStatusToConsideringDeleting: function () {
+    this.props.handleChangeCardStatusClick(this.props.card, 'consideringDeleting');
+  },
+  handleSetCardStatusToDESTROY: function () {
+    this.props.handleChangeCardStatusClick(this.props.card, 'DESTROY');
+  },
+
+  handleEditCardQuestionChange: function(event) {
+    this.props.handleEditCardChange(event, this.props.card, 'question');
+  },
+  handleEditCardAnswerChange: function(event) {
+    this.props.handleEditCardChange(event, this.props.card, 'answer');
+  },
+
   render: function() {
+    var card = this.props.card;
+    var that = this;
+
     var editPencilStyle = {
       fontSize: '24px'
     };
@@ -13,87 +38,121 @@ CardRow = React.createClass({
       width: '100%'
     };
 
-    var card = this.props.card;
-    var that = this;
-
-    // change the card to have an editing_status:
-    // 'none', 'editing', or 'considering_deleting'
-    var handleEditCardClick = function(event) {
-      that.props.handleEditCardClick(event, card.id)
-    };
-    var handleCancelEditClick = function(event) {
-      that.props.handleCancelEditClick(event, card.id)
-    };
-    var handleEditCardQuestionChange = function(event) {
-      that.props.handleEditCardChange(event, card.id, 'question')
-    };
-    var handleEditCardAnswerChange = function(event) {
-      that.props.handleEditCardChange(event, card.id, 'answer')
-    };
-    var handleEditedCardSave = function() {
-      that.props.handleEditedCardSave(card.id)
-    };
-    var handleDeleteCard = function() {
-      that.props.handleDeleteCard(card)
-    };
-    var handleConsideringDeletingCardClick = function() {
-      that.props.handleConsideringDeletingCardClick(card.id);
-    };
-    var handleCancelConsideringDeletingCardClick = function() {
-      that.props.handleCancelConsideringDeletingCardClick(card.id);
-    };
-
-    // we should change it so card.status === "consideringDeleting" || "editing" || "none"
-    if (card.consideringDeleting) {
+    if (card.status === 'viewing') {
       return(
         <tr key={card.question}>
-          <td>
-            {card.question}<br/><hr/>{card.answer}
-          </td>
-          <td>
-            <span className='text-danger'>Really delete this card?</span>
-          </td>
-          <td>
-            <span onClick={handleDeleteCard} className='btn btn-xs btn-danger mhm'>Delete Card</span>
-            <span onClick={handleCancelConsideringDeletingCardClick} className='btn btn-xs btn-default mhm'>Cancel</span>
+          <td>{card.question}<br/><hr/>
+            {card.answer}<br/><hr/>
+            <SubmittedBy 
+              id={card.id}
+              name={card.user_name}
+            />
+            <a style={editPencilStyle}
+              className="glyphicon glyphicon-pencil text-primary"
+              onClick={this.handleSetCardStatusToEditing} cardID={card.id}
+              aria-hidden="true"
+            />
           </td>
         </tr>
       )
-    } else if (card.editing) {
+    } else if (card.status === 'editing') {
       return(
         <tr key={card.question}>
           <td>
             <small>Question:</small>
-            <textarea className='form-control' style={textAreaStyle}
-             onChange={handleEditCardQuestionChange}
-             value={card.edited_question}/>
-             <br/><hr/>
+            <textarea
+              className='form-control'
+              style={textAreaStyle}
+              onChange={this.handleEditCardQuestionChange}
+              value={card.edited_question}
+            />
+            <br/><hr/>
+
             <small>Answer:</small>
-            <textarea className='form-control' style={textAreaStyle}
-             onChange={handleEditCardAnswerChange}
-             value={card.edited_answer}/>
-          </td>
-          <td>{card.user_name}</td>
-          <td>
-            <span onClick={handleCancelEditClick} className='btn btn-xs btn-default mhm'>Cancel</span>
-            <span onClick={handleConsideringDeletingCardClick} className='btn btn-xs btn-default mhm'>Delete</span>
-            <span onClick={handleEditedCardSave} className='btn btn-xs btn-primary mhm'>Save</span>
+            <textarea
+              className='form-control'
+              style={textAreaStyle}
+              onChange={this.handleEditCardAnswerChange}
+              value={card.edited_answer}
+            />
+            <SubmittedBy
+              id={card.id}
+              name={card.user_name}
+            />
+
+            <span
+              onClick={this.handleSetCardStatusToViewing}
+              className='btn btn-xs btn-default mhm'
+            >
+              Cancel
+            </span>
+            <span
+              onClick={this.handleSetCardStatusToConsideringDeleting}
+              className='btn btn-xs btn-default mhm'
+            >
+              Delete
+            </span>
+            <span 
+              onClick={this.props.handleEditedCardSave}
+              className='btn btn-xs btn-primary mhm'
+            >
+              Save
+            </span>
           </td>
         </tr>
       )
-    } else {
-    return(
-      <tr key={card.question}>
-        <td>{card.question}<br/><hr/>{card.answer}</td>
-        <td>{card.user_name}</td>
-        <td>
-          <a style={editPencilStyle}
-            className="glyphicon glyphicon-pencil text-primary"
-            onClick={handleEditCardClick} cardID={card.id}
-            aria-hidden="true"/>
-        </td>
-      </tr>
-    )
+    } else if (card.status === 'consideringDeleting') {
+      var divStyle = { marginBottom: '10px' };
+      return(
+        <tr key={card.question}>
+          <td>
+            {card.question}<br/><hr/>
+            {card.answer}<br/><hr/>
+            <div style={divStyle}>
+              <small className='text-danger'>Do you really want to delete this card?</small>
+            </div>
+            <span onClick={this.handleSetCardStatusToDESTROY} className='btn btn-xs btn-danger mhm'>Delete Card</span>
+            <span onClick={this.handleSetCardStatusToEditing} className='btn btn-xs btn-default mhm'>Cancel</span>
+          </td>
+        </tr>
+      )
+    } else if (card.status === 'DESTROY') {
+      return (
+        <tr key={card.question}>
+          <td>
+            {card.question}<br/><hr/>
+            {card.answer}<br/><hr/>
+            <span className='text-danger'>Deleting...</span>
+          </td>
+        </tr>
+      )
+    } else if (card.status === 'DESTROYFAILED') {
+      return (
+        <tr key={card.question}>
+          <td>
+            {card.question}<br/><hr/>
+            {card.answer}<br/><hr/>
+            <div>
+              <small>We can't connect to delete this card. Double check that your Internet is working or refresh the page.</small>
+            </div>
+            <span className='text-danger'>
+              Do you really want to delete this card?
+            </span>
+            <span
+              onClick={this.handleSetCardStatusToDESTROY}
+              className='btn btn-xs btn-danger mhm'
+            >
+              Delete Card
+            </span>
+            <span
+              onClick={this.handleSetCardStatusToEditing}
+              className='btn btn-xs btn-default mhm'
+            >
+              Cancel
+            </span>
+          </td>
+        </tr>
+      )
     }
   }
 });

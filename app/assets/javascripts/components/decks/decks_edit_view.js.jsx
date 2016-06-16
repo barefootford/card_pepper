@@ -141,7 +141,7 @@ DecksEditView = React.createClass({
   },
 
   updateCardSuggestion: function(cardSuggestion, status) {
-    var url = "/decks/" + this.props.deckID + "/card_suggestions/" + cardSuggestion.id;
+    var url = '/decks/' + this.props.deckID + '/card_suggestions/' + cardSuggestion.id;
     var cardSuggestion = cardSuggestion;
     var that = this;
     var status = status;
@@ -156,15 +156,15 @@ DecksEditView = React.createClass({
         console.log('An error updating the card...');
       }.bind(this),
       success: function(response) {
-        if (that.noErrorsIn(response) && (response.status === "card approval success")) {
+        if (that.noErrorsIn(response) && (response.status === 'card approval success')) {
           var newlyApprovedCard = response.newlyApprovedCard;
 
           this.setState({cards: _.concat(this.state.cards, newlyApprovedCard)});
           this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
-          this.addToFlashes(newlyApprovedCard.question.substr(0, 30) + "... was approved and added to the deck.");
-        } else if (that.noErrorsIn(response) && (response.status === "card rejected success") ) {
+          this.addToFlashes(newlyApprovedCard.question.substr(0, 30) + '... was approved and added to the deck.');
+        } else if (that.noErrorsIn(response) && (response.status === 'card rejected success') ) {
           this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
-          this.addToFlashes(cardSuggestion.question.substr(0, 30) + "... was rejected and will not be added to the deck.");
+          this.addToFlashes(cardSuggestion.question.substr(0, 30) + '... was rejected and will not be added to the deck.');
         } else {
           console.log('Error in updateCardSuggestion(). Response: ');
           console.log(response);
@@ -182,29 +182,6 @@ DecksEditView = React.createClass({
     this.updateCardSuggestion(cardSuggestion, 'rejected');
   },
 
-  handleConsideringDeletingCardClick: function(cardID) {
-    var cards = this.state.cards;
-    var cardToUpdateIndex = _.findIndex(cards, function(c) { return(c.id === cardID) });
-    var card = this.findCardByID(cardID);
-    card.consideringDeleting = true; 
-
-    if (cardToUpdateIndex === -1) {
-      console.log("Card wasn't found in current cards state")
-    } else {
-      cards[cardToUpdateIndex] = card;
-    }
-
-    this.setState({cards: cards})
-  },
-
-  handleCancelConsideringDeletingCardClick: function(cardID) {
-    var cards = this.state.cards;
-    var cardToUpdateIndex = _.findIndex(cards, function(c) { return(c.id === cardID) });
-    cards[cardToUpdateIndex].consideringDeleting = false;
-
-    this.setState({cards: cards})
-  },
-
   handleDeleteCard: function(card) {
     var card = card;
 
@@ -218,6 +195,7 @@ DecksEditView = React.createClass({
         }
       },
       error: function(response) {
+        this.handleChangeCardStatusClick(card, 'DESTROYFAILED');
       }.bind(this),
       success: function(response) {
         if (response.id) {
@@ -237,15 +215,15 @@ DecksEditView = React.createClass({
     }
   },
 
-  handleSwitchTab: function(event) {
-    this.setState({activeComponent: event })
+  handleSwitchTab: function(tabName) {
+    this.setState({activeComponent: tabName })
   },
 
   handleEditedCardSave: function(cardID) {
     var cardToUpdate = this.findCardByID(cardID);
 
     // do we still need the url param? or does data work fine? 
-    $.ajax('/cards/' + cardToUpdate.id + "&deck_id=" + this.props.deckID, {
+    $.ajax('/cards/' + cardToUpdate.id + '&deck_id=' + this.props.deckID, {
       method: 'PATCH',
       dataType: 'json',
       data: {
@@ -257,7 +235,7 @@ DecksEditView = React.createClass({
         }
       },
       error: function(response) {
-        console.log('Shoot. There was an error saving the updated card.');
+        console.log('There was an error saving the updated card.');
       },
       success: function(response) {
         var responseCard = response;
@@ -275,23 +253,16 @@ DecksEditView = React.createClass({
     })
   },
 
-  handleEditCardChange: function(event, card_id, field_name) {
-    var cards = this.state.cards;
+  handleEditCardChange: function(event, card, fieldName) {
+    var cards = _.without(this.state.cards, card);
 
-    // find the card that needs its editing status to be changed
-    var card_index = cards.findIndex(
-      function(card){
-        return(card.id === card_id)
-      }
-    );
-
-    if (field_name === 'question') {
-      cards[card_index].edited_question = event.target.value;
-      this.setState({cards: cards});
-    } else if (field_name === 'answer') {
-      cards[card_index].edited_answer = event.target.value;
-      this.setState({cards: cards});
+    if (fieldName === 'question') {
+      var editedCard = _.merge(card, { question: event.target.value });
+    } else if (fieldName === 'answer') {
+      var editedCard = _.merge(card, { answer: event.target.value });
     }
+
+    this.setState({cards: _.concat(cards, editedCard) });
   },
 
   handleNewCardChange: function(event) {
@@ -349,35 +320,14 @@ DecksEditView = React.createClass({
     })
   },
 
-  handleCancelEditClick: function(event, card_id) {
-    var cards = this.state.cards;
-    // find the card that needs its editing status to be changed
-    var card_index = cards.findIndex(
-      function(card){
-        return(card.id === card_id)
-      }
-    );
-
-    // change the individual cards status
-    cards[card_index].editing = false;
-    cards[card_index].editedQuestion = cards[card_index].question;
-    cards[card_index].editedAnswer = cards[card_index].answer;
-
-    this.setState({cards: cards});
-  },
-
-  handleEditCardClick: function(event, card_id) {
-    var cards = this.state.cards;
-    // find the card that needs its editing status to be changed
-    var card_index = cards.findIndex(
-      function(card){
-        return(card.id === card_id)
-      }
-    );
-
-    // change the individual cards status
-    cards[card_index].editing = true;
-    this.setState({cards: cards});
+  handleChangeCardStatusClick: function(card, newStatus) {
+    if (newStatus === 'DESTROY') {
+      this.handleDeleteCard(card);
+    } else {
+      var cards = _.without(this.state.cards, card);
+      card.status = newStatus;
+      this.setState({cards: cards.concat(card)});
+    }
   },
 
   deckTitleData: function() {
@@ -395,25 +345,13 @@ DecksEditView = React.createClass({
     return {
       // maybe remove all these deck labels
       id: this.props.deckID,
-      componentActive: ("Deck Settings" === this.state.activeComponent),
+      componentActive: ('Deck Settings' === this.state.activeComponent),
       settingsSavedRecently: this.state.deckSettingsSavedRecently,
       titleUpdated: this.state.deckTitleUpdated,
       titleUpdatedErrors: this.state.deckTitleUpdatedErrors,
       instructionsUpdated: this.state.deckInstructionsUpdated,
       instructionsUpdatedErrors: this.state.deckInstructionsUpdatedErrors,
       deckUserConsideringDeleting: this.state.deckUserConsideringDeleting
-    }
-  },
-
-  cardListCallbacks: function() {
-    return {
-      handleConsideringDeletingCardClick: this.handleConsideringDeletingCardClick,
-      handleCancelConsideringDeletingCardClick: this.handleCancelConsideringDeletingCardClick,
-      handleEditedCardSave: this.handleEditedCardSave,
-      handleEditCardClick: this.handleEditCardClick,
-      handleCancelEditClick: this.handleCancelEditClick,
-      handleEditCardChange: this.handleEditCardChange,
-      handleDeleteCard: this.handleDeleteCard
     }
   },
 
@@ -431,20 +369,22 @@ DecksEditView = React.createClass({
           handleSwitchTab={this.handleSwitchTab}
         />
         <NewCard
-          active={"New Card" === this.state.activeComponent}
+          active={'New Card' === this.state.activeComponent}
           card={this.state.newCard}
 
           onSaveClick={this.handleNewCardSave}
           onChange={this.handleNewCardChange}
         />
         <CardList
-          active={"Card List" === this.state.activeComponent}
+          active={'Card List' === this.state.activeComponent}
           cards={this.sortedCards()}
 
-          callbacks={this.cardListCallbacks()}
+          handleChangeCardStatusClick={this.handleChangeCardStatusClick}
+          handleEditedCardSave={this.handleEditedCardSave}
+          handleEditCardChange={this.handleEditCardChange}
         />
         <CardSuggestionsList
-          active={"Card Suggestions" === this.state.activeComponent}
+          active={'Card Suggestions' === this.state.activeComponent}
           cardSuggestions={this.state.cardSuggestions}
 
           handleApproveCardSuggestionClick={this.handleApproveCardSuggestionClick}

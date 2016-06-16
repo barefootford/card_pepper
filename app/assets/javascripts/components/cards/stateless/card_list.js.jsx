@@ -10,21 +10,15 @@ CardList = React.createClass({
             <tbody>
                 <tr>
                   <th>Question & Answer</th>
-                  <th>Creator</th>
-                  <th>Edit</th>
                 </tr>
                 {
                   this.props.cards.map(function(card) {
                     return (
                       <CardRow
                         card={card} key={card.id}
-                        handleCancelEditClick={callbacks.handleCancelEditClick}
-                        handleEditCardClick={callbacks.handleEditCardClick}
-                        handleEditCardChange={callbacks.handleEditCardChange}
-                        handleEditedCardSave={callbacks.handleEditedCardSave}
-                        handleCancelConsideringDeletingCardClick={callbacks.handleCancelConsideringDeletingCardClick}
-                        handleConsideringDeletingCardClick={callbacks.handleConsideringDeletingCardClick}
-                        handleDeleteCard={callbacks.handleDeleteCard}
+                        handleChangeCardStatusClick={that.props.handleChangeCardStatusClick}
+                        handleEditCardChange={that.props.handleEditCardChange}
+                        handleEditedCardSave={that.props.handleEditedCardSave}
                       />
                     )
                   })
