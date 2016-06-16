@@ -1,5 +1,5 @@
 var ViewHelpers = {
-  communityContributionsCount(cardsArray, deckEditorID) {
+  communityContributionsCount: function(cardsArray, deckEditorID) {
     // Community contributions are any cards where the
     // card's user_id is not the deck editor's id.
     // That means the card was created by someone else.

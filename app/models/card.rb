@@ -19,8 +19,7 @@ class Card < ActiveRecord::Base
 
   def self.addClientSideAttributes(card)
     client_side_only_attributes = {
-      editing: false,
-      consideringDeleting: false,
+      status: 'viewing', # options: 'viewing', 'editing', 'consideringDeleting', 'DESTROY', 'DESTROYFAILED'
       errors: [],
       edited_question: card.question,
       edited_answer: card.answer,

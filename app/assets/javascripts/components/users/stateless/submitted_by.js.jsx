@@ -1,4 +1,10 @@
 var SubmittedBy = React.createClass({
+  propTypes: {
+    id: React.PropTypes.number,
+    style: React.PropTypes.object,
+    name: React.PropTypes.string
+  },
+
   render: function() {
     var url = "/users/" + this.props.id;
 
