@@ -59,8 +59,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     destroy_session
-    redirect_to root_url,
-      notice: 'Account deleted successfuly.'
+    redirect_to root_url, notice: 'Account deleted successfuly.'
   end
 
   def edit_password

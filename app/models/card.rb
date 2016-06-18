@@ -21,6 +21,9 @@ class Card < ActiveRecord::Base
     client_side_only_attributes = {
       status: 'viewing', # options: 'viewing', 'editing', 'consideringDeleting', 'DESTROY', 'DESTROYFAILED'
       errors: [],
+      questionErrors: [],
+      answerErrors: [],
+      flash: '', # example: "The card was saved successfully."
       edited_question: card.question,
       edited_answer: card.answer,
       user_name: card.user.name
