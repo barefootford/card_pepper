@@ -1,7 +1,13 @@
 CardList = React.createClass({
+  propTypes: {
+    active: React.PropTypes.bool.isRequired,
+    cards: React.PropTypes.array.isRequired,
+    handleChangeCardStatusClick: React.PropTypes.func.isRequired,
+    handleEditCardChange: React.PropTypes.func.isRequired
+  },
+
   render: function() {
     if (this.props.active === true) {
-      var callbacks = this.props.callbacks;
       var that = this;
 
       return(
@@ -15,10 +21,10 @@ CardList = React.createClass({
                   this.props.cards.map(function(card) {
                     return (
                       <CardRow
-                        card={card} key={card.id}
+                        key={card.id}
+                        card={card}
                         handleChangeCardStatusClick={that.props.handleChangeCardStatusClick}
                         handleEditCardChange={that.props.handleEditCardChange}
-                        handleEditedCardSave={that.props.handleEditedCardSave}
                       />
                     )
                   })

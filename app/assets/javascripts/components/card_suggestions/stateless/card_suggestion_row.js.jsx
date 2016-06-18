@@ -19,7 +19,7 @@ var CardSuggestionRow = React.createClass({
           {cs.answer}
           <hr/>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-md-9'>
               <a
                 onClick={handleApproveCardSuggestionClick}
                 className="btn btn-xs btn-primary"
@@ -33,7 +33,7 @@ var CardSuggestionRow = React.createClass({
                 Decline
               </a>
             </div>
-            <div className='col-md-6'>
+            <div className='col-md-3'>
               <SubmittedBy name={cs.username} id={cs.userID} />
             </div>
           </div>

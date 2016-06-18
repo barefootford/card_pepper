@@ -1,10 +1,9 @@
 CardRow = React.createClass({
   propTypes: {
-    card: React.PropTypes.object,
+    card: React.PropTypes.object.isRequired,
     key: React.PropTypes.string,
-    handleChangeCardStatusClick: React.PropTypes.func,
-    handleEditCardChange: React.PropTypes.func,
-    handleEditedCardSave: React.PropTypes.func
+    handleChangeCardStatusClick: React.PropTypes.func.isRequired,
+    handleEditCardChange: React.PropTypes.func.isRequired,
   },
 
   handleSetCardStatusToViewing: function () {
@@ -13,6 +12,9 @@ CardRow = React.createClass({
   handleSetCardStatusToEditing: function () {
     this.props.handleChangeCardStatusClick(this.props.card, 'editing');
   },
+  handleSetCardStatusToSaving: function () {
+    this.props.handleChangeCardStatusClick(this.props.card, 'saving');
+  },
   handleSetCardStatusToConsideringDeleting: function () {
     this.props.handleChangeCardStatusClick(this.props.card, 'consideringDeleting');
   },
@@ -20,38 +22,47 @@ CardRow = React.createClass({
     this.props.handleChangeCardStatusClick(this.props.card, 'DESTROY');
   },
 
-  handleEditCardQuestionChange: function(event) {
-    this.props.handleEditCardChange(event, this.props.card, 'question');
-  },
-  handleEditCardAnswerChange: function(event) {
-    this.props.handleEditCardChange(event, this.props.card, 'answer');
+  QuestionAnswerFields: function() {
+    return(
+      <CardRowQuestionAnswerFields
+        card={this.props.card}
+        handleEditCardChange={this.props.handleEditCardChange}
+      />
+    )
   },
 
   render: function() {
     var card = this.props.card;
     var that = this;
+    var alignRight = {
+      textAlign: 'right'
+    };
 
-    var editPencilStyle = {
-      fontSize: '24px'
-    };
-    var textAreaStyle = {
-      width: '100%'
-    };
 
     if (card.status === 'viewing') {
       return(
         <tr key={card.question}>
-          <td>{card.question}<br/><hr/>
+          <td>
+            {card.question}<br/><hr/>
             {card.answer}<br/><hr/>
-            <SubmittedBy 
-              id={card.id}
-              name={card.user_name}
-            />
-            <a style={editPencilStyle}
-              className="glyphicon glyphicon-pencil text-primary"
-              onClick={this.handleSetCardStatusToEditing} cardID={card.id}
-              aria-hidden="true"
-            />
+            
+            <div className='row'>
+              <div className='col-md-8'>
+                <span
+                  onClick={this.handleSetCardStatusToEditing}
+                  className='btn btn-xs btn-default'
+                >
+                  Edit
+                </span>
+              </div>
+              <div className='col-md-4' style={alignRight}>
+                <SubmittedBy
+                  id={card.user_id}
+                  name={card.user_name}
+                />
+              </div>
+            </div>
+            <CardRowFlash flash={card.flash} />
           </td>
         </tr>
       )
@@ -59,60 +70,77 @@ CardRow = React.createClass({
       return(
         <tr key={card.question}>
           <td>
-            <small>Question:</small>
-            <textarea
-              className='form-control'
-              style={textAreaStyle}
-              onChange={this.handleEditCardQuestionChange}
-              value={card.edited_question}
-            />
-            <br/><hr/>
+            {this.QuestionAnswerFields()}
 
-            <small>Answer:</small>
-            <textarea
-              className='form-control'
-              style={textAreaStyle}
-              onChange={this.handleEditCardAnswerChange}
-              value={card.edited_answer}
-            />
-            <SubmittedBy
-              id={card.id}
-              name={card.user_name}
-            />
+            <div className='row'>
+              <div className='col-md-8'>
+                <span 
+                  onClick={this.handleSetCardStatusToSaving}
+                  className='btn btn-xs btn-primary'
+                >
+                  Save
+                </span>
+                <span
+                  onClick={this.handleSetCardStatusToViewing}
+                  className='btn btn-xs btn-default mhm'
+                >
+                  Cancel
+                </span>
+                <span
+                  onClick={this.handleSetCardStatusToConsideringDeleting}
+                  className='btn btn-xs btn-default'
+                >
+                  Delete
+                </span>
+              </div>
+              <div className='col-md-4' style={alignRight}>
+                <SubmittedBy 
+                  id={card.user_id}
+                  name={card.user_name}
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+      )
+    } else if (card.status === 'saving') {
+      return(
+        <tr>
+          <td>
+            {this.QuestionAnswerFields()}
 
-            <span
-              onClick={this.handleSetCardStatusToViewing}
-              className='btn btn-xs btn-default mhm'
-            >
-              Cancel
-            </span>
-            <span
-              onClick={this.handleSetCardStatusToConsideringDeleting}
-              className='btn btn-xs btn-default mhm'
-            >
-              Delete
-            </span>
-            <span 
-              onClick={this.props.handleEditedCardSave}
-              className='btn btn-xs btn-primary mhm'
-            >
-              Save
-            </span>
+            <div className='row'>
+              <div className='col-md-8'>
+                <span className='btn btn-xs btn-default'>Saving...</span>
+              </div>
+              <div className='col-md-4' style={alignRight}>
+                <SubmittedBy
+                  id={card.user_id}
+                  name={card.user_name}
+                />
+              </div>
+            </div>
           </td>
         </tr>
       )
     } else if (card.status === 'consideringDeleting') {
-      var divStyle = { marginBottom: '10px' };
       return(
         <tr key={card.question}>
           <td>
-            {card.question}<br/><hr/>
-            {card.answer}<br/><hr/>
-            <div style={divStyle}>
-              <small className='text-danger'>Do you really want to delete this card?</small>
+            {this.QuestionAnswerFields()}
+
+            <div className='row'>
+              <div className='col-md-8'>
+                <span onClick={this.handleSetCardStatusToDESTROY} className='btn btn-xs btn-danger'>Delete Card</span>
+                <span onClick={this.handleSetCardStatusToEditing} className='btn btn-xs btn-default mhm'>Cancel</span>
+              </div>
+              <div className='col-md-4' style={alignRight}>
+                <SubmittedBy
+                  id={card.user_id}
+                  name={card.user_name}
+                />
+              </div>
             </div>
-            <span onClick={this.handleSetCardStatusToDESTROY} className='btn btn-xs btn-danger mhm'>Delete Card</span>
-            <span onClick={this.handleSetCardStatusToEditing} className='btn btn-xs btn-default mhm'>Cancel</span>
           </td>
         </tr>
       )
@@ -120,9 +148,12 @@ CardRow = React.createClass({
       return (
         <tr key={card.question}>
           <td>
-            {card.question}<br/><hr/>
-            {card.answer}<br/><hr/>
-            <span className='text-danger'>Deleting...</span>
+            {this.QuestionAnswerFields()}
+            <span
+              className='btn btn-xs btn-danger'
+            >
+              Deleting Card...
+            </span>
           </td>
         </tr>
       )
@@ -130,17 +161,13 @@ CardRow = React.createClass({
       return (
         <tr key={card.question}>
           <td>
-            {card.question}<br/><hr/>
-            {card.answer}<br/><hr/>
+            {this.QuestionAnswerFields}
             <div>
-              <small>We can't connect to delete this card. Double check that your Internet is working or refresh the page.</small>
+              <small>We can't connect to delete this card. Double check that your Internet is working and try again.</small>
             </div>
-            <span className='text-danger'>
-              Do you really want to delete this card?
-            </span>
             <span
               onClick={this.handleSetCardStatusToDESTROY}
-              className='btn btn-xs btn-danger mhm'
+              className='btn btn-xs btn-danger'
             >
               Delete Card
             </span>
@@ -153,6 +180,8 @@ CardRow = React.createClass({
           </td>
         </tr>
       )
+    } else {
+      return null
     }
   }
 });

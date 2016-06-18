@@ -37,6 +37,27 @@ DecksEditView = React.createClass({
     }, 5000)
   },
 
+  addToCardFlash: function(card, flash) {
+    var that = this;
+    var cards = this.state.cards;
+    var card = card;
+    cards = _.without(cards, card);
+
+    card = _.merge(card, {flash: flash} );
+    this.setState({cards: _.concat(cards, card)});
+
+    // really should we be finding by the ID in case they change the card right after?
+    // lets test... by trying to change teh card right afte rsaving (but before flash goes away.)
+
+    window.setTimeout(function() {
+      var cards = _.without(that.state.cards, card);
+      var cardWithResetFlash = _.merge(card, {flash: ''});
+      cards = _.concat(cards, cardWithResetFlash);
+
+      that.setState({cards: cards})
+    }, 3000)
+  },
+
   addToFlashes: function(newFlash) {
     var newFlash = newFlash;
     var updatedFlashesArray = _.concat(this.state.flashes, newFlash);
@@ -168,6 +189,7 @@ DecksEditView = React.createClass({
         } else {
           console.log('Error in updateCardSuggestion(). Response: ');
           console.log(response);
+
           this.addToFlashes("We're having trouble connecting to Card Pepper. Try again or refresh the page.");
         }
       }.bind(this)
@@ -219,47 +241,58 @@ DecksEditView = React.createClass({
     this.setState({activeComponent: tabName })
   },
 
-  handleEditedCardSave: function(cardID) {
-    var cardToUpdate = this.findCardByID(cardID);
+  handleSaveEditedCard: function(card) {
+    var card = card;
 
-    // do we still need the url param? or does data work fine? 
-    $.ajax('/cards/' + cardToUpdate.id + '&deck_id=' + this.props.deckID, {
+    // do we still need the url param? or does data work fine?
+    // Lets look after everything works again...!!!!!!!!!!!!!!!!!!!!!!!!!
+    $.ajax('/cards/' + card.id + '&deck_id=' + this.props.deckID, {
       method: 'PATCH',
       dataType: 'json',
       data: {
         deck_id: this.props.deckID,
         card: {
-          id: cardToUpdate.id,
-          question: cardToUpdate.edited_question,
-          answer: cardToUpdate.edited_answer
+          id: card.id,
+          question: card.edited_question,
+          answer: card.edited_answer
         }
       },
       error: function(response) {
-        console.log('There was an error saving the updated card.');
-      },
-      success: function(response) {
-        var responseCard = response;
-        var cards = this.state.cards;
-        var cardToReplaceIndex = _.findIndex(cards, function(c) { return(c.id === cardID) });
+        if (response.status === 422) {
+          var responseErrors = response.responseJSON;
+          var cardAttributes = {
+            questionErrors: _.get(responseErrors, 'question', []),
+            answerErrors: _.get(responseErrors, 'answer', []),
+            status: 'editing'
+          };
+          var cards = _.without(this.state.cards, card);
+          var cardWithErrors = _.assign(card, cardAttributes);
+          var allDeckCards = _.concat(cards, cardWithErrors);
 
-        if (cardToReplaceIndex === -1) {
-          console.log("Card wasn't found in current cards state")
+          this.setState({cards: allDeckCards});
         } else {
-          cards[cardToReplaceIndex] = responseCard;
+          this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
         }
+      }.bind(this),
+      success: function(response) {
+        var savedCard = response;
+        var cards =  _.without(this.state.cards, card);
+        var allDeckCards = _.concat(cards, savedCard);
 
-        this.setState({cards: cards});
+        this.setState({cards: allDeckCards});
+        this.addToCardFlash(savedCard, 'Card saved.');
       }.bind(this)
     })
   },
 
   handleEditCardChange: function(event, card, fieldName) {
     var cards = _.without(this.state.cards, card);
+    var editedCard = card;
 
-    if (fieldName === 'question') {
-      var editedCard = _.merge(card, { question: event.target.value });
-    } else if (fieldName === 'answer') {
-      var editedCard = _.merge(card, { answer: event.target.value });
+    if (fieldName === 'edited_question') {
+      editedCard = _.merge(card, { edited_question: event.target.value });
+    } else if (fieldName === 'edited_answer') {
+      editedCard = _.merge(card, { edited_answer: event.target.value });
     }
 
     this.setState({cards: _.concat(cards, editedCard) });
@@ -291,16 +324,14 @@ DecksEditView = React.createClass({
         }
       },
       error: function(response) {
-        var response = response.responseJSON;
-
-        if ( _.has(response.errors, 'answer','question') ) {
-          var newCard = this.state.newCard;
+        if (response.status === 422) {
+          var response = response.responseJSON;
           var cardErrors = {
-            questionErrors: response.errors.question,
-            answerErrors: response.errors.answer
+            questionErrors: _.get(response, 'question', []),
+            answerErrors: _.get(response, 'answer', []),
           };
+          var newCard = _.assign(this.state.newCard, cardErrors)
 
-          newCard = _.assign(newCard, cardErrors);
           this.setState({newCard: newCard});
         } else {
           this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
@@ -321,12 +352,27 @@ DecksEditView = React.createClass({
   },
 
   handleChangeCardStatusClick: function(card, newStatus) {
+    var cards = _.without(this.state.cards, card);
+    card.status = newStatus;
+    this.setState({cards: cards.concat(card)});
+
     if (newStatus === 'DESTROY') {
       this.handleDeleteCard(card);
-    } else {
-      var cards = _.without(this.state.cards, card);
-      card.status = newStatus;
-      this.setState({cards: cards.concat(card)});
+    } else if (newStatus === 'saving') {
+      this.handleSaveEditedCard(card);
+    } else if (newStatus === 'viewing') {
+      // reset the edited question and answer to what is saved on server
+      var cards = _.without(cards, card);
+      var resettedAttributes = {
+        edited_question: card.question,
+        edited_answer: card.answer,
+        questionErrors: [],
+        answerErrors: []
+      };
+      var cardWithResettedAttributes = _.assign(card, resettedAttributes);
+      var cards = _.concat(cards, cardWithResettedAttributes);
+
+      this.setState({cards: cards});
     }
   },
 
@@ -380,7 +426,6 @@ DecksEditView = React.createClass({
           cards={this.sortedCards()}
 
           handleChangeCardStatusClick={this.handleChangeCardStatusClick}
-          handleEditedCardSave={this.handleEditedCardSave}
           handleEditCardChange={this.handleEditCardChange}
         />
         <CardSuggestionsList
