@@ -36,7 +36,12 @@ NewCard = React.createClass({
             errors={this.props.card.answerErrors}
             text={this.props.card.answer}
           />
-          <WideButton onSaveClick={this.props.onSaveClick} text='Save Card'/>
+          <WideSaveButton
+            onSaveClick={this.props.onSaveClick}
+            standardText='Save Card'
+            savingText='Saving Card...'
+            objectStatus={this.props.card.status}
+          />
         </form>
       )
     } else {

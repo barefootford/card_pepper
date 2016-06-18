@@ -46,9 +46,6 @@ DecksEditView = React.createClass({
     card = _.merge(card, {flash: flash} );
     this.setState({cards: _.concat(cards, card)});
 
-    // really should we be finding by the ID in case they change the card right after?
-    // lets test... by trying to change teh card right afte rsaving (but before flash goes away.)
-
     window.setTimeout(function() {
       var cards = _.without(that.state.cards, card);
       var cardWithResetFlash = _.merge(card, {flash: ''});
@@ -233,7 +230,9 @@ DecksEditView = React.createClass({
       question:'',
       answer:'',
       questionErrors: [],
-      answerErrors: []
+      answerErrors: [],
+      flash: '',
+      status: 'editing'
     }
   },
 
@@ -314,6 +313,13 @@ DecksEditView = React.createClass({
 
   handleNewCardSave: function(event) {
     event.preventDefault();
+
+    var newAttributes = {
+      status: 'saving'
+    }
+    var newCard = _.assign(this.state.newCard, newAttributes);
+    this.setState({newCard: newCard});
+
     $.ajax('/decks/' + this.props.deckID + '/cards', {
       method: 'POST',
       dataType: 'json',
@@ -326,11 +332,12 @@ DecksEditView = React.createClass({
       error: function(response) {
         if (response.status === 422) {
           var response = response.responseJSON;
-          var cardErrors = {
+          var attributes = {
             questionErrors: _.get(response, 'question', []),
             answerErrors: _.get(response, 'answer', []),
+            status: 'editing'
           };
-          var newCard = _.assign(this.state.newCard, cardErrors)
+          var newCard = _.assign(this.state.newCard, attributes);
 
           this.setState({newCard: newCard});
         } else {
@@ -339,13 +346,12 @@ DecksEditView = React.createClass({
       }.bind(this),
       success: function(response) {
         if (response.id) {
-          // handle created card
-          var card = response;
-          var cards = this.state.cards;
-          cards = cards.concat(card);
+          var newCard = response;
+          var savedCards = this.state.cards;
+          savedCards = savedCards.concat(newCard);
 
-          this.setState({cards: cards, newCard: this.newCard()});
-          this.addToFlashes(card.question.substr(0, 50) + "..." + " has been saved and added to the deck.");
+          this.setState({cards: savedCards, newCard: this.newCard()});
+          this.addToFlashes(newCard.question.substr(0, 50) + "..." + " has been saved and added to the deck.");
         }
       }.bind(this)
     })
