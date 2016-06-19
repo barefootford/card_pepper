@@ -71,13 +71,8 @@ var CardSuggestionView = React.createClass({
     var currentUser = this.props.currentUser;
     var currentUserIsOwner = currentUser.id === this.props.deckEditorID;
 
-    if (currentUserIsOwner) {
-      return (
-        <div>
-        { /* CardSuggestionsList */ }
-        </div>
-      )
-    } else if ( _.isObject(currentUser) && _.isNumber(currentUser.id) ) {
+
+    if ( _.isObject(currentUser) && _.isNumber(currentUser.id) ) {
       return(
         <div>
           <h5>Suggest a New Card:</h5>
@@ -121,9 +116,10 @@ var CardSuggestionView = React.createClass({
             Suggest Card
           </div>
 
-          { /* CardSuggestionsList */ }
         </div>
       )
+    } else {
+      return null
     }
   }
 });
