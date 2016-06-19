@@ -23,10 +23,10 @@ var CardSuggestionsList = React.createClass({
         <div id='CardSuggestionsListTable'>
           <table className='table table-striped'>
             <tbody>
-                <tr key={"CardSuggestionsListHeaderTR"}>
-                  <th>Question & Answer</th>
-                </tr>
-                { cards }
+              <tr key={'tableHeaderKey'}>
+                <th>Question & Answer</th>
+              </tr>
+              { cards }
             </tbody>
           </table>
         </div>
