@@ -1,15 +1,16 @@
-<nav class="navbar navbar-default" id='navigation-id'role="navigation">
+<nav class="navbar navbar-default" role="navigation">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
       <span class="sr-only">Toggle navigation</span>
     </button>
-    <a class="navbar-brand primary" color='#1abc9c' href="/">
-      Card Pepper
-    </a>
+    <a class="navbar-brand active" href="/">Card Pepper</a>
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse-01">
-    <ul class="nav navbar-nav">
-      <li><%= link_to 'Sign Up', new_user_path if !current_user %></li>
-    </ul>
-  </div>
-</nav>
+    <% if current_user %>
+      <ul class="nav navbar-nav">           
+        <li><a href="/reportabug">report a bug</a></li>
+        <li><a href="/requestafeature">request a feature</a></li>
+      </ul>
+    <% end %>
+  </div><!-- /.navbar-collapse -->
+</nav><!-- /navbar -->
