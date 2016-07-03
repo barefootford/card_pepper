@@ -4,7 +4,7 @@ DecksEditView = React.createClass({
       {
         // Use addToFlashes() so flashes are auto removed
         flashes: [],
-        activeComponent: 'New Card',
+        activeComponent: 'Card List',
         // Use deckSettingsSaved() so 'recently' is managed.
         deckSettingsSavedRecently: false,
 
