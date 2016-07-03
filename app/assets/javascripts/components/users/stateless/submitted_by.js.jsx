@@ -5,6 +5,13 @@ var SubmittedBy = React.createClass({
     name: React.PropTypes.string
   },
 
+  allArgumentsGiven: function() {
+    var idPresent = _.toNumber(this.props.id) > 0
+    var userNamePresent = (_.toString(this.props.name)).length > 0
+
+    return (idPresent && userNamePresent) ? true : false
+  },
+
   render: function() {
     var url = "/users/" + this.props.id;
 
@@ -16,14 +23,18 @@ var SubmittedBy = React.createClass({
       };
     }
 
-    return(
-      <small style={style}>
-        Submitted by 
-        <a href={url} style={style}>
-          {" " + this.props.name}
-        </a>
-        <br/>
-      </small>
-    )
+    if (this.allArgumentsGiven()) {
+      return (
+        <small style={style}>
+          Submitted by 
+          <a href={url} style={style}>
+            {" " + _.toString(this.props.name)}
+          </a>
+          <br/>
+        </small>
+      )
+    } else {
+      return null
+    }
   }
 });
