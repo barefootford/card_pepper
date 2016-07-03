@@ -13,6 +13,39 @@ DecksEditView = React.createClass({
         cards: this.props.cards,
         cardSuggestions: this.props.cardSuggestions,
 
+        cardEdits: [
+          {
+            id: 1,
+            card_id: 1,
+            name: 'Andrew Ford',
+            status: 'viewing',
+            savedCardQuestion: 'I want to eat',
+            proposedCardQuestion: 'I really want to eat',
+            savedCardAnswer: 'Quero comer',
+            proposedCardAnswer: 'Muy quero comer',
+            pendingEditorReply: ''
+          },
+          {
+            name: 'Andrew Ford',
+            id: 2,
+            status: 'viewing',
+            savedCardQuestion: 'I want',
+            proposedCardQuestion: 'I wanna',
+            savedCardAnswer: '',
+            proposedCardAnswer: '',
+            pendingEditorReply: ''
+          },
+          {
+            name: 'Andrew Ford',
+            id: 3,
+            status: 'viewing',
+            savedCardQuestion: 'Kerry Kerry',
+            proposedCardQuestion: 'Kailey Kelley',
+            savedCardAnswer: '',
+            proposedCardAnswer: '',
+            pendingEditorReply: ''
+          }
+        ],
         deckTitle: this.props.initialTitle, 
         deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
@@ -82,6 +115,17 @@ DecksEditView = React.createClass({
 
   handleEditDeckInstructions: function(event) {
     this.setState({deckInstructionsUpdated: event.target.value});
+  },
+
+  handleChangePendingEditorReply: function(event) {
+    var allCardEdits = this.state.cardEdits
+    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId)
+    var cardEditToChange = _.find(allCardEdits, function(ce) { return ce.id === cardEditId });
+
+    var newTextValue = event.target.value
+    _.assign(cardEditToChange, {pendingEditorReply: newTextValue})
+
+    this.setState({cardEdits: allCardEdits})
   },
 
   handleDeckUserConsideringDeleting: function() {
@@ -382,6 +426,27 @@ DecksEditView = React.createClass({
     }
   },
 
+  handleChangeCardEditStatus: function(event) {
+    var allCardEdits = this.state.cardEdits;
+    var newCardEditStatus = event.target.dataset.callbackAttribute;
+    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId)
+    var cardEditToChange = _.find(allCardEdits, function(ce) { return ce.id === cardEditId });
+
+    // if the user switches back to view the cardEdit, clear their response
+    var pendingEditorReply = (newCardEditStatus === 'viewing') ? '' : cardEditToChange.pendingEditorReply
+
+    _.assign(cardEditToChange, {status: newCardEditStatus, pendingEditorReply: pendingEditorReply});
+    this.setState({cardEdits: allCardEdits});
+
+    if (cardEditToChange.status === 'approving') {
+      console.log("CardEdit set to approving... now we need some ajax.")
+      // this.ajaxUpdateCardEdit
+    } else if (cardEditToChange.status === 'declining'){
+      console.log("CardEdit set to declining... now we need some ajax.")
+      // this.ajaxUpdateCardEdit
+    }
+  },
+
   deckTitleData: function() {
     return {
       deckID: this.props.deckID,
@@ -395,7 +460,6 @@ DecksEditView = React.createClass({
 
   deckSettingsData: function() {
     return {
-      // maybe remove all these deck labels
       id: this.props.deckID,
       componentActive: ('Deck Settings' === this.state.activeComponent),
       settingsSavedRecently: this.state.deckSettingsSavedRecently,
@@ -434,10 +498,14 @@ DecksEditView = React.createClass({
           handleChangeCardStatusClick={this.handleChangeCardStatusClick}
           handleEditCardChange={this.handleEditCardChange}
         />
-        <CardSuggestionsList
-          active={'Card Suggestions' === this.state.activeComponent}
+        <CommunitySuggestionsList
+          active={'Community Suggestions' === this.state.activeComponent}
           cardSuggestions={this.state.cardSuggestions}
+          cards={this.state.cards}
+          cardEdits={this.state.cardEdits}
 
+          handleChangePendingEditorReply={this.handleChangePendingEditorReply}
+          handleChangeCardEditStatus={this.handleChangeCardEditStatus}
           handleApproveCardSuggestionClick={this.handleApproveCardSuggestionClick}
           handleDeclineCardSuggestionClick={this.handleDeclineCardSuggestionClick}
         />

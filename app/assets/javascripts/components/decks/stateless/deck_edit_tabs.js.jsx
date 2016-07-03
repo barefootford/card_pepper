@@ -18,8 +18,8 @@ var DeckEditTabs = React.createClass({
             handleSwitchTab={this.props.handleSwitchTab}
           />
           <DeckEditTab
-            text="Card Suggestions"
-            active={this.props.activeComponent === "Card Suggestions"}
+            text="Community Suggestions"
+            active={this.props.activeComponent === "Community Suggestions"}
             handleSwitchTab={this.props.handleSwitchTab}
             cardSuggestionsCount={this.props.cardSuggestionsCount}
           />

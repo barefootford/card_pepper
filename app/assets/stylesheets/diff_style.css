@@ -1,0 +1,42 @@
+.diff{
+  overflow:auto;
+}
+
+// this shouldn't be necessary.
+// use style from SubmittedBy component
+.diff .qaheader {
+  color: #7b8996;
+  font-size: 13px;
+}
+
+.diff ul {
+  overflow:auto;
+  font-size:20px;
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:table;
+  width:100%;
+}
+
+.diff del, .diff ins{
+  display:block;
+  text-decoration:none;
+  color: #1e347b;
+}
+
+.diff li{
+  padding:0;
+  display:table-row;
+  margin: 10px;
+  height:1em;
+  color: black;
+}
+
+.diff li.ins{
+  background-color: rgba(217,255,225);
+}
+
+.diff li.del{
+  background-color: rgba(255,226,227,1);
+}
