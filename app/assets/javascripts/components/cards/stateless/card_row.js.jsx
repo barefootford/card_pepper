@@ -38,33 +38,14 @@ CardRow = React.createClass({
       textAlign: 'right'
     };
 
-
     if (card.status === 'viewing') {
       return(
-        <tr key={card.question}>
-          <td>
-            {card.question}<br/><hr/>
-            {card.answer}<br/><hr/>
-            
-            <div className='row'>
-              <div className='col-md-8'>
-                <span
-                  onClick={this.handleSetCardStatusToEditing}
-                  className='btn btn-xs btn-default'
-                >
-                  Edit
-                </span>
-              </div>
-              <div className='col-md-4' style={alignRight}>
-                <SubmittedBy
-                  id={card.user_id}
-                  name={card.user_name}
-                />
-              </div>
-            </div>
-            <CardRowFlash flash={card.flash} />
-          </td>
-        </tr>
+        <ViewingCardRow
+          card={card}
+          submittedByStyle={this.alignRight}
+          editButtonText="edit card"
+          editButtonOnClickCallback={that.handleSetCardStatusToEditing}
+        />
       )
     } else if (card.status === 'editing') {
       return(
@@ -93,12 +74,10 @@ CardRow = React.createClass({
                   Delete
                 </span>
               </div>
-              <div className='col-md-4' style={alignRight}>
-                <SubmittedBy 
-                  id={card.user_id}
-                  name={card.user_name}
-                />
-              </div>
+              <SubmittedByCol4
+                id={card.user_id}
+                name={card.user_name}
+              />
             </div>
           </td>
         </tr>
@@ -113,12 +92,10 @@ CardRow = React.createClass({
               <div className='col-md-8'>
                 <span className='btn btn-xs btn-default'>Saving...</span>
               </div>
-              <div className='col-md-4' style={alignRight}>
-                <SubmittedBy
-                  id={card.user_id}
-                  name={card.user_name}
-                />
-              </div>
+              <SubmittedByCol4
+                id={card.user_id}
+                name={card.user_name}
+              />
             </div>
           </td>
         </tr>
@@ -134,12 +111,10 @@ CardRow = React.createClass({
                 <span onClick={this.handleSetCardStatusToDESTROY} className='btn btn-xs btn-danger'>Delete Card</span>
                 <span onClick={this.handleSetCardStatusToEditing} className='btn btn-xs btn-default mhm'>Cancel</span>
               </div>
-              <div className='col-md-4' style={alignRight}>
-                <SubmittedBy
-                  id={card.user_id}
-                  name={card.user_name}
-                />
-              </div>
+              <SubmittedByCol4
+                id={card.user_id}
+                name={card.user_name}
+              />
             </div>
           </td>
         </tr>
