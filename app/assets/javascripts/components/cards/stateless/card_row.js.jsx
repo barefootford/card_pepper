@@ -1,7 +1,6 @@
 CardRow = React.createClass({
   propTypes: {
     card: React.PropTypes.object.isRequired,
-    key: React.PropTypes.string,
     handleChangeCardStatusClick: React.PropTypes.func.isRequired,
     handleEditCardChange: React.PropTypes.func.isRequired,
   },
