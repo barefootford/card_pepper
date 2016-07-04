@@ -8,6 +8,7 @@ var XsBtn = React.createClass({
     callbackAttributeId: React.PropTypes.number,
     additionalClasses: React.PropTypes.string,
     primary: React.PropTypes.bool,
+    danger: React.PropTypes.bool,
     hidden: React.PropTypes.bool
   },
 
@@ -26,6 +27,8 @@ var XsBtn = React.createClass({
 
     if (this.props.primary) {
       return('btn btn-xs btn-primary ' + addlClassesStr)
+    } else if (this.props.danger) {
+      return('btn btn-xs btn-danger ' + addlClassesStr)
     } else {
       return('btn btn-xs btn-default ' + addlClassesStr)
     }
