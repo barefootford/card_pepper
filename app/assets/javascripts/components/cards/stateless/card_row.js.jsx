@@ -6,22 +6,6 @@ CardRow = React.createClass({
     handleEditCardChange: React.PropTypes.func.isRequired,
   },
 
-  handleSetCardStatusToViewing: function () {
-    this.props.handleChangeCardStatusClick(this.props.card, 'viewing');
-  },
-  handleSetCardStatusToEditing: function () {
-    this.props.handleChangeCardStatusClick(this.props.card, 'editing');
-  },
-  handleSetCardStatusToSaving: function () {
-    this.props.handleChangeCardStatusClick(this.props.card, 'saving');
-  },
-  handleSetCardStatusToConsideringDeleting: function () {
-    this.props.handleChangeCardStatusClick(this.props.card, 'consideringDeleting');
-  },
-  handleSetCardStatusToDESTROY: function () {
-    this.props.handleChangeCardStatusClick(this.props.card, 'DESTROY');
-  },
-
   QuestionAnswerFields: function() {
     return(
       <CardRowQuestionAnswerFields
@@ -33,7 +17,6 @@ CardRow = React.createClass({
 
   render: function() {
     var card = this.props.card;
-    var that = this;
     var alignRight = {
       textAlign: 'right'
     };
@@ -44,7 +27,7 @@ CardRow = React.createClass({
           card={card}
           submittedByStyle={this.alignRight}
           editButtonText="edit card"
-          editButtonOnClickCallback={that.handleSetCardStatusToEditing}
+          editButtonOnClickCallback={this.props.handleChangeCardStatusClick}
         />
       )
     } else if (card.status === 'editing') {
@@ -52,32 +35,30 @@ CardRow = React.createClass({
         <tr key={card.question}>
           <td>
             {this.QuestionAnswerFields()}
-
             <div className='row'>
               <div className='col-md-8'>
-                <span 
-                  onClick={this.handleSetCardStatusToSaving}
-                  className='btn btn-xs btn-primary'
-                >
-                  Save
-                </span>
-                <span
-                  onClick={this.handleSetCardStatusToViewing}
-                  className='btn btn-xs btn-default mhm'
-                >
-                  Cancel
-                </span>
-                <span
-                  onClick={this.handleSetCardStatusToConsideringDeleting}
-                  className='btn btn-xs btn-default'
-                >
-                  Delete
-                </span>
+                <XsBtn
+                  text='Save'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='saving'
+                  callbackAttributeId={card.id}
+                  primary
+                />
+                <XsBtn
+                  text='Cancel'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='viewing'
+                  callbackAttributeId={card.id}
+                  additionalClasses='mhm'
+                />
+                <XsBtn
+                  text='Delete'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='consideringDeleting'
+                  callbackAttributeId={card.id}
+                />
               </div>
-              <SubmittedByCol4
-                id={card.user_id}
-                name={card.user_name}
-              />
+              <SubmittedByCol4 card={card} />
             </div>
           </td>
         </tr>
@@ -90,12 +71,12 @@ CardRow = React.createClass({
 
             <div className='row'>
               <div className='col-md-8'>
-                <span className='btn btn-xs btn-default'>Saving...</span>
+                <XsBtn
+                  text='Saving...'
+                  primary 
+                />
               </div>
-              <SubmittedByCol4
-                id={card.user_id}
-                name={card.user_name}
-              />
+              <SubmittedByCol4 card={card} />
             </div>
           </td>
         </tr>
@@ -108,13 +89,22 @@ CardRow = React.createClass({
 
             <div className='row'>
               <div className='col-md-8'>
-                <span onClick={this.handleSetCardStatusToDESTROY} className='btn btn-xs btn-danger'>Delete Card</span>
-                <span onClick={this.handleSetCardStatusToEditing} className='btn btn-xs btn-default mhm'>Cancel</span>
+                <XsBtn
+                  text='Delete Card'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='DESTROY'
+                  callbackAttributeId={card.id}
+                  danger
+                />
+                <XsBtn
+                  text='Cancel'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='editing'
+                  callbackAttributeId={card.id}
+                  additionalClasses='mhm'
+                />
               </div>
-              <SubmittedByCol4
-                id={card.user_id}
-                name={card.user_name}
-              />
+              <SubmittedByCol4 card={card} />
             </div>
           </td>
         </tr>
@@ -124,11 +114,16 @@ CardRow = React.createClass({
         <tr key={card.question}>
           <td>
             {this.QuestionAnswerFields()}
-            <span
-              className='btn btn-xs btn-danger'
-            >
-              Deleting Card...
-            </span>
+            <div className='row'>
+              <div className='col-md-8'>
+                  
+                  <XsBtn
+                    text='Deleting Card...'
+                    danger
+                  />
+              </div>
+              <SubmittedByCol4 card={card} />
+            </div>
           </td>
         </tr>
       )
@@ -136,22 +131,35 @@ CardRow = React.createClass({
       return (
         <tr key={card.question}>
           <td>
-            {this.QuestionAnswerFields}
-            <div>
-              <small>We can't connect to delete this card. Double check that your Internet is working and try again.</small>
+            <div className='row'>
+              <div className='col-md-8'>
+                {this.QuestionAnswerFields}
+                <small>
+                  We can't connect to delete this card. Double check that your Internet is working and
+                  <A
+                    text="try again"
+                    onClick={this.props.handleChangeCardStatusClick}
+                    callbackAttribute='DESTROY'
+                    callbackAttributeId={card.id}
+                    danger
+                  />.
+                </small>
+                <XsBtn
+                  text='Cancel'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='editing'
+                  callbackAttributeId={card.id}
+                />
+                <XsBtn
+                  text='Delete Card'
+                  onClick={this.props.handleChangeCardStatusClick}
+                  callbackAttribute='DESTROY'
+                  callbackAttributeId={card.id}
+                  danger
+                />
+              </div>
+              <SubmittedByCol4 card={card} />
             </div>
-            <span
-              onClick={this.handleSetCardStatusToDESTROY}
-              className='btn btn-xs btn-danger'
-            >
-              Delete Card
-            </span>
-            <span
-              onClick={this.handleSetCardStatusToEditing}
-              className='btn btn-xs btn-default mhm'
-            >
-              Cancel
-            </span>
           </td>
         </tr>
       )
