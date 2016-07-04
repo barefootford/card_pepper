@@ -17,7 +17,7 @@ gem 'less-rails'
 gem 'lodash-rails', '~> 4.6', '>= 4.6.1'
 
 gem 'newrelic_rpm'
-gem 'react-rails', '~> 1.0'
+gem 'react-rails', '1.8.0'
 gem 'therubyracer'
 
 gem 'time_difference', '0.4.2'
