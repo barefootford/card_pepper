@@ -1,4 +1,4 @@
-StudyViewContainer = React.createClass({
+var StudyViewContainer = React.createClass({
   getInitialState: function() {
     return({
       card: this.props.initialCard,

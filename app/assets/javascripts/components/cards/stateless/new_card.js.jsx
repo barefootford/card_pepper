@@ -1,4 +1,4 @@
-NewCard = React.createClass({
+var NewCard = React.createClass({
   render: function() {
     var style = {
       borderRadius: '6px',

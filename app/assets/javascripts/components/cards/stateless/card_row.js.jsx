@@ -1,4 +1,4 @@
-CardRow = React.createClass({
+var CardRow = React.createClass({
   propTypes: {
     card: React.PropTypes.object.isRequired,
     handleChangeCardStatusClick: React.PropTypes.func.isRequired,
