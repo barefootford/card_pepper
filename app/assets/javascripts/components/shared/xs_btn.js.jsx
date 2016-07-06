@@ -1,9 +1,9 @@
 var XsBtn = React.createClass({
   propTypes: {
     text: React.PropTypes.string.isRequired,
-    // onClick isn't required so that we can change text
-    // to say "saving..." without onClick consequences
-    onClick: React.PropTypes.func,
+    // Pass in an empty anonymous function when you don't
+    // want an onClick function. (ie: while 'saving')
+    onClick: React.PropTypes.func.isRequired,
     callbackAttribute: React.PropTypes.string,
     callbackAttributeId: React.PropTypes.number,
     additionalClasses: React.PropTypes.string,
@@ -13,7 +13,7 @@ var XsBtn = React.createClass({
   },
 
   style: function() {
-    if (this.props.hidden === true) {
+    if (this.props.hidden) {
       return {
         display: 'none'
       }

@@ -2,7 +2,8 @@ var SubmittedBy = React.createClass({
   propTypes: {
     id: React.PropTypes.number,
     style: React.PropTypes.object,
-    name: React.PropTypes.string
+    name: React.PropTypes.string,
+    alignRight: React.PropTypes.bool
   },
 
   allArgumentsGiven: function() {
@@ -19,7 +20,7 @@ var SubmittedBy = React.createClass({
       var style = this.props.style;
     } else {
       var style = {
-        color: '#7b8996'
+        color: '#7b8996',
       };
     }
 

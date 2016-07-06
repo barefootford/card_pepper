@@ -8,7 +8,7 @@ var CardRowFlash = React.createClass({
       return (
         <div className='row'>
           <div className='col-md-12'>
-            <small style={{color: '#7b8996'}}>Card saved.</small>
+            <small style={{color: '#7b8996'}}>{this.props.flash}</small>
           </div>
         </div>
       )

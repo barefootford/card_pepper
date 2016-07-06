@@ -12,14 +12,13 @@ class DecksController < ApplicationController
     end
   end
 
-  # def index
-  #   # not currently in use
-  #   @decks = Deck.all.limit(10)
-  # end
-
   def show
     @card_suggestion = CardSuggestion.new
-    @cards = deck.cards
+    @cards = deck.cards.includes(:user)
+    @cards_with_client_side_attributes = @cards.collect do |card|
+      card = Card.addClientSideAttributes(card)
+    end
+
     set_deck_subscription if current_user.present?
 
     respond_to do |format|

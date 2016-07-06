@@ -34,10 +34,14 @@
       <br><br>
     </div>
 
-    <h6>Cards:</h6>
-    <% if @cards.any? %>
-      <%= render 'cards/index' %>
-    <% end %>
+    <!-- <h6>Cards:</h6> -->
+    <%# if @cards.any? %>
+      <%#= render 'cards/index' %>
+    <%# end %>
+
+  <%# Yeah... We need to reconcile all these components into DecksShowView. After launch...  %>
+
+    <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, currentUser: current_user.client_side) %>
   </div>
 
   <div class='col-md-4'>

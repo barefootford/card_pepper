@@ -1,11 +1,13 @@
-DeckEditTab = React.createClass({
+var DeckTab = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
-    text: React.PropTypes.string,
-    handleSwitchTab: React.PropTypes.func
+    text: React.PropTypes.string.isRequired,
+    handleSwitchTab: React.PropTypes.func.isRequired,
+    callbackAttribute: React.PropTypes.string.isRequired
   },
 
   btnStatus: function() {
+    // ternary operator here
     if (this.props.active) {
       return('active')
     } else {
@@ -26,23 +28,25 @@ DeckEditTab = React.createClass({
   },
 
   render: function() {
-    var that = this;
     var style = {
       marginRight: '10px'
     };
     var linkStyle = {
       color: (this.props.active ? '#34495e' : '')
     };
-    var handleSwitchTab = function() {
-      that.props.handleSwitchTab(that.props.text);
-    };
 
     return(
       <li
-        onClick={handleSwitchTab}
         className={this.btnStatus()}
-        style={style}>
-        <a style={linkStyle}>{this.props.text + this.cardCountText()}</a>
+        style={style}
+      >
+        <a
+          onClick={this.props.handleSwitchTab}
+          style={linkStyle}
+          data-callback-attribute={this.props.callbackAttribute}
+        >
+          {this.props.text + this.cardCountText()}
+        </a>
       </li>
     )
   }

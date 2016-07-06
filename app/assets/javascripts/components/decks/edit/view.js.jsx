@@ -1,4 +1,4 @@
-DecksEditView = React.createClass({
+var DecksEditView = React.createClass({
   getInitialState: function() {
     return(
       {
@@ -280,52 +280,62 @@ DecksEditView = React.createClass({
     }
   },
 
-  handleSwitchTab: function(tabName) {
-    this.setState({activeComponent: tabName })
+  handleSwitchTab: function(event) {
+    this.setState({activeComponent: event.target.dataset.callbackAttribute})
   },
 
   handleSaveEditedCard: function(card) {
     var card = card;
 
-    // do we still need the url param? or does data work fine?
-    // Lets look after everything works again...!!!!!!!!!!!!!!!!!!!!!!!!!
-    $.ajax('/cards/' + card.id + '&deck_id=' + this.props.deckID, {
-      method: 'PATCH',
-      dataType: 'json',
-      data: {
-        deck_id: this.props.deckID,
-        card: {
-          id: card.id,
-          question: card.edited_question,
-          answer: card.edited_answer
-        }
-      },
-      error: function(response) {
-        if (response.status === 422) {
-          var responseErrors = response.responseJSON;
-          var cardAttributes = {
-            questionErrors: _.get(responseErrors, 'question', []),
-            answerErrors: _.get(responseErrors, 'answer', []),
-            status: 'editing'
-          };
-          var cards = _.without(this.state.cards, card);
-          var cardWithErrors = _.assign(card, cardAttributes);
-          var allDeckCards = _.concat(cards, cardWithErrors);
+    var answerHasNotChanged = card.edited_answer === card.answer;
+    var questionHasNotChanged = card.edited_question === card.question;
+
+    if (answerHasNotChanged && questionHasNotChanged) {
+      var allCards = this.state.cards;
+      var cardToChange = _.find(allCards, {id: card.id});
+      cardToChange.status = 'viewing';
+      this.setState({cards: allCards});
+      this.addToCardFlash(cardToChange, "No changes to save.");
+    } else {
+      $.ajax('/cards/' + card.id + '&deck_id=' + this.props.deckID, {
+        method: 'PATCH',
+        dataType: 'json',
+        data: {
+          deck_id: this.props.deckID,
+          card: {
+            id: card.id,
+            question: card.edited_question,
+            answer: card.edited_answer
+          }
+        },
+        error: function(response) {
+          if (response.status === 422) {
+            var responseErrors = response.responseJSON;
+            var cardAttributes = {
+              questionErrors: _.get(responseErrors, 'question', []),
+              answerErrors: _.get(responseErrors, 'answer', []),
+              status: 'editing'
+            };
+            var cards = _.without(this.state.cards, card);
+            var cardWithErrors = _.assign(card, cardAttributes);
+            var allDeckCards = _.concat(cards, cardWithErrors);
+
+            this.setState({cards: allDeckCards});
+          } else {
+            this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
+          }
+        }.bind(this),
+        success: function(response) {
+          var savedCard = response;
+          var cards =  _.without(this.state.cards, card);
+          var allDeckCards = _.concat(cards, savedCard);
 
           this.setState({cards: allDeckCards});
-        } else {
-          this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
-        }
-      }.bind(this),
-      success: function(response) {
-        var savedCard = response;
-        var cards =  _.without(this.state.cards, card);
-        var allDeckCards = _.concat(cards, savedCard);
 
-        this.setState({cards: allDeckCards});
-        this.addToCardFlash(savedCard, 'Card saved.');
-      }.bind(this)
-    })
+          this.addToCardFlash(savedCard, 'Card saved.');
+        }.bind(this)
+      })
+    }
   },
 
   handleEditCardChange: function(event, card, fieldName) {
@@ -401,28 +411,29 @@ DecksEditView = React.createClass({
     })
   },
 
-  handleChangeCardStatusClick: function(card, newStatus) {
-    var cards = _.without(this.state.cards, card);
-    card.status = newStatus;
-    this.setState({cards: cards.concat(card)});
+  handleChangeCardStatusClick: function(event) {
+    var cardToChangeId = _.toNumber(event.target.dataset.callbackAttributeId);
+    var newStatus = event.target.dataset.callbackAttribute;
+    var allCards = this.state.cards;
+    var cardToChange = _.find(allCards, {id: cardToChangeId});
+
+    cardToChange.status = newStatus;
+    this.setState({cards: allCards});
 
     if (newStatus === 'DESTROY') {
-      this.handleDeleteCard(card);
+      this.handleDeleteCard(cardToChange);
     } else if (newStatus === 'saving') {
-      this.handleSaveEditedCard(card);
+      this.handleSaveEditedCard(cardToChange);
     } else if (newStatus === 'viewing') {
-      // reset the edited question and answer to what is saved on server
-      var cards = _.without(cards, card);
-      var resettedAttributes = {
-        edited_question: card.question,
-        edited_answer: card.answer,
+      // reset the edited question and answer to what is saved
+      var resetAttributes = {
+        edited_question: cardToChange.question,
+        edited_answer: cardToChange.answer,
         questionErrors: [],
         answerErrors: []
       };
-      var cardWithResettedAttributes = _.assign(card, resettedAttributes);
-      var cards = _.concat(cards, cardWithResettedAttributes);
-
-      this.setState({cards: cards});
+      _.assign(cardToChange, resetAttributes);
+      this.setState({cards: allCards});
     }
   },
 
@@ -478,7 +489,7 @@ DecksEditView = React.createClass({
           data={this.deckTitleData()}
         />
         <FlashList flashes={this.state.flashes} />
-        <DeckEditTabs
+        <DecksEditTabs
           activeComponent={this.state.activeComponent}
           cardSuggestionsCount={this.state.cardSuggestions.length}
 
@@ -491,7 +502,7 @@ DecksEditView = React.createClass({
           onSaveClick={this.handleNewCardSave}
           onChange={this.handleNewCardChange}
         />
-        <CardList
+        <DecksEditCardTable
           active={'Card List' === this.state.activeComponent}
           cards={this.sortedCards()}
 

@@ -59,18 +59,19 @@ var CardSuggestionView = React.createClass({
         this.setAlert(response.status)
       }.bind(this)
     })
-
   },
+
   handleEnteredQuestionChange: function(event) {
     this.setState({question: event.target.value.substr(0, 140)});
   },
+
   handleEnteredAnswerChange: function(event) {
     this.setState({answer: event.target.value.substr(0, 140)});
   },
+
   render: function() {
     var currentUser = this.props.currentUser;
-    var currentUserIsOwner = currentUser.id === this.props.deckEditorID;
-
+    var currentUserIsOwner = (currentUser.id === this.props.deckEditorID);
 
     if ( _.isObject(currentUser) && _.isNumber(currentUser.id) ) {
       return(
@@ -89,7 +90,7 @@ var CardSuggestionView = React.createClass({
             rows='2'
           />
           <ValidationsOrRequirements
-            text={this.state.question}
+            inputText={this.state.question}
             errors={this.state.questionErrors}
           />
 
@@ -101,7 +102,7 @@ var CardSuggestionView = React.createClass({
             rows='2'
           />
           <ValidationsOrRequirements
-            text={this.state.answer}
+            inputText={this.state.answer}
             errors={this.state.answerErrors}
           />
 

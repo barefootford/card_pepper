@@ -18,14 +18,13 @@ var ViewingCardRow = React.createClass({
           <div className='row'>
             <div className='col-md-8'>
               <XsBtn
-                onClick={this.props.editButtonOnClickCallback}
                 text={this.props.editButtonText}
+                onClick={this.props.editButtonOnClickCallback}
+                callbackAttribute='editing'
+                callbackAttributeId={card.id}
               />
             </div>
-            <SubmittedByCol4
-              id={card.user_id}
-              name={card.user_name}
-            />
+            <SubmittedByCol4 card={card} />
           </div>
           <CardRowFlash flash={card.flash} />
         </td>

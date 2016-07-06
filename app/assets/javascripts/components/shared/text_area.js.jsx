@@ -2,6 +2,10 @@ var TextArea = React.createClass({
   propTypes: {
     text: React.PropTypes.string.isRequired,
     defaultText: React.PropTypes.string,
+    
+    // we still need to try rows
+    // rows: React.PropTypes.number,
+    
     // We don't require onChange so the field can be sorta immutable when saving
     onChange: React.PropTypes.func,
     callbackAttribute: React.PropTypes.string,
@@ -22,6 +26,7 @@ var TextArea = React.createClass({
         onChange={this.props.onChange}
         className='form-control'
         style={this.style}
+        // rows={this.props.rows}
         data-callback-attribute={this.props.callbackAttribute}
         data-callback-attribute-id={this.props.callbackAttributeID}
       />
