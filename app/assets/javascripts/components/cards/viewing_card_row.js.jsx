@@ -12,7 +12,10 @@ var ViewingCardRow = React.createClass({
     return(
       <tr key={card.question}>
         <td>
+          <QuestionLabel /><br/>
           {card.question}<br/><hr/>
+          
+          <AnswerLabel /><br/>
           {card.answer}<br/><hr/>
 
           <div className='row'>

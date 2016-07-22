@@ -13,11 +13,13 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }
   validates :password, length: { minimum: 6, maximum: 20, allow_blank: true }
 
-  def client_side
+  # For ActiveModel::Serialization
+  # call .serializable_hash or .to_json
+  def attributes
     {
-      name: self.name,
-      id: self.id,
-      website: self.website
+      'name' => nil,
+      'id' => nil,
+      'website' => nil,
     }
   end
 
@@ -59,9 +61,13 @@ class User < ActiveRecord::Base
   end
 
   def website
-    return nil if self[:website].nil? || self[:website].blank?  
-    return self[:website] if self[:website].include?('http' || 'https')
-    return "http://#{self[:website]}"
+    if self[:website].nil? || self[:website].blank?
+      ''
+    elsif self[:website].include?('http' || 'https')
+      self[:website]
+    else 
+      "http://#{self[:website]}"
+    end
   end
 
   def update_password(password_params)

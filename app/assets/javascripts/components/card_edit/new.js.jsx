@@ -11,18 +11,69 @@ Decks.Show.TR.CardEdit.New = React.createClass({
     return this.props.saving ? 'Saving Card Edit...' : 'Save Card Edit'
   },
 
+  handleEditCardQuestionChange: function(event) {
+    this.props.handleCardChange(event, this.props.card, 'edited_question');
+  },
+
+  handleEditCardAnswerChange: function(event) {
+    this.props.handleCardChange(event, this.props.card, 'edited_answer');
+  },
+
+  handleEditCardReasonChange: function(event) {
+    this.props.handleCardChange(event, this.props.card, 'reason');
+  },
+
+  saveButtonShouldBeDisabled: function() {
+    var card = this.props.card;
+    var questionHasNotChanged = card.edited_question === card.question;
+    var answerHasNotChanged = card.edited_answer === card.answer;
+
+    var cardEditHasNoChanges = (questionHasNotChanged && answerHasNotChanged);
+    var basicQuestionValidationsFail = ViewHelpers.basicValidationsFail(card.edited_question);
+    var basicAnswerValidationsFail = ViewHelpers.basicValidationsFail(card.edited_answer);
+
+    // disable the save button if there are no changes, or the Q or A is empty/blank
+    var somethingFailed = (cardEditHasNoChanges || basicQuestionValidationsFail || basicAnswerValidationsFail)
+
+    return somethingFailed
+  },
+
   render: function() {
     var card = this.props.card;
+    var that = this;
 
     return (
       <tr key={card.id}>
         <td>
           <div className='row'>
             <div className='col-md-12'>
-              <CardRowQuestionAnswerFields
-                card={this.props.card}
-                handleEditCardChange={this.props.handleCardChange}
+              <textarea
+                className='form-control'
+                placeholder='Question'
+                value={card.edited_question}
+                onChange={this.handleEditCardQuestionChange}
               />
+              <ValidationsOrRequirements
+                errors={card.questionErrors}
+                inputText={card.edited_question}
+              />
+
+              <textarea
+                className='form-control'
+                placeholder='Answer'
+                value={card.edited_answer}
+                onChange={that.handleEditCardAnswerChange}
+              />
+              <ValidationsOrRequirements
+                errors={card.answerErrors}
+                inputText={card.edited_answer}
+              />
+              <div><Small text="Reason for Card Edit: (typo, improvement, etc.)"/></div>
+              <textarea
+                className='form-control'
+                value={card.reason}
+                onChange={that.handleEditCardReasonChange}
+              /><br/>
             </div>
           </div>
           <div className='row'>
@@ -33,6 +84,7 @@ Decks.Show.TR.CardEdit.New = React.createClass({
                 callbackAttribute='CREATE'
                 callbackAttributeId={card.id}
                 primary
+                disabled={this.saveButtonShouldBeDisabled()}
               />
                 <XsBtn
                   text='Cancel'

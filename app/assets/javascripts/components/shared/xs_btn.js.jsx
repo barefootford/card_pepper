@@ -9,7 +9,8 @@ var XsBtn = React.createClass({
     additionalClasses: React.PropTypes.string,
     primary: React.PropTypes.bool,
     danger: React.PropTypes.bool,
-    hidden: React.PropTypes.bool
+    hidden: React.PropTypes.bool,
+    disabled: React.PropTypes.bool
   },
 
   style: function() {
@@ -23,7 +24,8 @@ var XsBtn = React.createClass({
   },
 
   btnClass: function() {
-    var addlClassesStr = _.toString(this.props.additionalClasses);
+    var disabledClass = this.props.disabled ? ' disabled ' : ''
+    var addlClassesStr = _.toString(this.props.additionalClasses + disabledClass);
 
     if (this.props.primary) {
       return('btn btn-xs btn-primary ' + addlClassesStr)

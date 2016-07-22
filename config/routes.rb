@@ -19,6 +19,8 @@ Pepper::Application.routes.draw do
   get 'sign_in' => 'sessions#new'
   get 'sign_up' => 'users#new'
 
+  resources :card_edits, only: [:create, :update]
+
   resources :cards, only: [ :create, :destroy, :update ]
 
   get 'decks/:id/destroy' => 'decks#destroy'

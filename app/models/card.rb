@@ -6,6 +6,7 @@ class Card < ActiveRecord::Base
 
   has_many :user_cards, dependent: :destroy
   has_many :versions
+  has_many :card_edits, dependent: :destroy
 
   validates :deck_id, presence: true
   validates :user_id, presence: true
@@ -23,11 +24,12 @@ class Card < ActiveRecord::Base
       errors: [],
       questionErrors: [],
       answerErrors: [],
-      flash: '', # example: "The card was saved successfully."
+      flash: '', # "The card was saved successfully."
+      reason: '', # we don't use this for editing cards yet, but do use it for creating CardEdits
       edited_question: card.question,
       edited_answer: card.answer,
       user_name: card.user.name
-     }
+    }
     card.attributes.merge(client_side_only_attributes)
   end
 

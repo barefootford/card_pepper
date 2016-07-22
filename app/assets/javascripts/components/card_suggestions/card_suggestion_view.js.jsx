@@ -82,7 +82,7 @@ var CardSuggestionView = React.createClass({
             onClick={this.handleRemoveAlertClick}
           />
 
-          <small>Question:</small>
+          <div className='small'>Question:</div>
           <textarea
             className='form-control'
             value={this.state.question}
@@ -94,7 +94,7 @@ var CardSuggestionView = React.createClass({
             errors={this.state.questionErrors}
           />
 
-          <small>Answer:</small>
+          <div className='small'>Answer:</div>
           <textarea
             className='form-control'
             value={this.state.answer}
@@ -106,10 +106,12 @@ var CardSuggestionView = React.createClass({
             errors={this.state.answerErrors}
           />
 
-          <CardSuggestionSubmittedBy
-            id={this.props.currentUser.id}
-            name={this.props.currentUser.name}
-          />
+          <div>
+            <CardSuggestionSubmittedBy
+              id={this.props.currentUser.id}
+              name={this.props.currentUser.name}
+            />
+          </div>
           <div
             onClick={this.saveCardSuggestionToServer}
             className='btn btn-block btn-primary'

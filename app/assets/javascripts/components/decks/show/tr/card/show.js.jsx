@@ -6,10 +6,16 @@ Decks.Show.TR.Card.Show = React.createClass({
 
   render: function() {
     var card = this.props.card
+
     return(
       <tr key={card.id}>
         <td>
+          <QuestionLabel />
+          <br/>
           {card.question}<br/><hr/>
+
+          <AnswerLabel />
+          <br/>
           {card.answer}<br/><hr/>
 
           <div className='row'>

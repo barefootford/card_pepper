@@ -2,6 +2,7 @@ var CommunitySuggestionsList = React.createClass({
   propTypes: {
     active: React.PropTypes.bool.isRequired,
     cardSuggestions: React.PropTypes.array.isRequired,
+    cards: React.PropTypes.array.isRequired,
     cardEdits: React.PropTypes.array.isRequired,
 
     handleChangePendingEditorReply: React.PropTypes.func.isRequired,
@@ -14,17 +15,15 @@ var CommunitySuggestionsList = React.createClass({
     if (this.props.active) {
       return (
         <div>
-          {/* 
-            <PendingCardSuggestionsList
-              cardSuggestions={this.props.cardSuggestions}
-              cards={this.props.cards}
+          <Decks.Edit.PendingCardSuggestionsTable
+            cardSuggestions={this.props.cardSuggestions}
+            cards={this.props.cards}
 
-              handleApproveCardSuggestionClick={this.props.handleApproveCardSuggestionClick}
-              handleDeclineCardSuggestionClick={this.props.handleDeclineCardSuggestionClick}
-            />
-          */}
+            handleApproveCardSuggestionClick={this.props.handleApproveCardSuggestionClick}
+            handleDeclineCardSuggestionClick={this.props.handleDeclineCardSuggestionClick}
+          />
 
-          <PendingCardEditsList
+          <Decks.Edit.PendingCardEditsTable
             cardEdits={this.props.cardEdits}
             cards={this.props.cards}
 

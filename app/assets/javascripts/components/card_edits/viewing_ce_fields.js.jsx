@@ -1,4 +1,4 @@
-var ViewingCEFields = React.createClass({
+Decks.Edit.ViewingCEFields = React.createClass({
   propTypes: {
     style: React.PropTypes.object.isRequired,
     cardEdit: React.PropTypes.object.isRequired,
@@ -7,21 +7,29 @@ var ViewingCEFields = React.createClass({
 
   render: function() {
     return(
-      <div>
-        <XsBtn
-          text='approve changes'
-          onClick={this.props.handleChangeCardEditStatus}
-          callbackAttribute='consideringApproving'
-          callbackAttributeId={this.props.cardEdit.id}
-        />
+      <div className='row'>
+        <div className='col-md-8'>
+          <XsBtn
+            text='approve changes'
+            onClick={this.props.handleChangeCardEditStatus}
+            callbackAttribute='consideringApproving'
+            callbackAttributeId={this.props.cardEdit.id}
+          />
 
-        <XsBtn
-          text='decline changes'
-          onClick={this.props.handleChangeCardEditStatus}
-          callbackAttribute='consideringDeclining'
-          callbackAttributeId={this.props.cardEdit.id}
-          additionalClasses='mhm'
-        />
+          <XsBtn
+            text='decline changes'
+            onClick={this.props.handleChangeCardEditStatus}
+            callbackAttribute='consideringDeclining'
+            callbackAttributeId={this.props.cardEdit.id}
+            additionalClasses='mhm'
+          />
+        </div>
+        <div style={{textAlign: 'right'}} className='col-md-4'>
+          <SubmittedBy
+            id={this.props.cardEdit.user_id}
+            name={this.props.cardEdit.name}
+          />
+        </div>
       </div>
     )
   }

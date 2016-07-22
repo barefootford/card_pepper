@@ -10,37 +10,37 @@ var NewCard = React.createClass({
     if (this.props.active) {
       return(
         <form className='new_card'>
-          <small>Question:</small>
+          <div className='small'>Question:</div>
           <textarea
             style={style}
             className='form-control'
             placeholder="Question"
             value={this.props.card.question}
             onChange={this.props.onChange}
-            rows='4'
+            rows='3'
           />
           <ValidationsOrRequirements
             errors={this.props.card.questionErrors}
-            text={this.props.card.question}
+            inputText={this.props.card.question}
           />
-          <small>Answer:</small>
+          <div className='small'>Answer:</div>
           <textarea
             style={style}
             className='form-control'
             placeholder="Answer"
             value={this.props.card.answer}
             onChange={this.props.onChange}
-            rows='4'
+            rows='3'
           />
           <ValidationsOrRequirements
             errors={this.props.card.answerErrors}
-            text={this.props.card.answer}
+            inputText={this.props.card.answer}
           />
-          <WideSaveButton
-            onSaveClick={this.props.onSaveClick}
-            standardText='Save Card'
+          <BlockBtn
+            onClick={this.props.onSaveClick}
+            text='Save Card'
             savingText='Saving Card...'
-            objectStatus={this.props.card.status}
+            primary
           />
         </form>
       )

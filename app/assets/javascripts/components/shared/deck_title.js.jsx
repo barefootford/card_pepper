@@ -6,13 +6,13 @@ var DeckTitle = React.createClass({
     if (deckEditorIsCurrentUser && (data.currentPage === 'show')) {
       return(
         <span>
-        | <a href={"/decks/" + data.deckID + "/edit"}> edit deck</a>
+        | <a className='btn btn-xs btn-primary' href={"/decks/" + data.deckID + "/edit"}> edit deck</a>
         </span>
       )
     } else if (deckEditorIsCurrentUser && data.currentPage === 'edit'){
       return (
         <span>
-          | <a href={"/decks/" + data.deckID}>view deck</a>
+          | <a className='btn btn-xs btn-primary' href={"/decks/" + data.deckID}>view deck</a>
         </span>
       )
     } else {

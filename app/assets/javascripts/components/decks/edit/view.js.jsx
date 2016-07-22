@@ -1,4 +1,4 @@
-var DecksEditView = React.createClass({
+Decks.Edit.View = React.createClass({
   getInitialState: function() {
     return(
       {
@@ -9,43 +9,11 @@ var DecksEditView = React.createClass({
         deckSettingsSavedRecently: false,
 
         newCard: this.newCard(),
-        // Use sortedCards()
+        // Use ViewHelpers.sortCards()
         cards: this.props.cards,
         cardSuggestions: this.props.cardSuggestions,
 
-        cardEdits: [
-          {
-            id: 1,
-            card_id: 1,
-            name: 'Andrew Ford',
-            status: 'viewing',
-            savedCardQuestion: 'I want to eat',
-            proposedCardQuestion: 'I really want to eat',
-            savedCardAnswer: 'Quero comer',
-            proposedCardAnswer: 'Muy quero comer',
-            pendingEditorReply: ''
-          },
-          {
-            name: 'Andrew Ford',
-            id: 2,
-            status: 'viewing',
-            savedCardQuestion: 'I want',
-            proposedCardQuestion: 'I wanna',
-            savedCardAnswer: '',
-            proposedCardAnswer: '',
-            pendingEditorReply: ''
-          },
-          {
-            name: 'Andrew Ford',
-            id: 3,
-            status: 'viewing',
-            savedCardQuestion: 'Kerry Kerry',
-            proposedCardQuestion: 'Kailey Kelley',
-            savedCardAnswer: '',
-            proposedCardAnswer: '',
-            pendingEditorReply: ''
-          }
-        ],
+        cardEdits: this.props.cardEdits,
         deckTitle: this.props.initialTitle, 
         deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
@@ -55,10 +23,6 @@ var DecksEditView = React.createClass({
         deckUserConsideringDeleting: false
       }
     )
-  },
-
-  sortedCards: function() {
-    return _.sortBy(this.state.cards, function(c) { return c.id })
   },
 
   deckSettingsSaved: function() {
@@ -73,7 +37,8 @@ var DecksEditView = React.createClass({
   addToCardFlash: function(card, flash) {
     var that = this;
     var cards = this.state.cards;
-    var card = card;
+    var card = _.find(cards, {id: card.id});
+
     cards = _.without(cards, card);
 
     card = _.merge(card, {flash: flash} );
@@ -85,7 +50,7 @@ var DecksEditView = React.createClass({
       cards = _.concat(cards, cardWithResetFlash);
 
       that.setState({cards: cards})
-    }, 3000)
+    }, 5000)
   },
 
   addToFlashes: function(newFlash) {
@@ -154,7 +119,7 @@ var DecksEditView = React.createClass({
         if (response.flash === 'Deck updated successfully.') {
           var deck = response.deck;
           this.setState({
-            deckTitle: deck.title ,
+            deckTitle: deck.title,
             deckTitleUpdated: deck.title,
             deckTitleUpdatedErrors: [],
 
@@ -185,13 +150,32 @@ var DecksEditView = React.createClass({
     });
   },
 
-  addCardToState: function(card) {
-    this.setState({cards: _.concat(this.state.cards, card)});
+  removeAndInsertCard: function(cardToRemove, optionalCardToInsert) {
+    var cardsState = this.state.cards;
+    var cardsWithoutCardToRemove = _.without(cardsState, cardToRemove);
+    var cardsStateWithOptionalCard = _.concat(cardsWithoutCardToRemove, optionalCardToInsert);
+
+    // remove null or undefined optionalCardToInsert with _.compact()
+    var newCardsState = _.compact(cardsStateWithOptionalCard);
+
+    this.setState({cards: newCardsState});
   },
 
-  removeCardSuggestionFromState: function(card) {
-    this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
+  removeAndInsertCardEdit: function(cardEditToRemove, optionalCardEditToInsert) {
+    debugger
+    var optionalCardGiven = _.isObject(optionalCardEditToInsert);
+    var cardEditsState = this.state.cardEdits;
+    var cardEditsWithoutCardEditToRemove = _.without(cardEditsState, cardEditToRemove);
+
+    if (optionalCardGiven) {
+      var newCardEditsState = _.concat(cardEditsWithoutCardEditToRemove, optionalCardEditToInsert);
+    } else {
+      var newCardEditsState = cardEditsWithoutCardEditToRemove;
+    }
+
+    this.setState({cards: newCardEditsState});
   },
+
 
   findCardByID: function(cardID) {
     var cards = this.state.cards;
@@ -231,7 +215,7 @@ var DecksEditView = React.createClass({
           console.log('Error in updateCardSuggestion(). Response: ');
           console.log(response);
 
-          this.addToFlashes("We're having trouble connecting to Card Pepper. Try again or refresh the page.");
+          this.addToFlashes(ViewHelpers.standardInternetIsDownMessage);
         }
       }.bind(this)
     })
@@ -269,6 +253,8 @@ var DecksEditView = React.createClass({
     })
   },
 
+  // I think we already do this server side... So we should just pass in:
+  // newCard: @card.serializable_hash
   newCard: function() {
     return {
       question:'',
@@ -438,24 +424,94 @@ var DecksEditView = React.createClass({
   },
 
   handleChangeCardEditStatus: function(event) {
+    var that = this;
     var allCardEdits = this.state.cardEdits;
     var newCardEditStatus = event.target.dataset.callbackAttribute;
-    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId)
+
+    // _.toNumber isn't for error handing, data- attributes are strings
+    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId);
     var cardEditToChange = _.find(allCardEdits, function(ce) { return ce.id === cardEditId });
 
-    // if the user switches back to view the cardEdit, clear their response
+    // if the editor wants to switch back to view the cardEdit, clear their pendingEditorReply
     var pendingEditorReply = (newCardEditStatus === 'viewing') ? '' : cardEditToChange.pendingEditorReply
 
     _.assign(cardEditToChange, {status: newCardEditStatus, pendingEditorReply: pendingEditorReply});
     this.setState({cardEdits: allCardEdits});
 
-    if (cardEditToChange.status === 'approving') {
-      console.log("CardEdit set to approving... now we need some ajax.")
-      // this.ajaxUpdateCardEdit
-    } else if (cardEditToChange.status === 'declining'){
-      console.log("CardEdit set to declining... now we need some ajax.")
-      // this.ajaxUpdateCardEdit
+    // if cardEdit status is 'approving' or 'declining', make an ajax request
+    var statusIsApproving = (cardEditToChange.status === 'approving');
+    var statusIsDeclining = (cardEditToChange.status === 'declining');
+    var cardEditStatusIsApprovingOrDeclining = (statusIsApproving || statusIsDeclining);
+    if (cardEditStatusIsApprovingOrDeclining) {
+      window.setTimeout(function() {
+        that.updateCardEditOnServer(cardEditToChange);
+      }, 500)
     }
+  },
+
+  updateCardEditOnServer: function(cardEdit) {
+    var cardEdit = cardEdit;
+    var cardEditId = cardEdit.id;
+    var that = this;
+
+    // Enum statuses in CardEdit.rb:
+    // pending: 0, declined: 1, approved: 2
+    if (cardEdit.status === 'declining') {
+      var serverCardEditStatus = 'declined'
+    } else if (cardEdit.status === 'approving') {
+      var serverCardEditStatus = 'approved'
+    } else {
+      var serverCardEditStatus = 'pending'
+    }
+
+    $.ajax({
+      url: '/card_edits/' + cardEdit.id,
+      data: {
+        deck_id: this.props.deckID,
+        card_id: cardEdit.card_id,
+        card_edit_id: cardEdit.id,
+        editor_response: cardEdit.pendingEditorReply,
+        status: serverCardEditStatus
+      },
+      method: 'PATCH',
+      dataType: 'json',
+      success: function(response) {
+        var savedCardEdit = response.data.cardEdit
+        var savedCard = response.data.card;
+
+        var clientCardEditToRemove = _.find(this.state.cardEdits, {id: savedCardEdit.id});
+        var clientCardToRemove = _.find(this.state.cards, {id: savedCard.id});
+
+        if (savedCardEdit.status === 'approved') {
+          this.removeAndInsertCard(clientCardToRemove, savedCard);
+          this.setState({cardEdits: _.without(this.state.cardEdits, clientCardEditToRemove)});
+        } else if (savedCardEdit.status === 'declined') {
+          this.setState({cardEdits: _.without(this.state.cardEdits, clientCardEditToRemove)});
+        }
+      }.bind(this),
+      error: function(response) {
+        // we don't really deal with failed validations, but the only thing that could
+        // easily fail is offline internet or an editor response that's too long (max is 5000)
+        // I dont think that will happen often, so we can save better error handling for later.
+
+        // Reset cards that may be failing/hanging because internet is down
+        var cardEditsState = this.state.cardEdits;
+        function revertFailingStates(cardEdit) {
+          if (cardEdit.status === 'approving') {
+            cardEdit.status = 'consideringApproving';
+            cardEdit.flash = ViewHelpers.standardInternetIsDownMessage;
+          } else if (cardEdit.status === 'declining') {
+            cardEdit.status = 'consideringDeclining';
+            cardEdit.flash = ViewHelpers.standardInternetIsDownMessage;
+          }
+          return cardEdit
+        }
+
+        var newCardEditsState = _.map(cardEditsState,revertFailingStates);
+        this.setState({cardEdits: newCardEditsState});
+
+      }.bind(this)
+    });
   },
 
   deckTitleData: function() {
@@ -492,6 +548,7 @@ var DecksEditView = React.createClass({
         <DecksEditTabs
           activeComponent={this.state.activeComponent}
           cardSuggestionsCount={this.state.cardSuggestions.length}
+          cardsCount={this.state.cards.length}
 
           handleSwitchTab={this.handleSwitchTab}
         />
@@ -502,9 +559,9 @@ var DecksEditView = React.createClass({
           onSaveClick={this.handleNewCardSave}
           onChange={this.handleNewCardChange}
         />
-        <DecksEditCardTable
+        <Decks.Edit.CardTable
           active={'Card List' === this.state.activeComponent}
-          cards={this.sortedCards()}
+          cards={ViewHelpers.sortCards(this.state.cards)}
 
           handleChangeCardStatusClick={this.handleChangeCardStatusClick}
           handleEditCardChange={this.handleEditCardChange}

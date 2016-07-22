@@ -3,13 +3,30 @@ Decks.Show.TR.Card = React.createClass({
     card: React.PropTypes.object.isRequired,
     currentUser: React.PropTypes.object,
     handleChangeCardStatusClick: React.PropTypes.func.isRequired,
-    handleCardChange: React.PropTypes.func.isRequired
+    handleCardChange: React.PropTypes.func.isRequired,
+    deckEditorIsCurrentUser: React.PropTypes.bool
   },
 
   render: function() {
     var card = this.props.card;
+    var deckEditorIsCurrentUser = this.props.deckEditorIsCurrentUser;
 
-    if (card.status === 'viewing') {
+    // Same as 'viewing', but do not display "Recommend a change" buttons
+    if (card.status === 'viewing' && deckEditorIsCurrentUser) {
+      return(
+        <tr key={card.id}>
+          <td>
+            <QuestionLabel />
+            <br/>
+            {card.question}<br/><hr/>
+
+            <AnswerLabel />
+            <br/>
+            {card.answer}<br/>
+          </td>
+        </tr>
+      )
+    } else if (card.status === 'viewing') {
       return(
         <Decks.Show.TR.Card.Show
           card={card}
@@ -32,7 +49,7 @@ Decks.Show.TR.Card = React.createClass({
           handleCardChange={doNothing}
           currentUser={this.props.currentUser}
           handleChangeCardStatusClick={doNothing}
-          saving={true}
+          saving
         />
       )
     } else if (card.status === 'CREATEFAILED') {
@@ -42,7 +59,7 @@ Decks.Show.TR.Card = React.createClass({
           handleCardChange={doNothing}
           currentUser={this.props.currentUser}
           handleChangeCardStatusClick={doNothing}
-          saving={true}
+          saving
         />
       )
     } else {

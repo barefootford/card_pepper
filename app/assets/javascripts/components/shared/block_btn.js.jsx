@@ -1,4 +1,4 @@
-var FullWidthBtn = React.createClass({
+var BlockBtn = React.createClass({
   propTypes: {
     onClick: React.PropTypes.func.isRequired,
     text: React.PropTypes.string.isRequired,

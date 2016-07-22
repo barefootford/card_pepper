@@ -12,8 +12,8 @@ var CardEditRowFields = React.createClass({
   render: function() {
     var cardEdit = this.props.cardEdit;
 
-    if (cardEdit.status === 'viewing') {
-      return <ViewingCEFields
+    if (cardEdit.status === 'viewing' || cardEdit.status === 'pending') {
+      return <Decks.Edit.ViewingCEFields
         style={this.style}
         cardEdit={this.props.cardEdit}
         handleChangeCardEditStatus={this.props.handleChangeCardEditStatus}
@@ -38,6 +38,8 @@ var CardEditRowFields = React.createClass({
       return <ConsideringDecliningCEFields
         style={this.style}
         cardEdit={this.props.cardEdit}
+        handleChangeCardEditStatus={doNothing}
+        handleChangePendingEditorReply={doNothing}
       />
     } else if (cardEdit.status === 'approving') {
       // Approving uses same fields as consideringApproving
@@ -46,7 +48,11 @@ var CardEditRowFields = React.createClass({
       return <ConsideringApprovingCEFields
         style={this.style}
         cardEdit={this.props.cardEdit}
+        handleChangeCardEditStatus={doNothing}
+        handleChangePendingEditorReply={doNothing}
       />
+    } else {
+      return null
     }
   }
 })

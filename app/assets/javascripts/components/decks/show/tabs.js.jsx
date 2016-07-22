@@ -16,20 +16,20 @@ Decks.Show.Tabs = React.createClass({
       <div style={style} >
         <ul className="nav nav-tabs">
           <DeckTab
-            text="Card List"
+            text={ViewHelpers.pluralizeCard(this.props.cards.length, true)}
             active={this.props.activeComponent === "Card List"}
             handleSwitchTab={this.props.handleSwitchTab}
             callbackAttribute="Card List"
           />
           <DeckTab
-            text="New Card Suggestions"
+            text="Pending New Cards"
             active={this.props.activeComponent === "New Card Suggestions"}
             handleSwitchTab={this.props.handleSwitchTab}
             cardSuggestionsCount={this.props.cardSuggestionsCount}
             callbackAttribute="New Card Suggestions"
           />
           <DeckTab
-            text="Card Edits"
+            text="Pending Card Edits"
             active={this.props.activeComponent === "Card Edits"}
             handleSwitchTab={this.props.handleSwitchTab}
             callbackAttribute="Card Edits"

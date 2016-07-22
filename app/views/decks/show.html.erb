@@ -1,7 +1,7 @@
 <div class='row'>
   <div class='col-md-8'>
 
-    <%= react_component('DeckTitle', data: { deckID: @deck.id, deckTitle: @deck.title.to_s, deckEditor: @deck.user.client_side, currentUser: @current_user.client_side, cards: @cards, currentPage: 'show'}) %>
+    <%= react_component('DeckTitle', data: { deckID: @deck.id, deckTitle: @deck.title.to_s, deckEditor: @deck.user.serializable_hash, currentUser: @current_user.serializable_hash, cards: @cards, currentPage: 'show'}) %>
       <h6>Instructions:</h6>
       <p><%= @deck._instructions %></p>
     <br><br>
@@ -41,11 +41,11 @@
 
   <%# Yeah... We need to reconcile all these components into DecksShowView. After launch...  %>
 
-    <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, currentUser: current_user.client_side) %>
+    <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions, currentUser: current_user.serializable_hash, deck: @deck.serializable_hash) %>
   </div>
 
   <div class='col-md-4'>
-    <%= react_component('CardSuggestionView', currentUser: current_user.client_side, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
+    <%= react_component('CardSuggestionView', currentUser: current_user.serializable_hash, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
   </div>
 </div>
 

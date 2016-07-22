@@ -2,11 +2,14 @@ var CardEditDiff = React.createClass({
   propTypes: {
     before: React.PropTypes.string.isRequired,
     after: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired
+    label: React.PropTypes.string.isRequired,
+
+    // hide diffs when the user isn't asking for a change
+    // For example, when a user wants to change the question, but not answer
+    areChanges: React.PropTypes.bool.isRequired
   },
 
   divStyle: {
-    marginRight: '10px',
     marginBottom: '10px'
   },
 
@@ -16,26 +19,50 @@ var CardEditDiff = React.createClass({
   },
 
   removeStyle: {
+    // red background
     backgroundColor: 'rgb(255,226,227)',
     color: 'black'
   },
 
-  labelStyle: {
-    marginBottom: '-5px',
-    color: '#7f8c9a'
+  labelForChange: function() {
+    if (this.props.label === 'question') {
+      return <QuestionLabel />
+    } else if (this.props.label === 'answer') {
+      return <AnswerLabel />
+    } else {
+      console.log("<CardEditDiff/>: unknown label type: " + this.props.label);
+    }
+  },
+
+  labelForNoChange: function() {
+    if (this.props.label === 'question') {
+      return <QuestionLabel noChange={true} />
+    } else if (this.props.label === 'answer') {
+      return <AnswerLabel noChange={true} />
+    } else {
+      console.log("<CardEditDiff/>: unknown label type: " + this.props.label);
+    }
   },
 
   render: function() {
-    if (this.props.active) {
-      return(
+    // if a user wants to change a card or a question, show a diff
+    if (this.props.areChanges) {
+      return (
         <div style={this.divStyle}>
-          <label style={this.labelStyle}>{this.props.label}:</label>
+          {this.labelForChange()}<br/>
+
           <div style={this.removeStyle}>{this.props.before}</div>
           <div style={this.insertStyle}>{this.props.after}</div>
         </div>
       )
+    // Otherwise show the existing question.
     } else {
-      return null
+      return (
+        <div style={this.divStyle}>
+          {this.labelForNoChange()}<br/>
+          <div>{this.props.before}</div>
+        </div>
+      )
     }
   }
 });

@@ -72,7 +72,9 @@ var CardRow = React.createClass({
               <div className='col-md-8'>
                 <XsBtn
                   text='Saving...'
-                  primary 
+                  onClick={doNothing}
+                  primary
+                  disabled
                 />
               </div>
               <SubmittedByCol4 card={card} />
@@ -118,7 +120,9 @@ var CardRow = React.createClass({
                   
                   <XsBtn
                     text='Deleting Card...'
+                    onClick={doNothing}
                     danger
+                    disabled
                   />
               </div>
               <SubmittedByCol4 card={card} />
