@@ -44,9 +44,11 @@
     <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions, currentUser: current_user.serializable_hash, deck: @deck.serializable_hash) %>
   </div>
 
-  <div class='col-md-4'>
-    <%= react_component('CardSuggestionView', currentUser: current_user.serializable_hash, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
-  </div>
+  <% if current_user && (current_user != @deck.user) %>
+    <div class='col-md-4'>
+      <%= react_component('CardSuggestionView', currentUser: current_user.serializable_hash, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
+    </div>
+  <% end %>
 </div>
 
 <%# remove these scripts after changing studying --> downloading %>
