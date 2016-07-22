@@ -1,7 +1,7 @@
 class DecksController < ApplicationController
   before_action :require_sign_in, except: [:show, :index]
-  before_action :require_creator, only: [:edit, :update, :destroy]
   before_action :deck, only: [:show, :edit, :update, :destroy, :download]
+  before_action :require_creator, only: [:edit, :update, :destroy]
   before_action :dont_show_edit_button, only: [:show]
   before_action :do_show_edit_button, only: [:edit]
   before_action :must_be_beta_approved
@@ -12,14 +12,21 @@ class DecksController < ApplicationController
     end
   end
 
-  # def index
-  #   # not currently in use
-  #   @decks = Deck.all.limit(10)
-  # end
-
   def show
     @card_suggestion = CardSuggestion.new
-    @cards = deck.cards
+    @card_suggestions = @deck.card_suggestions.select {|cs| cs.pending?}
+      .map {|cs| CardSuggestion.addClientSideAttributes(cs)}
+    # need to make this scoped to only include pendign card edits, like in #edit
+    @cards = deck.cards.includes(:user, :card_edits)
+    @cards_with_client_side_attributes = @cards.collect do |card|
+      card = Card.addClientSideAttributes(card)
+    end
+
+    @card_edits = @cards.collect {|card| card.card_edits}
+      .flatten
+      .select {|ce| ce.pending? }
+      .map {|ce| ce.serializable_hash }
+
     set_deck_subscription if current_user.present?
 
     respond_to do |format|
@@ -30,17 +37,21 @@ class DecksController < ApplicationController
 
   def edit
     @card_suggestions = @deck.card_suggestions.pending.includes(:user)
-    @card_suggestions_with_client_side_attributes = @card_suggestions.collect do |card|
-      card = CardSuggestion.addClientSideAttributes(card)
+    @card_suggestions_with_client_side_attributes = @card_suggestions.collect do |cs|
+      cs = CardSuggestion.addClientSideAttributes(cs)
     end
 
-    @current_user = current_user
     @deck_editor = @deck.user
     @new_card = @deck.cards.build
-    @cards = @deck.cards.saved.includes(:user)
+    @cards = @deck.cards.saved.includes(:user, :card_edits)
+
     @cards_with_client_side_attributes = @cards.collect do |card|
       card = Card.addClientSideAttributes(card)
     end
+
+    @card_edits = @cards.collect {|card| card.card_edits }.flatten
+      .select {|ce| ce.pending? }
+      .map {|ce| ce.serializable_hash }
   end
 
   def update
@@ -111,7 +122,8 @@ private
   end
 
   def deck
-    @deck ||= Deck.includes(:user).find(params[:id])
+    @deck ||= Deck.includes(:user, :card_suggestions).find(params[:id])
+    # users = User.includes(:address, friends: [:address, :followers])
   end
 
   def deck_params

@@ -59,25 +59,21 @@ var CardSuggestionView = React.createClass({
         this.setAlert(response.status)
       }.bind(this)
     })
-
   },
+
   handleEnteredQuestionChange: function(event) {
     this.setState({question: event.target.value.substr(0, 140)});
   },
+
   handleEnteredAnswerChange: function(event) {
     this.setState({answer: event.target.value.substr(0, 140)});
   },
+
   render: function() {
     var currentUser = this.props.currentUser;
-    var currentUserIsOwner = currentUser.id === this.props.deckEditorID;
+    var currentUserIsOwner = (currentUser.id === this.props.deckEditorID);
 
-    if (currentUserIsOwner) {
-      return (
-        <div>
-        { /* CardSuggestionsList */ }
-        </div>
-      )
-    } else if ( _.isObject(currentUser) && _.isNumber(currentUser.id) ) {
+    if ( _.isObject(currentUser) && _.isNumber(currentUser.id) ) {
       return(
         <div>
           <h5>Suggest a New Card:</h5>
@@ -86,7 +82,7 @@ var CardSuggestionView = React.createClass({
             onClick={this.handleRemoveAlertClick}
           />
 
-          <small>Question:</small>
+          <div className='small'>Question:</div>
           <textarea
             className='form-control'
             value={this.state.question}
@@ -94,11 +90,11 @@ var CardSuggestionView = React.createClass({
             rows='2'
           />
           <ValidationsOrRequirements
-            text={this.state.question}
+            inputText={this.state.question}
             errors={this.state.questionErrors}
           />
 
-          <small>Answer:</small>
+          <div className='small'>Answer:</div>
           <textarea
             className='form-control'
             value={this.state.answer}
@@ -106,14 +102,16 @@ var CardSuggestionView = React.createClass({
             rows='2'
           />
           <ValidationsOrRequirements
-            text={this.state.answer}
+            inputText={this.state.answer}
             errors={this.state.answerErrors}
           />
 
-          <CardSuggestionSubmittedBy
-            id={this.props.currentUser.id}
-            name={this.props.currentUser.name}
-          />
+          <div>
+            <CardSuggestionSubmittedBy
+              id={this.props.currentUser.id}
+              name={this.props.currentUser.name}
+            />
+          </div>
           <div
             onClick={this.saveCardSuggestionToServer}
             className='btn btn-block btn-primary'
@@ -121,9 +119,10 @@ var CardSuggestionView = React.createClass({
             Suggest Card
           </div>
 
-          { /* CardSuggestionsList */ }
         </div>
       )
+    } else {
+      return null
     }
   }
 });

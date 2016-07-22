@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150419055330) do
+ActiveRecord::Schema.define(version: 20160715155317) do
+
+  create_table "card_edits", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "card_id"
+    t.string   "question"
+    t.string   "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "reason"
+    t.text     "editor_response"
+    t.integer  "status",          default: 0
+  end
+
+  add_index "card_edits", ["card_id"], name: "index_card_edits_on_card_id"
 
   create_table "card_suggestions", force: true do |t|
     t.string   "question"
@@ -88,12 +102,12 @@ ActiveRecord::Schema.define(version: 20150419055330) do
   create_table "user_cards", force: true do |t|
     t.integer  "deck_subscription_id"
     t.integer  "card_id"
+    t.datetime "last_view"
+    t.datetime "first_view"
     t.float    "efficiency"
     t.integer  "view_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_view"
-    t.datetime "first_view"
     t.datetime "next_view"
   end
 

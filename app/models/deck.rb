@@ -12,6 +12,17 @@ class Deck < ActiveRecord::Base
   # There has gotta be an Active Record method scope for this
   scope :saved, lambda { where('id > 0') }
 
+  # For ActiveModel::Serialization 
+  def attributes
+    {
+      'updated_at' => nil,
+      'title' => nil,
+      'editor' => nil,
+      'instructions' => nil,
+      'user_id' => nil
+    }
+  end
+
   def _instructions
     if instructions.present?
       instructions

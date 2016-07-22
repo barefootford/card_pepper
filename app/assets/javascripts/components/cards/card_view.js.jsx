@@ -1,4 +1,4 @@
-CardView = React.createClass({
+var CardView = React.createClass({
   getInitialState: function() {
     return({
       showingAnswer: false,

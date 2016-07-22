@@ -1,27 +1,23 @@
 var ValidationsOrRequirements = React.createClass({
   propTypes: {
     errors: React.PropTypes.array,
-    text: React.PropTypes.string
+    // inputText is the text that is being shown in
+    // the corresponding textarea or input field.
+    inputText: React.PropTypes.string
   },
 
   render: function() {
-    // if there are any server generated errors show those
+      // if there are any server generated errors show those
     if (this.props.errors.length > 0) {
-      return(<ValidationErrors errors={this.props.errors} />)
+      return <ValidationErrors errors={this.props.errors} />
+      // otherwise show gentle help
     } else {
-    // otherwise show gentle help
-      var style = { color: '#7b8996' };
-      var text = this.props.text;
-
-      if (text.length === 0) {
-        return <div><small style={style}>1 character minimum</small></div>
-      } else if (_.trim(text).length === 0) {
-        return <div><small style={style}>can't be blank</small></div>
-      } else if (text.length > 100) {
-        return <div><small style={style}>140 character maximum. Current: {text.length}</small></div>
-      } else {
-        return <div>&nbsp;</div>
-      }
+      return (
+        <CardRequirements
+          errors={this.props.errors}
+          inputText={this.props.inputText}
+        />
+      )
     }
   }
 });

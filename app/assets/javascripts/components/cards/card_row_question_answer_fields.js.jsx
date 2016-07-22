@@ -15,8 +15,6 @@ var CardRowQuestionAnswerFields = React.createClass({
   render: function() {
     return(
       <div>
-        {/* <small>Question:</small> */}
-        
         <textarea
           className='form-control'
           placeholder='Question'
@@ -25,10 +23,9 @@ var CardRowQuestionAnswerFields = React.createClass({
         />
         <ValidationsOrRequirements
           errors={this.props.card.questionErrors}
-          text={this.props.card.edited_question}
+          inputText={this.props.card.edited_question}
         />
 
-        {/* <small>Answer:</small> */}
         <textarea
           className='form-control'
           placeholder='Answer'
@@ -37,7 +34,7 @@ var CardRowQuestionAnswerFields = React.createClass({
         />
         <ValidationsOrRequirements
           errors={this.props.card.answerErrors}
-          text={this.props.card.edited_question}
+          inputText={this.props.card.edited_answer}
         />
       </div>
     )

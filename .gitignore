@@ -18,3 +18,7 @@
 to_do.txt
 
 config/secrets.yml
+
+app/assets/javascripts/components/react_prop_types.jsx
+
+react_prop_types.jsx

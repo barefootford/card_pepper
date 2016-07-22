@@ -10,22 +10,32 @@ var ViewHelpers = {
     return count
   },
 
-  pluralizeCard: function(number) {
+  sortCards: function(arrayOfCards) {
+    return _.sortBy(arrayOfCards, function(c) { return c.id })
+  },
+
+  pluralizeCard: function(number, capitalizeResults) {
     if (_.isUndefined(number)) {
       console.log("pluralizeCard was called without a number.");
     };
 
-    if ( _.isNumber(number) ) {
-      if (number === 1) {
-        return '1 card'
-      } else if (number > 1) {
-        return (_.toString(number) + ' cards')
-      } else {
-        return '0 cards'
-      }
+    var integer = _.toSafeInteger(number);
+    var shouldCapitalize = (capitalizeResults === true) ? true : false
+
+    if (integer === 1) {
+      return shouldCapitalize ? '1 Card' : '1 card'
+    } else if (integer > 1) {
+      var capitalized = _.toString(integer) + ' Cards';
+      var lowercase   = _.toString(integer) + ' cards';
+      return shouldCapitalize ? capitalized : lowercase
     } else {
-      return '0 cards'
+      return shouldCapitalize ? '0 Cards' : '0 cards'
     }
+  },
+
+  basicValidationsFail: function(text) {
+    var textEmptyOrBlank = (text.length === 0 || _.trim(text).length === 0)
+    return textEmptyOrBlank
   },
 
   pluralizeContrib: function(number) {
@@ -44,5 +54,7 @@ var ViewHelpers = {
     } else {
       return '0 community contributions '
     }
-  }
+  },
+
+  standardInternetIsDownMessage: "We're having trouble connecting to Card Pepper. Ensure your Internet is working, then try again or refresh the page."
 };

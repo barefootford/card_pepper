@@ -1,18 +1,19 @@
-DecksEditView = React.createClass({
+Decks.Edit.View = React.createClass({
   getInitialState: function() {
     return(
       {
         // Use addToFlashes() so flashes are auto removed
         flashes: [],
-        activeComponent: 'New Card',
+        activeComponent: 'Card List',
         // Use deckSettingsSaved() so 'recently' is managed.
         deckSettingsSavedRecently: false,
 
         newCard: this.newCard(),
-        // Use sortedCards()
+        // Use ViewHelpers.sortCards()
         cards: this.props.cards,
         cardSuggestions: this.props.cardSuggestions,
 
+        cardEdits: this.props.cardEdits,
         deckTitle: this.props.initialTitle, 
         deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
@@ -22,10 +23,6 @@ DecksEditView = React.createClass({
         deckUserConsideringDeleting: false
       }
     )
-  },
-
-  sortedCards: function() {
-    return _.sortBy(this.state.cards, function(c) { return c.id })
   },
 
   deckSettingsSaved: function() {
@@ -40,7 +37,8 @@ DecksEditView = React.createClass({
   addToCardFlash: function(card, flash) {
     var that = this;
     var cards = this.state.cards;
-    var card = card;
+    var card = _.find(cards, {id: card.id});
+
     cards = _.without(cards, card);
 
     card = _.merge(card, {flash: flash} );
@@ -52,7 +50,7 @@ DecksEditView = React.createClass({
       cards = _.concat(cards, cardWithResetFlash);
 
       that.setState({cards: cards})
-    }, 3000)
+    }, 5000)
   },
 
   addToFlashes: function(newFlash) {
@@ -84,6 +82,17 @@ DecksEditView = React.createClass({
     this.setState({deckInstructionsUpdated: event.target.value});
   },
 
+  handleChangePendingEditorReply: function(event) {
+    var allCardEdits = this.state.cardEdits
+    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId)
+    var cardEditToChange = _.find(allCardEdits, function(ce) { return ce.id === cardEditId });
+
+    var newTextValue = event.target.value
+    _.assign(cardEditToChange, {pendingEditorReply: newTextValue})
+
+    this.setState({cardEdits: allCardEdits})
+  },
+
   handleDeckUserConsideringDeleting: function() {
     if (this.state.deckUserConsideringDeleting === true) {
       this.setState({deckUserConsideringDeleting: false})
@@ -110,7 +119,7 @@ DecksEditView = React.createClass({
         if (response.flash === 'Deck updated successfully.') {
           var deck = response.deck;
           this.setState({
-            deckTitle: deck.title ,
+            deckTitle: deck.title,
             deckTitleUpdated: deck.title,
             deckTitleUpdatedErrors: [],
 
@@ -141,13 +150,32 @@ DecksEditView = React.createClass({
     });
   },
 
-  addCardToState: function(card) {
-    this.setState({cards: _.concat(this.state.cards, card)});
+  removeAndInsertCard: function(cardToRemove, optionalCardToInsert) {
+    var cardsState = this.state.cards;
+    var cardsWithoutCardToRemove = _.without(cardsState, cardToRemove);
+    var cardsStateWithOptionalCard = _.concat(cardsWithoutCardToRemove, optionalCardToInsert);
+
+    // remove null or undefined optionalCardToInsert with _.compact()
+    var newCardsState = _.compact(cardsStateWithOptionalCard);
+
+    this.setState({cards: newCardsState});
   },
 
-  removeCardSuggestionFromState: function(card) {
-    this.setState({cardSuggestions: _.without(this.state.cardSuggestions, cardSuggestion)});
+  removeAndInsertCardEdit: function(cardEditToRemove, optionalCardEditToInsert) {
+    debugger
+    var optionalCardGiven = _.isObject(optionalCardEditToInsert);
+    var cardEditsState = this.state.cardEdits;
+    var cardEditsWithoutCardEditToRemove = _.without(cardEditsState, cardEditToRemove);
+
+    if (optionalCardGiven) {
+      var newCardEditsState = _.concat(cardEditsWithoutCardEditToRemove, optionalCardEditToInsert);
+    } else {
+      var newCardEditsState = cardEditsWithoutCardEditToRemove;
+    }
+
+    this.setState({cards: newCardEditsState});
   },
+
 
   findCardByID: function(cardID) {
     var cards = this.state.cards;
@@ -187,7 +215,7 @@ DecksEditView = React.createClass({
           console.log('Error in updateCardSuggestion(). Response: ');
           console.log(response);
 
-          this.addToFlashes("We're having trouble connecting to Card Pepper. Try again or refresh the page.");
+          this.addToFlashes(ViewHelpers.standardInternetIsDownMessage);
         }
       }.bind(this)
     })
@@ -225,6 +253,8 @@ DecksEditView = React.createClass({
     })
   },
 
+  // I think we already do this server side... So we should just pass in:
+  // newCard: @card.serializable_hash
   newCard: function() {
     return {
       question:'',
@@ -236,52 +266,62 @@ DecksEditView = React.createClass({
     }
   },
 
-  handleSwitchTab: function(tabName) {
-    this.setState({activeComponent: tabName })
+  handleSwitchTab: function(event) {
+    this.setState({activeComponent: event.target.dataset.callbackAttribute})
   },
 
   handleSaveEditedCard: function(card) {
     var card = card;
 
-    // do we still need the url param? or does data work fine?
-    // Lets look after everything works again...!!!!!!!!!!!!!!!!!!!!!!!!!
-    $.ajax('/cards/' + card.id + '&deck_id=' + this.props.deckID, {
-      method: 'PATCH',
-      dataType: 'json',
-      data: {
-        deck_id: this.props.deckID,
-        card: {
-          id: card.id,
-          question: card.edited_question,
-          answer: card.edited_answer
-        }
-      },
-      error: function(response) {
-        if (response.status === 422) {
-          var responseErrors = response.responseJSON;
-          var cardAttributes = {
-            questionErrors: _.get(responseErrors, 'question', []),
-            answerErrors: _.get(responseErrors, 'answer', []),
-            status: 'editing'
-          };
-          var cards = _.without(this.state.cards, card);
-          var cardWithErrors = _.assign(card, cardAttributes);
-          var allDeckCards = _.concat(cards, cardWithErrors);
+    var answerHasNotChanged = card.edited_answer === card.answer;
+    var questionHasNotChanged = card.edited_question === card.question;
+
+    if (answerHasNotChanged && questionHasNotChanged) {
+      var allCards = this.state.cards;
+      var cardToChange = _.find(allCards, {id: card.id});
+      cardToChange.status = 'viewing';
+      this.setState({cards: allCards});
+      this.addToCardFlash(cardToChange, "No changes to save.");
+    } else {
+      $.ajax('/cards/' + card.id + '&deck_id=' + this.props.deckID, {
+        method: 'PATCH',
+        dataType: 'json',
+        data: {
+          deck_id: this.props.deckID,
+          card: {
+            id: card.id,
+            question: card.edited_question,
+            answer: card.edited_answer
+          }
+        },
+        error: function(response) {
+          if (response.status === 422) {
+            var responseErrors = response.responseJSON;
+            var cardAttributes = {
+              questionErrors: _.get(responseErrors, 'question', []),
+              answerErrors: _.get(responseErrors, 'answer', []),
+              status: 'editing'
+            };
+            var cards = _.without(this.state.cards, card);
+            var cardWithErrors = _.assign(card, cardAttributes);
+            var allDeckCards = _.concat(cards, cardWithErrors);
+
+            this.setState({cards: allDeckCards});
+          } else {
+            this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
+          }
+        }.bind(this),
+        success: function(response) {
+          var savedCard = response;
+          var cards =  _.without(this.state.cards, card);
+          var allDeckCards = _.concat(cards, savedCard);
 
           this.setState({cards: allDeckCards});
-        } else {
-          this.addToFlashes("We're having trouble connecting to Card Pepper. Try saving the new card again or refresh the page.");
-        }
-      }.bind(this),
-      success: function(response) {
-        var savedCard = response;
-        var cards =  _.without(this.state.cards, card);
-        var allDeckCards = _.concat(cards, savedCard);
 
-        this.setState({cards: allDeckCards});
-        this.addToCardFlash(savedCard, 'Card saved.');
-      }.bind(this)
-    })
+          this.addToCardFlash(savedCard, 'Card saved.');
+        }.bind(this)
+      })
+    }
   },
 
   handleEditCardChange: function(event, card, fieldName) {
@@ -357,29 +397,121 @@ DecksEditView = React.createClass({
     })
   },
 
-  handleChangeCardStatusClick: function(card, newStatus) {
-    var cards = _.without(this.state.cards, card);
-    card.status = newStatus;
-    this.setState({cards: cards.concat(card)});
+  handleChangeCardStatusClick: function(event) {
+    var cardToChangeId = _.toNumber(event.target.dataset.callbackAttributeId);
+    var newStatus = event.target.dataset.callbackAttribute;
+    var allCards = this.state.cards;
+    var cardToChange = _.find(allCards, {id: cardToChangeId});
+
+    cardToChange.status = newStatus;
+    this.setState({cards: allCards});
 
     if (newStatus === 'DESTROY') {
-      this.handleDeleteCard(card);
+      this.handleDeleteCard(cardToChange);
     } else if (newStatus === 'saving') {
-      this.handleSaveEditedCard(card);
+      this.handleSaveEditedCard(cardToChange);
     } else if (newStatus === 'viewing') {
-      // reset the edited question and answer to what is saved on server
-      var cards = _.without(cards, card);
-      var resettedAttributes = {
-        edited_question: card.question,
-        edited_answer: card.answer,
+      // reset the edited question and answer to what is saved
+      var resetAttributes = {
+        edited_question: cardToChange.question,
+        edited_answer: cardToChange.answer,
         questionErrors: [],
         answerErrors: []
       };
-      var cardWithResettedAttributes = _.assign(card, resettedAttributes);
-      var cards = _.concat(cards, cardWithResettedAttributes);
-
-      this.setState({cards: cards});
+      _.assign(cardToChange, resetAttributes);
+      this.setState({cards: allCards});
     }
+  },
+
+  handleChangeCardEditStatus: function(event) {
+    var that = this;
+    var allCardEdits = this.state.cardEdits;
+    var newCardEditStatus = event.target.dataset.callbackAttribute;
+
+    // _.toNumber isn't for error handing, data- attributes are strings
+    var cardEditId = _.toNumber(event.target.dataset.callbackAttributeId);
+    var cardEditToChange = _.find(allCardEdits, function(ce) { return ce.id === cardEditId });
+
+    // if the editor wants to switch back to view the cardEdit, clear their pendingEditorReply
+    var pendingEditorReply = (newCardEditStatus === 'viewing') ? '' : cardEditToChange.pendingEditorReply
+
+    _.assign(cardEditToChange, {status: newCardEditStatus, pendingEditorReply: pendingEditorReply});
+    this.setState({cardEdits: allCardEdits});
+
+    // if cardEdit status is 'approving' or 'declining', make an ajax request
+    var statusIsApproving = (cardEditToChange.status === 'approving');
+    var statusIsDeclining = (cardEditToChange.status === 'declining');
+    var cardEditStatusIsApprovingOrDeclining = (statusIsApproving || statusIsDeclining);
+    if (cardEditStatusIsApprovingOrDeclining) {
+      window.setTimeout(function() {
+        that.updateCardEditOnServer(cardEditToChange);
+      }, 500)
+    }
+  },
+
+  updateCardEditOnServer: function(cardEdit) {
+    var cardEdit = cardEdit;
+    var cardEditId = cardEdit.id;
+    var that = this;
+
+    // Enum statuses in CardEdit.rb:
+    // pending: 0, declined: 1, approved: 2
+    if (cardEdit.status === 'declining') {
+      var serverCardEditStatus = 'declined'
+    } else if (cardEdit.status === 'approving') {
+      var serverCardEditStatus = 'approved'
+    } else {
+      var serverCardEditStatus = 'pending'
+    }
+
+    $.ajax({
+      url: '/card_edits/' + cardEdit.id,
+      data: {
+        deck_id: this.props.deckID,
+        card_id: cardEdit.card_id,
+        card_edit_id: cardEdit.id,
+        editor_response: cardEdit.pendingEditorReply,
+        status: serverCardEditStatus
+      },
+      method: 'PATCH',
+      dataType: 'json',
+      success: function(response) {
+        var savedCardEdit = response.data.cardEdit
+        var savedCard = response.data.card;
+
+        var clientCardEditToRemove = _.find(this.state.cardEdits, {id: savedCardEdit.id});
+        var clientCardToRemove = _.find(this.state.cards, {id: savedCard.id});
+
+        if (savedCardEdit.status === 'approved') {
+          this.removeAndInsertCard(clientCardToRemove, savedCard);
+          this.setState({cardEdits: _.without(this.state.cardEdits, clientCardEditToRemove)});
+        } else if (savedCardEdit.status === 'declined') {
+          this.setState({cardEdits: _.without(this.state.cardEdits, clientCardEditToRemove)});
+        }
+      }.bind(this),
+      error: function(response) {
+        // we don't really deal with failed validations, but the only thing that could
+        // easily fail is offline internet or an editor response that's too long (max is 5000)
+        // I dont think that will happen often, so we can save better error handling for later.
+
+        // Reset cards that may be failing/hanging because internet is down
+        var cardEditsState = this.state.cardEdits;
+        function revertFailingStates(cardEdit) {
+          if (cardEdit.status === 'approving') {
+            cardEdit.status = 'consideringApproving';
+            cardEdit.flash = ViewHelpers.standardInternetIsDownMessage;
+          } else if (cardEdit.status === 'declining') {
+            cardEdit.status = 'consideringDeclining';
+            cardEdit.flash = ViewHelpers.standardInternetIsDownMessage;
+          }
+          return cardEdit
+        }
+
+        var newCardEditsState = _.map(cardEditsState,revertFailingStates);
+        this.setState({cardEdits: newCardEditsState});
+
+      }.bind(this)
+    });
   },
 
   deckTitleData: function() {
@@ -395,7 +527,6 @@ DecksEditView = React.createClass({
 
   deckSettingsData: function() {
     return {
-      // maybe remove all these deck labels
       id: this.props.deckID,
       componentActive: ('Deck Settings' === this.state.activeComponent),
       settingsSavedRecently: this.state.deckSettingsSavedRecently,
@@ -414,9 +545,10 @@ DecksEditView = React.createClass({
           data={this.deckTitleData()}
         />
         <FlashList flashes={this.state.flashes} />
-        <DeckEditTabs
+        <DecksEditTabs
           activeComponent={this.state.activeComponent}
           cardSuggestionsCount={this.state.cardSuggestions.length}
+          cardsCount={this.state.cards.length}
 
           handleSwitchTab={this.handleSwitchTab}
         />
@@ -427,17 +559,21 @@ DecksEditView = React.createClass({
           onSaveClick={this.handleNewCardSave}
           onChange={this.handleNewCardChange}
         />
-        <CardList
+        <Decks.Edit.CardTable
           active={'Card List' === this.state.activeComponent}
-          cards={this.sortedCards()}
+          cards={ViewHelpers.sortCards(this.state.cards)}
 
           handleChangeCardStatusClick={this.handleChangeCardStatusClick}
           handleEditCardChange={this.handleEditCardChange}
         />
-        <CardSuggestionsList
-          active={'Card Suggestions' === this.state.activeComponent}
+        <CommunitySuggestionsList
+          active={'Community Suggestions' === this.state.activeComponent}
           cardSuggestions={this.state.cardSuggestions}
+          cards={this.state.cards}
+          cardEdits={this.state.cardEdits}
 
+          handleChangePendingEditorReply={this.handleChangePendingEditorReply}
+          handleChangeCardEditStatus={this.handleChangeCardEditStatus}
           handleApproveCardSuggestionClick={this.handleApproveCardSuggestionClick}
           handleDeclineCardSuggestionClick={this.handleDeclineCardSuggestionClick}
         />

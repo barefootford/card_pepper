@@ -9,13 +9,13 @@ class CardSuggestion < ActiveRecord::Base
   validates :user_id, presence: true
   validates :deck_id, presence: true
 
-  def self.addClientSideAttributes(card)
+  def self.addClientSideAttributes(cs)
     client_side_only_attributes = {
-      userID: card.user.id,
-      username: card.user.name
+      userID: cs.user.id,
+      username: cs.user.name
     }
 
-    card.attributes.merge(client_side_only_attributes)
+    cs.attributes.merge(client_side_only_attributes)
   end
 
   def self.saved

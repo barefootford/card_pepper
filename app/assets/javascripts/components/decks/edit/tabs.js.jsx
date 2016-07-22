@@ -1,4 +1,11 @@
-var DeckEditTabs = React.createClass({
+var DecksEditTabs = React.createClass({
+  propTypes: {
+    activeComponent: React.PropTypes.string.isRequired,
+    handleSwitchTab: React.PropTypes.func.isRequired,
+    cardsCount: React.PropTypes.number.isRequired,
+    cardSuggestionsCount: React.PropTypes.number.isRequired
+  },
+
   render: function() {
     var style = {
       marginBottom: '10px'
@@ -7,24 +14,28 @@ var DeckEditTabs = React.createClass({
     return (
       <div style={style} >
         <ul className="nav nav-tabs">
-          <DeckEditTab
+          <DeckTab
             text="New Card"
+            callbackAttribute="New Card"
             active={this.props.activeComponent === "New Card"}
             handleSwitchTab={this.props.handleSwitchTab}
           />
-          <DeckEditTab
-            text="Card List"
+          <DeckTab
+            text={ViewHelpers.pluralizeCard(this.props.cardsCount, true)}
+            callbackAttribute="Card List"
             active={this.props.activeComponent === "Card List"}
             handleSwitchTab={this.props.handleSwitchTab}
           />
-          <DeckEditTab
-            text="Card Suggestions"
-            active={this.props.activeComponent === "Card Suggestions"}
+          <DeckTab
+            text="Community Suggestions"
+            callbackAttribute="Community Suggestions"
+            active={this.props.activeComponent === "Community Suggestions"}
             handleSwitchTab={this.props.handleSwitchTab}
             cardSuggestionsCount={this.props.cardSuggestionsCount}
           />
-          <DeckEditTab
+          <DeckTab
             text="Deck Settings"
+            callbackAttribute="Deck Settings"
             active={this.props.activeComponent === "Deck Settings"}
             handleSwitchTab={this.props.handleSwitchTab}
           />

@@ -25,7 +25,7 @@ private
   end
 
   def current_user_owns(object)
-    current_user && (current_user == object.user)
+    current_user && (current_user.id == object.user_id)
   end
 
   def current_user
