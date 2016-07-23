@@ -9,7 +9,7 @@ Decks.Show.Tabs = React.createClass({
 
   render: function() {
     var style = {
-      marginBottom: '10px'
+      marginBottom: '-5px'
     };
 
     return (
@@ -33,6 +33,12 @@ Decks.Show.Tabs = React.createClass({
             active={this.props.activeComponent === "Card Edits"}
             handleSwitchTab={this.props.handleSwitchTab}
             callbackAttribute="Card Edits"
+          />
+          <DeckTab
+            text="Contributors"
+            active={this.props.activeComponent === "Contributors"}
+            handleSwitchTab={this.props.handleSwitchTab}
+            callbackAttribute="Contributors"
           />
         </ul>
       </div>

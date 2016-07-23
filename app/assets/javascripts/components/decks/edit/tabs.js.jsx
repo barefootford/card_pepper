@@ -8,7 +8,7 @@ var DecksEditTabs = React.createClass({
 
   render: function() {
     var style = {
-      marginBottom: '10px'
+      marginBottom: '-5px'
     };
 
     return (
