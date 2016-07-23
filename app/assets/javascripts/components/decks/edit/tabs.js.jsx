@@ -34,6 +34,12 @@ var DecksEditTabs = React.createClass({
             cardSuggestionsCount={this.props.cardSuggestionsCount}
           />
           <DeckTab
+            text="Contributors"
+            callbackAttribute="Contributors"
+            active={this.props.activeComponent === "Contributors"}
+            handleSwitchTab={this.props.handleSwitchTab}
+          />
+          <DeckTab
             text="Deck Settings"
             callbackAttribute="Deck Settings"
             active={this.props.activeComponent === "Deck Settings"}

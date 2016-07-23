@@ -149,11 +149,11 @@ Decks.Show.View = React.createClass({
           cards={ViewHelpers.sortCards(this.state.cards)}
           cardEdits={this.state.cardEdits}
         />
-        <Decks.Show.Contributors
+        <Decks.ContributorsTab
           active={this.state.activeComponent === 'Contributors'}
           deckId={this.props.deck.id}
         />
       </div>
     )
   }
-})
+});

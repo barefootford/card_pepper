@@ -577,6 +577,10 @@ Decks.Edit.View = React.createClass({
           handleApproveCardSuggestionClick={this.handleApproveCardSuggestionClick}
           handleDeclineCardSuggestionClick={this.handleDeclineCardSuggestionClick}
         />
+        <Decks.ContributorsTab
+          active={this.state.activeComponent === 'Contributors'}
+          deckId={this.props.deckID}
+        />
         <DeckSettings
           deckSettingsData={this.deckSettingsData()}
 

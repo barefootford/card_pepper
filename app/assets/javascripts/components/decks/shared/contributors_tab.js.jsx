@@ -1,4 +1,4 @@
-Decks.Show.Contributors = React.createClass({
+Decks.ContributorsTab = React.createClass({
   propTypes: {
     active: React.PropTypes.bool.isRequired,
     deckId: React.PropTypes.number.isRequired
