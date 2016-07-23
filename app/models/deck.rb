@@ -15,6 +15,7 @@ class Deck < ActiveRecord::Base
   # For ActiveModel::Serialization 
   def attributes
     {
+      'id' => nil,
       'updated_at' => nil,
       'title' => nil,
       'editor' => nil,

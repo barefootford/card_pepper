@@ -14,17 +14,14 @@ class DecksController < ApplicationController
 
   def show
     @card_suggestion = CardSuggestion.new
-    @card_suggestions = @deck.card_suggestions.select {|cs| cs.pending?}
+    @card_suggestions = @deck.card_suggestions.pending
       .map {|cs| CardSuggestion.addClientSideAttributes(cs)}
-    # need to make this scoped to only include pendign card edits, like in #edit
-    @cards = deck.cards.includes(:user, :card_edits)
+    @cards = deck.cards.active.includes(:user, :card_edits)
     @cards_with_client_side_attributes = @cards.collect do |card|
       card = Card.addClientSideAttributes(card)
     end
 
-    @card_edits = @cards.collect {|card| card.card_edits}
-      .flatten
-      .select {|ce| ce.pending? }
+    @card_edits = @cards.collect {|card| card.card_edits.pending}.flatten
       .map {|ce| ce.serializable_hash }
 
     set_deck_subscription if current_user.present?
@@ -88,6 +85,53 @@ class DecksController < ApplicationController
     else
       render :new
     end
+  end
+
+      # {
+      #   name: 'Andrew',
+      #   url: '/users/1',
+      #   contributionText: '9 New Cards, 3 Card Edits'
+      #  }
+      # ]
+
+  def contributors
+    @deck = Deck.where(id:params[:id]).includes(:cards).first
+    card_ids = @deck.cards.collect {|c| c.id}
+
+    deck_card_suggestions = CardSuggestion.approved.where(deck_id: @deck.id)
+    deck_card_edits = CardEdit.approved.where(card_id: card_ids)
+
+    cs_user_ids = deck_card_suggestions.collect {|cs| cs.user_id}
+    ce_user_ids = deck_card_edits.collect{|ce| ce.user_id}
+    combined_user_ids = (cs_user_ids + ce_user_ids).uniq
+
+    contributors = User.where(id: [combined_user_ids])
+
+    response = contributors.collect do |c|
+      card_edit_count = deck_card_edits.select {|ce| ce.user_id == c.id }.size
+      card_suggestions_count = deck_card_suggestions.select {|cs| cs.user_id == c.id }.size
+      ce_and_cs = (card_edit_count > 0 && card_suggestions_count > 0)
+
+      if card_edit_count > 0
+        card_edit_text = "#{card_edit_count} #{"Card edit".pluralize(card_edit_count)}"
+      else
+        card_edit_text = ''
+      end
+
+      if card_suggestions_count > 0
+        card_suggestions_text = " #{card_suggestions_count} #{"Card Suggestion".pluralize(card_suggestions_count)}"
+      else
+        card_suggestions_text = ''
+      end
+
+      {
+        name: c.name,
+        url: user_path(c),
+        contributionText: "#{card_edit_text}#{"," if ce_and_cs}#{card_suggestions_text}"
+      }
+    end
+  
+    render json: response
   end
 
 private
