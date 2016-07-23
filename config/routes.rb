@@ -1,13 +1,13 @@
 Pepper::Application.routes.draw do
 
-  root 'dashboards#show'
+  root 'dashboard#show'
   #static pages
   get 'beta' => 'pages#beta', as: 'beta'
   get 'requestafeature' => 'pages#request_feature'
   get 'reportabug' => 'pages#report_bug'
 
   get 'anki-import' => 'decks#anki_import', as: 'anki-import'
-  get 'dashboard' => 'dashboards#show', as: 'dashboard'
+  get 'dashboard' => 'dashboard#show', as: 'dashboard'
 
   resources :users
   get 'users/:id/delete' => 'users#delete', as: 'user_delete'
