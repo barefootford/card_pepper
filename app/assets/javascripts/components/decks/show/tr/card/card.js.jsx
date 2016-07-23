@@ -23,6 +23,11 @@ Decks.Show.TR.Card = React.createClass({
             <AnswerLabel />
             <br/>
             {card.answer}<br/>
+
+            <div className='row'>
+              <div className='col-md-8'></div>
+              <SubmittedByCol4 card={card} />
+            </div>
           </td>
         </tr>
       )
