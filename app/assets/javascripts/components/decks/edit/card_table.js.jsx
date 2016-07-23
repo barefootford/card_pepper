@@ -7,9 +7,23 @@ Decks.Edit.CardTable = React.createClass({
   },
 
   render: function() {
-    if (this.props.active) {
-      var that = this;
+    var active = this.props.active;
 
+    if (active && this.props.cards.length === 0) {
+      return(
+        <table className='table table-striped'>
+          <tbody>
+              <tr key={"tableHeaderRow"}>
+                <th>Question & Answer</th>
+              </tr>
+              <tr key='nocards'>
+                <td>Looks like it's time to create some cards.</td>
+              </tr>
+          </tbody>
+        </table>
+      )
+    } else if (active && this.props.cards.length > 0) {
+      var that = this;
       return(
         <table className='table table-striped'>
           <tbody>
