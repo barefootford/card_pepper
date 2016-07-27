@@ -29,7 +29,7 @@ private
   end
 
   def current_user
-    @current_user ||= User.find(cookies.signed[:user_id]) if cookies.signed[:user_id].present?
+    @current_user ||= User.where(id: cookies.signed[:user_id]).includes(:decks, :deck_favorites).first if cookies.signed[:user_id].present?
   end
 
   def require_sign_in

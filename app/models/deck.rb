@@ -4,6 +4,7 @@ class Deck < ActiveRecord::Base
   belongs_to :user
   has_many :card_suggestions, dependent: :destroy
   has_many :cards, dependent: :destroy
+  has_many :deck_favorites, dependent: :destroy
 
   validates :title, length: { minimum: 5, maximum: 65 }
   validates :instructions, length: { minimum: 0, maximum: 3000 }, allow_blank: true
@@ -18,9 +19,10 @@ class Deck < ActiveRecord::Base
       'id' => nil,
       'updated_at' => nil,
       'title' => nil,
-      'editor' => nil,
       'instructions' => nil,
-      'user_id' => nil
+      'user_id' => nil,
+      'edit_deck_path' => nil,
+      'deck_path' => nil
     }
   end
 
@@ -32,16 +34,27 @@ class Deck < ActiveRecord::Base
     end
   end
 
-  def owner
-    self.user
-  end
-
   def any_card_suggestions_pending?
     card_suggestions.pending.any?
   end
 
   def card_count
     cards.count
+  end
+
+  def deck_path
+    deck = self
+    Rails.application.routes.url_helpers.deck_path(deck)
+  end
+
+  def edit_deck_path
+    deck = self
+    Rails.application.routes.url_helpers.edit_deck_path(deck)
+  end
+
+  def deck_path
+    deck = self
+    Rails.application.routes.url_helpers.deck_path(deck)
   end
 
   def file_name

@@ -10,8 +10,6 @@ class DeckSubscription < ActiveRecord::Base
   validates :user_id, presence: true
   validates :deck_id, presence: true
 
-  scope :inactive, -> { where(status:1) }
-
   def sync
     create_user_cards
   end

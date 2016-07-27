@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
-  has_many :deck_subscriptions
+  has_many :deck_subscriptions, dependent: :destroy
+  has_many :deck_favorites, dependent: :destroy
 
   has_secure_password
 
@@ -20,6 +21,8 @@ class User < ActiveRecord::Base
       'name' => nil,
       'id' => nil,
       'website' => nil,
+      'profile_path' => nil,
+      'deck_favorites_ids' => nil
     }
   end
 
@@ -54,6 +57,15 @@ class User < ActiveRecord::Base
 
   def website?
     return true unless website.blank?
+  end
+
+  def deck_favorites_ids
+    deck_favorites.collect {|df| df.deck_id}
+  end
+
+  def profile_path
+    user = self
+    Rails.application.routes.url_helpers.user_path(user)
   end
 
   def website=(website)

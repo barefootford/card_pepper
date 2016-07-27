@@ -1,26 +1,5 @@
-<div class='row'>
-  <div class='col-md-8'>
-    <% if @decks.any? %>
-      <p>Your Decks:</p>
-      <% @decks.each do |deck| %>
-        <%= render 'decks/title', deck: deck %>
-        <% if deck.any_card_suggestions_pending? %>
-          <br>
-            <small>
-              <%= link_to "#{pluralize(deck.card_suggestions.pending.count, 'card')} awaiting approval.", edit_deck_path(deck), class:'no-link-primary' %>
-            </small>
-        <% end %>
-      <% end %>
-    <% end %>
+<%= react_component('Dashboard', currentUser: current_user, ownedDecks: @owned_decks, favoritedDecks: @favorited_decks, favoritedDecksEditors: @favorited_decks_editors) %>
 
-    <p>
-      <br><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %>
-    </p>
-  </div>
-</div>
-
-<script>
-  $(document).ready(function(){
-    $('.hideable').removeClass('hidden');
-  });
-</script>
+<br><br>
+<p><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %>
+</p>

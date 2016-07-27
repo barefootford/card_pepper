@@ -22,7 +22,7 @@ var DeckTitle = React.createClass({
   render: function() {
     var data = this.props.data;
     var headStyle = {
-      marginBottom: '-4px'
+      marginBottom: '-20px'
     };
 
     var cardCountString = ViewHelpers.pluralizeCard(data.cards.length);
@@ -31,13 +31,17 @@ var DeckTitle = React.createClass({
 
     return (
       <div>
-        <h3 style={headStyle}>{data.deckTitle}</h3>
+        <h3 style={headStyle}>{data.deckTitle}
+        </h3>
+
         <small>
           by <a href={"/users/" + data.deckEditor.id}>{data.deckEditor.name}</a>
           {' | ' + cardCountString}
           {' | ' + contributionString }
-          { this.editLink() }
+          <Heart status='pending'/>
         </small>
+        { this.editLink() }
+        <div><QuietLabel text="You like this deck." /></div>
         <hr/>
       </div>
     )

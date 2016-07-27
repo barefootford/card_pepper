@@ -1,5 +1,7 @@
 Pepper::Application.routes.draw do
 
+  resources :deck_favorites, only: [:create, :destroy]
+
   root 'dashboard#show'
   #static pages
   get 'beta' => 'pages#beta', as: 'beta'
