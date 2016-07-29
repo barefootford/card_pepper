@@ -1,46 +1,42 @@
 <div class='row'>
   <div class='col-md-8'>
-    <h1 class='less-bottom-margin'><%= @user.name %></h1>
-    <p>    
+    <h1 class='less-bottom-margin'>
+      <%= @user.name %>
+    </h1>
+    <small>
       <% if @user.new? %>
-        <span class='label label-primary label-margin'>New User</span>
+        New User
       <% else %>
-        <span class='label label-primary label-margin'>Veteran</span>
-      <% end  %>
-      
-      <span class='label label-default label-margin'>
-        <%= @user.created_at.strftime("%B %Y")%>
-      </span>  
-      
-      <span class='label label-default label-margin'>
-        <%= number_of_cards(@user.cards.count) %>
-      </span>
-      
-      <span class='label label-default label-margin'>
-        <%= number_of("deck", @user.decks.count) %>
-      </span>
-    </p>
-    <h5>Decks:</h5>
-    <% if @user.decks.any? %>
-      <% @user.decks.each do |deck| %>
-        <small>
-          <%= link_to deck.title, deck %>
-          (<%= number_of_cards(deck.cards.count) %>)
-        </small><br>
+        Veteran
       <% end %>
-    <% else %>
-      <%= "#{@user.name} doesn't manage any decks yet."  %>  
-    <% end %>
 
-    <h5>Website:</h5>
-    <p>
-      <% if @user.website? %>  
-        <%= link_to @user.website.truncate(70), url_for(@user.website), rel:"nofollow"  %>
-      <% else %>
-        No website listed.
-      <% end %>
-    </p>   
-  </div>
-  <div class='col-md-4'>
+      <%= ' | '+ @user.created_at.strftime("%B %Y")%>
+      <%= ' | '+ number_of_cards(@user.cards.count) + ' created' %>
+      <%= ' | '+ number_of('deck', @user.decks.count) + ' created' %>
+    </small>
+
+    <% if @user.website.present? %>
+      <br>
+      <div>
+        <small class='quietGrey'>website: <%= link_to @user.website.truncate(70), url_for(@user.website), rel:"nofollow" %></small>
+      </div>
+    <% end %>
+    <hr>
+
+    <% if @user.decks.any? %>
+      <div>
+        <small class='quietGrey'>decks:</small><br>
+        <% @user.decks.each do |deck| %>
+          <div>
+            <h4 style="margin-bottom: -6px;"><%= link_to(deck.title, deck, class: 'no-link-primary') %></h4>
+            <small>
+              <%= "#{deck.cards.select(&:active?).count} #{"card".pluralize(deck.cards.select(&:active?).count)}" %>
+              | <%= "#{deck.card_edits.select(&:approved?).count} approved #{"card edit".pluralize(deck.card_edits.select(&:approved?).count)}" %>
+              | <%= "#{deck.card_suggestions.select(&:approved?).count} approved #{"card suggestion".pluralize(deck.card_suggestions.select(&:approved?).count)}" %>
+            </small>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

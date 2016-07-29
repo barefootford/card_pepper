@@ -21,6 +21,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    @user = User.where(id: params[:id]).includes(:decks, :cards).first
+  end
+
   def edit
     @user = user
   end
@@ -41,6 +45,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete
+    @user = user
+  end
+
   def update_password
     @user = user
 
@@ -53,14 +61,6 @@ class UsersController < ApplicationController
     else
       render :edit_password
     end
-  end
-
-  def delete
-    @user = user
-  end
-
-  def show
-    @user = User.find(params[:id])
   end
 
   def destroy
