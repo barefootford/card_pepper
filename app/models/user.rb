@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
-  has_many :deck_subscriptions
+  has_many :deck_subscriptions, dependent: :destroy
+  has_many :deck_favorites, dependent: :destroy
 
   has_secure_password
 
@@ -13,13 +14,18 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, length: { minimum: 2, maximum: 100 }
   validates :password, length: { minimum: 6, maximum: 20, allow_blank: true }
 
-  # For ActiveModel::Serialization
-  # call .serializable_hash or .to_json
+  # .attributes is for ActiveModel::Serialization
+  # Call .serializable_hash or .to_json
   def attributes
     {
       'name' => nil,
       'id' => nil,
       'website' => nil,
+      'profilePath' => nil,
+      # deck_favorites
+      'deckFavoritesIds' => nil,
+      'updatingDeckFavorites' => nil,
+      'userSawWelcomeMessage' => nil
     }
   end
 
@@ -44,6 +50,16 @@ class User < ActiveRecord::Base
     @card_suggestions
   end
 
+  def userSawWelcomeMessage
+    self.user_saw_welcome_message == true
+  end
+
+  def updatingDeckFavorites
+    # client side attribute
+    false
+  end
+
+
   def name
     "#{first_name} #{last_name}"
   end
@@ -54,6 +70,15 @@ class User < ActiveRecord::Base
 
   def website?
     return true unless website.blank?
+  end
+
+  def deckFavoritesIds
+    deck_favorites.collect {|df| df.deck_id}.to_a
+  end
+
+  def profilePath
+    user = self
+    Rails.application.routes.url_helpers.user_path(user)
   end
 
   def website=(website)

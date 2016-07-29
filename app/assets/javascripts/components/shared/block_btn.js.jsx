@@ -1,6 +1,7 @@
 var BlockBtn = React.createClass({
   propTypes: {
     onClick: React.PropTypes.func.isRequired,
+    href: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired,
     savingText: React.PropTypes.string,
     callbackAttribute: React.PropTypes.string,
@@ -17,14 +18,29 @@ var BlockBtn = React.createClass({
   },
 
   render: function() {
-    return(
-      <button
-        style={this.style}
-        onClick={this.props.onClick}
-        className={'btn btn-block ' + this.btnColor()}
-      >
-        {this.props.text}
-      </button>
-    )
+    var href = this.props.href;
+    var hrefPresent = href && href.length > 0;
+
+    if (hrefPresent) {
+      return (
+        <a
+          style={this.style}
+          className={'btn btn-block ' + this.btnColor()}
+          href={href}
+        >
+          {this.props.text}
+        </a>
+      )
+    } else {
+      return(
+        <button
+          style={this.style}
+          onClick={this.props.onClick}
+          className={'btn btn-block ' + this.btnColor()}
+        >
+          {this.props.text}
+        </button>
+      )
+    }
   }
 });

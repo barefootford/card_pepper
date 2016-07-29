@@ -2,11 +2,13 @@ class DashboardController < ApplicationController
   before_action :require_sign_in
   before_action :must_be_beta_approved
 
+  # has_many decks, through deck_favorites?
+
   def show
-    @user = User.where(id: current_user.id).includes(:decks).first
-    @decks = @user.decks
-    # @deck_subscriptions = @user.deck_subscriptions.active
-    # @deck_subscriptions.each { |ds| ds.sync }
-    # @inactive_deck_subscriptions = @user.deck_subscriptions.inactive
+    @owned_decks = current_user.decks.map(&:serializable_hash)
+    deck_favorites_ids = current_user.deck_favorites.collect(&:deck_id)
+
+    @favorited_decks = Deck.where.not(user_id: current_user.id).where(id: deck_favorites_ids).includes(:user)
+    @favorited_decks_editors = @favorited_decks.collect(&:user)
   end
 end

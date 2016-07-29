@@ -1,7 +1,12 @@
 Decks.Edit.View = React.createClass({
+  propTypes: {
+  },
+
   getInitialState: function() {
     return(
       {
+        deckEditor: this.props.deckEditor,
+        currentUser: this.props.currentUser,
         // Use addToFlashes() so flashes are auto removed
         flashes: [],
         activeComponent: 'Card List',
@@ -14,7 +19,7 @@ Decks.Edit.View = React.createClass({
         cardSuggestions: this.props.cardSuggestions,
 
         cardEdits: this.props.cardEdits,
-        deckTitle: this.props.initialTitle, 
+        deckTitle: this.props.initialTitle,
         deckTitleUpdated: this.props.initialTitle,
         deckTitleUpdatedErrors: [],
         deckInstructions: this.props.instructions,
@@ -23,6 +28,25 @@ Decks.Edit.View = React.createClass({
         deckUserConsideringDeleting: false
       }
     )
+  },
+
+  // For now we use this for Deck Title,
+  // But ultimately we should come up with a more robust
+  // way of storing the normal deck.serializable_hash
+  // and the editable (editing?) attributes
+  readOnlyDeck: function() {
+    var frozenDeck = {
+      id: this.props.deck.id,
+      title: this.state.deckTitle,
+      instructions: this.state.deckInstructions,
+      user_id: this.props.deck.user_id,
+      edit_deck_path: this.props.deck.edit_deck_path,
+      deck_path: this.props.deck.deck_path,
+      download_path: this.props.deck.download_path
+    };
+    Object.freeze(frozenDeck);
+
+    return frozenDeck;
   },
 
   deckSettingsSaved: function() {
@@ -160,22 +184,6 @@ Decks.Edit.View = React.createClass({
 
     this.setState({cards: newCardsState});
   },
-
-  removeAndInsertCardEdit: function(cardEditToRemove, optionalCardEditToInsert) {
-    debugger
-    var optionalCardGiven = _.isObject(optionalCardEditToInsert);
-    var cardEditsState = this.state.cardEdits;
-    var cardEditsWithoutCardEditToRemove = _.without(cardEditsState, cardEditToRemove);
-
-    if (optionalCardGiven) {
-      var newCardEditsState = _.concat(cardEditsWithoutCardEditToRemove, optionalCardEditToInsert);
-    } else {
-      var newCardEditsState = cardEditsWithoutCardEditToRemove;
-    }
-
-    this.setState({cards: newCardEditsState});
-  },
-
 
   findCardByID: function(cardID) {
     var cards = this.state.cards;
@@ -397,6 +405,76 @@ Decks.Edit.View = React.createClass({
     })
   },
 
+  createDeckFavorite: function() {
+    var updatedCurrentUser = this.state.currentUser;
+    updatedCurrentUser.updatingDeckFavorites = true;
+
+    this.setState({currentUser: updatedCurrentUser})
+
+    $.ajax({
+      url: '/deck_favorites',
+      method: 'POST',
+      data: {
+        deck: {
+          id: this.props.deck.id
+        }
+      },
+      success: function(response) {
+        var updatedCurrentUser = this.state.currentUser;
+
+        updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+        updatedCurrentUser.updatingDeckFavorites = false
+
+        this.setState({currentUser: updatedCurrentUser});
+      }.bind(this),
+      error: function(response) {
+        if (response.data && response.data.deckFavoritesIds) {
+          var updatedCurrentUser = this.state.currentUser;
+
+          updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+          updatedCurrentUser.updatingDeckFavorites = false
+
+          this.setState({currentUser: updatedCurrentUser});
+        }
+      }.bind(this)
+    });
+  },
+
+  destroyDeckFavorite: function() {
+    var updatedCurrentUser = this.state.currentUser;
+    updatedCurrentUser.updatingDeckFavorites = true;
+
+    this.setState({currentUser: updatedCurrentUser});
+
+    $.ajax({
+      url: '/deck_favorites/' + this.props.deck.id,
+      method: 'DELETE',
+      data: {
+        deck: {
+          id: this.props.deck.id
+        }
+      },
+      success: function(response) {
+        var updatedCurrentUser = this.state.currentUser;
+
+        updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+        updatedCurrentUser.updatingDeckFavorites = false
+
+        this.setState({currentUser: updatedCurrentUser});
+      }.bind(this),
+      error: function(response) {
+        if (response.data && response.data.deckFavoritesIds) {
+          var updatedCurrentUser = this.state.currentUser;
+
+          updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+          updatedCurrentUser.updatingDeckFavorites = false
+
+          this.setState({currentUser: updatedCurrentUser});
+        }
+      }.bind(this)
+    })
+  },
+
   handleChangeCardStatusClick: function(event) {
     var cardToChangeId = _.toNumber(event.target.dataset.callbackAttributeId);
     var newStatus = event.target.dataset.callbackAttribute;
@@ -514,17 +592,6 @@ Decks.Edit.View = React.createClass({
     });
   },
 
-  deckTitleData: function() {
-    return {
-      deckID: this.props.deckID,
-      deckTitle: this.state.deckTitle,
-      deckEditor: this.props.deckEditor,
-      currentUser: this.props.currentUser,
-      cards: this.state.cards,
-      currentPage: this.props.currentPage
-    }
-  },
-
   deckSettingsData: function() {
     return {
       id: this.props.deckID,
@@ -542,8 +609,15 @@ Decks.Edit.View = React.createClass({
     return(
       <div>
         <DeckTitle
-          data={this.deckTitleData()}
+          deck={this.readOnlyDeck()}
+          deckEditor={this.state.deckEditor}
+          currentUser={this.state.currentUser}
+          cards={this.state.cards}
+          currentPage='edit'
+          createDeckFavorite={this.createDeckFavorite}
+          destroyDeckFavorite={this.destroyDeckFavorite}
         />
+
         <FlashList flashes={this.state.flashes} />
         <DecksEditTabs
           activeComponent={this.state.activeComponent}
