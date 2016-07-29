@@ -20,7 +20,7 @@ var Dashboard = React.createClass({
     this.setState({currentUser: updatedCurrentUser});
     // some ajax to actually update it on the server.
     $.ajax({
-      url: 'users/' + this.props.currentUser.id,
+      url: '/users/' + this.props.currentUser.id,
       method: 'PATCH',
       data: {
         user: {
