@@ -27,10 +27,17 @@ class UsersController < ApplicationController
 
   def update
     @user = user
+
     if @user.update(user_params)
-      redirect_to @user, notice: 'Account updated.'
+      respond_to do |format|
+        format.html { redirect_to @user, notice: 'Account updated.' }
+        format.json { render json: @user }
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: @user, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -70,7 +77,7 @@ private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :website,
-      :email, :password, :password_confirmation)
+      :email, :password, :password_confirmation, :user_saw_welcome_message)
   end
 
   def password_params

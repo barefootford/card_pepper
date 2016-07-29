@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
 
   def show
     @owned_decks = current_user.decks.map(&:serializable_hash)
-    deck_favorites_ids = current_user.deck_favorites.select(&:deck_id)
+    deck_favorites_ids = current_user.deck_favorites.collect(&:deck_id)
 
     @favorited_decks = Deck.where.not(user_id: current_user.id).where(id: deck_favorites_ids).includes(:user)
     @favorited_decks_editors = @favorited_decks.collect(&:user)

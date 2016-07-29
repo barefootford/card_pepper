@@ -11,27 +11,33 @@ class Deck < ActiveRecord::Base
   validates :user_id, presence: :true
 
   # There has gotta be an Active Record method scope for this
+  # ...Also this might not even be necessary because we're
+  # not using rails forms for decks/cards anymore
   scope :saved, lambda { where('id > 0') }
 
   # For ActiveModel::Serialization 
   def attributes
     {
       'id' => nil,
-      'updated_at' => nil,
       'title' => nil,
       'instructions' => nil,
       'user_id' => nil,
       'edit_deck_path' => nil,
-      'deck_path' => nil
+      'deck_path' => nil,
+      'download_path' => nil
     }
   end
 
-  def _instructions
-    if instructions.present?
-      instructions
-    else
+  def instructions
+    if self[:instructions].blank?
       "This deck doesn't have instructions yet."
+    else
+      self[:instructions]
     end
+  end
+
+  def download_path
+    self.deck_path + '.csv'
   end
 
   def any_card_suggestions_pending?

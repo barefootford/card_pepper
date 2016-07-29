@@ -3,28 +3,24 @@ class DecksController < ApplicationController
   before_action :deck, only: [:show, :edit, :update, :destroy, :download]
   before_action :require_creator, only: [:edit, :update, :destroy]
   before_action :dont_show_edit_button, only: [:show]
-  before_action :do_show_edit_button, only: [:edit]
   before_action :must_be_beta_approved
 
-  def anki_import
-    respond_to do |format|
-      format.js { render :anki_import }
-    end
-  end
-
   def show
-    @card_suggestion = CardSuggestion.new
-    @card_suggestions = @deck.card_suggestions.pending
+    @deck_editor = deck.user
+    @card_suggestions = @deck.card_suggestions.select {|cs| cs.pending?}
       .map {|cs| CardSuggestion.addClientSideAttributes(cs)}
-    @cards = deck.cards.active.includes(:user, :card_edits)
+
+    puts "before @cards"
+    @cards = deck.cards.saved.active.includes(:user, :card_edits)
+    puts 'after @cards'
     @cards_with_client_side_attributes = @cards.collect do |card|
       card = Card.addClientSideAttributes(card)
     end
+    puts 'after @cards_with_client_side_attributes'
 
-    @card_edits = @cards.collect {|card| card.card_edits.pending}.flatten
-      .map {|ce| ce.serializable_hash }
-
-    set_deck_subscription if current_user.present?
+    @card_edits = @cards.collect(&:card_edits).flatten
+      .select {|ce| ce.pending? }
+      .map(&:serializable_hash)
 
     respond_to do |format|
       format.html
@@ -39,8 +35,7 @@ class DecksController < ApplicationController
     end
 
     @deck_editor = @deck.user
-    @new_card = @deck.cards.build
-    @cards = @deck.cards.saved.includes(:user, :card_edits)
+    @cards = @deck.cards.saved.active.includes(:user, :card_edits)
 
     @cards_with_client_side_attributes = @cards.collect do |card|
       card = Card.addClientSideAttributes(card)
@@ -48,7 +43,7 @@ class DecksController < ApplicationController
 
     @card_edits = @cards.collect {|card| card.card_edits }.flatten
       .select {|ce| ce.pending? }
-      .map {|ce| ce.serializable_hash }
+      .map(&:serializable_hash)
   end
 
   def update
@@ -151,10 +146,6 @@ private
     @show_edit_button = false
   end
 
-  def do_show_edit_button
-    @show_edit_button = true
-  end
-
   def require_creator
     unless current_user && current_user == deck.user
       redirect_to root_url, notice: "Only the deck's creator can edit the deck."
@@ -167,7 +158,6 @@ private
 
   def deck
     @deck ||= Deck.includes(:user, :card_suggestions).find(params[:id])
-    # users = User.includes(:address, friends: [:address, :followers])
   end
 
   def deck_params

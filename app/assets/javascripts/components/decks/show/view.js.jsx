@@ -1,6 +1,15 @@
 Decks.Show.View = React.createClass({
+  propTypes: {
+    cards: React.PropTypes.array.isRequired,
+    cardSuggestions: React.PropTypes.array.isRequired,
+    cardEdits: React.PropTypes.array.isRequired,
+    deck: React.PropTypes.object.isRequired,
+    currentUser: React.PropTypes.object.isRequired
+  },
+
   getInitialState: function() {
     return {
+      currentUser: this.props.currentUser,
       activeComponent: 'Card List',
       cards: this.props.cards,
       cardSuggestions: this.props.cardSuggestions,
@@ -20,6 +29,76 @@ Decks.Show.View = React.createClass({
     // CardEdits are children of cards. So a card edit
     // question and answer is part of a card until we
     // create the cardEdit on the server.
+  },
+
+  createDeckFavorite: function() {
+    var updatedCurrentUser = this.state.currentUser;
+    updatedCurrentUser.updatingDeckFavorites = true;
+
+    this.setState({currentUser: updatedCurrentUser})
+
+    $.ajax({
+      url: '/deck_favorites',
+      method: 'POST',
+      data: {
+        deck: {
+          id: this.props.deck.id
+        }
+      },
+      success: function(response) {
+        var updatedCurrentUser = this.state.currentUser;
+
+        updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+        updatedCurrentUser.updatingDeckFavorites = false
+
+        this.setState({currentUser: updatedCurrentUser});
+      }.bind(this),
+      error: function(response) {
+        if (response.data && response.data.deckFavoritesIds) {
+          var updatedCurrentUser = this.state.currentUser;
+
+          updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+          updatedCurrentUser.updatingDeckFavorites = false
+
+          this.setState({currentUser: updatedCurrentUser});
+        }
+      }.bind(this)
+    })
+  },
+
+  destroyDeckFavorite: function() {
+    var updatedCurrentUser = this.state.currentUser;
+    updatedCurrentUser.updatingDeckFavorites = true;
+
+    this.setState({currentUser: updatedCurrentUser})
+
+    $.ajax({
+      url: '/deck_favorites/' + this.props.deck.id,
+      method: 'DELETE',
+      data: {
+        deck: {
+          id: this.props.deck.id
+        }
+      },
+      success: function(response) {
+        var updatedCurrentUser = this.state.currentUser;
+
+        updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+        updatedCurrentUser.updatingDeckFavorites = false
+
+        this.setState({currentUser: updatedCurrentUser});
+      }.bind(this),
+      error: function(response) {
+        if (response.data && response.data.deckFavoritesIds) {
+          var updatedCurrentUser = this.state.currentUser;
+
+          updatedCurrentUser.deckFavoritesIds = response.data.deckFavoritesIds
+          updatedCurrentUser.updatingDeckFavorites = false
+
+          this.setState({currentUser: updatedCurrentUser});
+        }
+      }.bind(this)
+    })
   },
 
   addToCardFlash: function(card, flash) {
@@ -116,8 +195,26 @@ Decks.Show.View = React.createClass({
   },
 
   render: function() {
+    var deck = this.props.deck;
+
     return (
       <div>
+        <DeckTitle
+          deck={deck}
+          deckEditor={this.props.deckEditor}
+          currentUser={this.state.currentUser}
+          cards={this.state.cards}
+          currentPage={'show'}
+          createDeckFavorite={this.createDeckFavorite}
+          destroyDeckFavorite={this.destroyDeckFavorite}
+        />
+        <DeckInstructions instructions={deck.instructions} />
+        <BlockBtn
+          primary
+          text='Download Deck'
+          onClick={doNothing}
+          href={deck.download_path}
+        />
         <br/>
         <hr/>
 
@@ -133,7 +230,7 @@ Decks.Show.View = React.createClass({
           deck={this.props.deck}
           active={this.state.activeComponent === 'Card List'}
           cards={ViewHelpers.sortCards(this.state.cards)}
-          currentUser={this.props.currentUser}
+          currentUser={this.state.currentUser}
           handleChangeCardStatusClick={this.handleChangeCardStatusClick}
           handleCardChange={this.handleCardChange}
         />

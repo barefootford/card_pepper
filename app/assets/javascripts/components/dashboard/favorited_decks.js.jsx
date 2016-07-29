@@ -14,7 +14,11 @@ var FavoritedDecks = React.createClass({
     if (anyFavoritedDecks) {
       return (
         <div>
-          <QuietLabel text={'Decks you <3 and contribute to:'}/>
+          <QuietLabel text={'Decks you '}/>
+          <small><Heart style={{color: 'rgb(188, 195, 202)'}}/></small>
+          <QuietLabel text={' and contribute to:'}/>
+          <br/>
+
           {
             _.map(favoritedDecks, function(deck) {
               var deckEditor = _.find(favoritedDecksEditors, {id: deck.user_id});
@@ -31,8 +35,12 @@ var FavoritedDecks = React.createClass({
     } else {
       return (
         <div>
-          <QuietLabel text='Decks you <3 and contribute to:'/>
-          <small>{"<3"} decks and they'll show up here so you can follow them easily.</small>
+          <QuietLabel text='Other community decks you follow:'/>
+          <div>
+            <small>
+              <Heart/> decks and they'll show up here.
+            </small>
+          </div>
         </div>
       )
     }

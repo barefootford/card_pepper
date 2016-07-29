@@ -43,7 +43,7 @@ var DashboardDeckTitle = React.createClass({
           By{" "}
           <A
             text={deckEditor.name}
-            href={deckEditor.profile_path}
+            href={deckEditor.profilePath}
           />
           {this.editOrViewDeckBtn()}
         </small>

@@ -3,6 +3,7 @@ var XsBtn = React.createClass({
     text: React.PropTypes.string.isRequired,
     // Pass in an empty anonymous function when you don't
     // want an onClick function. (ie: while 'saving')
+    href: React.PropTypes.string,
     onClick: React.PropTypes.func.isRequired,
     callbackAttribute: React.PropTypes.string,
     callbackAttributeId: React.PropTypes.number,
@@ -23,7 +24,7 @@ var XsBtn = React.createClass({
     }
   },
 
-  btnClass: function() {
+  btnClasses: function() {
     var disabledClass = this.props.disabled ? ' disabled ' : ''
     var addlClassesStr = _.toString(this.props.additionalClasses + disabledClass);
 
@@ -37,16 +38,30 @@ var XsBtn = React.createClass({
   },
 
   render: function() {
-    return(
-      <button
-        onClick={this.props.onClick}
-        className={this.btnClass()}
-        style={this.style()}
-        data-callback-attribute={this.props.callbackAttribute}
-        data-callback-attribute-id={this.props.callbackAttributeId}
-      >
-        {this.props.text}
-      </button>
-    )
+    if (this.props.href && this.props.href.length > 0) {
+      return (
+        <a
+          href={this.props.href}
+          className={this.btnClasses()}
+          style={this.style()}
+          data-callback-attribute={this.props.callbackAttribute}
+          data-callback-attribute-id={this.props.callbackAttributeId}
+        >
+          {this.props.text}
+        </a>
+      )
+    } else {
+      return (
+        <span
+          onClick={this.props.onClick}
+          className={this.btnClasses()}
+          style={this.style()}
+          data-callback-attribute={this.props.callbackAttribute}
+          data-callback-attribute-id={this.props.callbackAttributeId}
+        >
+          {this.props.text}
+        </span>
+      )
+    }
   }
 });

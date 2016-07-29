@@ -1,5 +1,5 @@
 <div class='row'>
   <div class='col-md-8'>
-    <%= react_component('Decks.Edit.View', initialTitle: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions_with_client_side_attributes, currentUser: @current_user.serializable_hash, deckEditor: @deck_editor.serializable_hash, currentPage: 'edit') %>
+    <%= react_component('Decks.Edit.View', deck: @deck.serializable_hash, initialTitle: @deck.title.to_s, instructions: @deck.instructions.to_s, deckID: @deck.id, cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions_with_client_side_attributes, currentUser: @current_user.serializable_hash, deckEditor: @deck_editor.serializable_hash, currentPage: 'edit') %>
   </div>
 </div>

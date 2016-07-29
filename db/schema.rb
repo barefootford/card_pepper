@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727005736) do
+ActiveRecord::Schema.define(version: 20160729025740) do
 
   create_table "card_edits", force: true do |t|
     t.integer  "user_id"
@@ -131,7 +131,8 @@ ActiveRecord::Schema.define(version: 20160727005736) do
     t.datetime "updated_at"
     t.string   "last_name"
     t.string   "website"
-    t.integer  "beta_status",     default: 0
+    t.integer  "beta_status",              default: 0
+    t.boolean  "user_saw_welcome_message"
   end
 
   create_table "versions", force: true do |t|

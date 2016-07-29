@@ -1,67 +1,11 @@
 <div class='row'>
   <div class='col-md-8'>
-
-    <%= react_component('DeckTitle', data: { deckID: @deck.id, deckTitle: @deck.title.to_s, deckEditor: @deck.user.serializable_hash, currentUser: @current_user.serializable_hash, cards: @cards, currentPage: 'show'}) %>
-      <h6>Instructions:</h6>
-      <p><%= @deck._instructions %></p>
-    <br><br>
-
-    <% if current_user && @deck_subscription %>
-      <%= link_to "Study this Deck", deck_subscription_study_sessions_path(@deck_subscription), method: :post, 
-        class:'btn btn-lg btn-block btn-primary' %>
-
-      <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
-        class:'label label-default', id:'dl-deck' %>
-    <% elsif current_user %>
-      <%= link_to "Add to My Decks", deck_subscriptions_path(deck_id: @deck.id), method: :post, class:'btn btn-lg btn-block btn-primary',
-        id:'add-to-my-decks' %>
-      <%= link_to 'Download Deck CSV', deck_path(@deck, format: 'csv'),
-        class:'label label-default', id:'dl-deck' %>
-    <% else %>
-      <%= link_to "Sign In to Study or Download", "#",
-        class:'btn btn-lg btn-block btn-primary' %>
-    <% end %>
-    <br>
-
-    <div id='deck-now-downloading' class='hidden'>
-      <p>
-        <%= @deck.title %> should begin downloading soon.
-        <em>
-          <%= link_to 'Download again.', deck_path(@deck, format: 'csv') %>
-        </em>
-      <p>
-      <%= link_to "Anki Import Instructions", anki_import_path, remote: true, class: 'label label-default' %>
-      <br><br>
-    </div>
-
-    <!-- <h6>Cards:</h6> -->
-    <%# if @cards.any? %>
-      <%#= render 'cards/index' %>
-    <%# end %>
-
-  <%# Yeah... We need to reconcile all these components into DecksShowView. After launch...  %>
-
-    <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions, currentUser: current_user.serializable_hash, deck: @deck.serializable_hash) %>
+    <%= react_component('Decks.Show.View', cards: @cards_with_client_side_attributes, cardEdits: @card_edits, cardSuggestions: @card_suggestions, deckEditor: @deck_editor, currentUser: current_user.serializable_hash, deck: @deck.serializable_hash) %>
   </div>
 
-  <% if current_user && (current_user != @deck.user) %>
+  <% if current_user && (current_user.id != @deck.user.id) %>
     <div class='col-md-4'>
       <%= react_component('CardSuggestionView', currentUser: current_user.serializable_hash, deckID: @deck.id, deckEditorID: @deck.user_id ) %>
     </div>
   <% end %>
 </div>
-
-<%# remove these scripts after changing studying --> downloading %>
-<script>
-  $(document).ready(function(){
-    $('#dl-deck').click(function(){
-      $('#deck-now-downloading').fadeIn(500).removeClass('hidden');
-    });
-  });
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.hideable').removeClass('hidden');
-  });
-</script>
