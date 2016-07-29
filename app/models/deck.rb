@@ -4,6 +4,7 @@ class Deck < ActiveRecord::Base
   belongs_to :user
   has_many :card_suggestions, dependent: :destroy
   has_many :cards, dependent: :destroy
+  has_many :card_edits, through: :cards
   has_many :deck_favorites, dependent: :destroy
 
   validates :title, length: { minimum: 5, maximum: 65 }

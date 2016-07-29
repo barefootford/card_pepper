@@ -68,10 +68,6 @@ class User < ActiveRecord::Base
     "#{first_name[0]}#{last_name[0]}'s"
   end
 
-  def website?
-    return true unless website.blank?
-  end
-
   def deckFavoritesIds
     deck_favorites.collect {|df| df.deck_id}.to_a
   end
@@ -81,6 +77,7 @@ class User < ActiveRecord::Base
     Rails.application.routes.url_helpers.user_path(user)
   end
 
+  # do we use this somewhere?
   def website=(website)
     self[:website] = website
   end
