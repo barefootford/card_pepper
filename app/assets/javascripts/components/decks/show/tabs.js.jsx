@@ -4,7 +4,8 @@ Decks.Show.Tabs = React.createClass({
     handleSwitchTab: React.PropTypes.func.isRequired,
     cardSuggestions: React.PropTypes.array.isRequired,
     cards: React.PropTypes.array.isRequired,
-    cardEdits: React.PropTypes.array.isRequired
+    cardEdits: React.PropTypes.array.isRequired,
+    deck: React.PropTypes.object.isRequired
   },
 
   render: function() {
@@ -33,6 +34,13 @@ Decks.Show.Tabs = React.createClass({
             active={this.props.activeComponent === "Card Edits"}
             handleSwitchTab={this.props.handleSwitchTab}
             callbackAttribute="Card Edits"
+          />
+          <DeckTab
+            text="Discussion"
+            handleSwitchTab={doNothing}
+            callbackAttribute=""
+            // this is actually just a link.
+            href={this.props.deck.deck_discussions_path}
           />
           <DeckTab
             text="Contributors"

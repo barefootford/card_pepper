@@ -1,6 +1,6 @@
 class DecksController < ApplicationController
   before_action :require_sign_in, except: [:show, :index]
-  before_action :deck, only: [:show, :edit, :update, :destroy, :download]
+  before_action :deck, only: [:show, :show_discussion, :edit, :update, :destroy, :download]
   before_action :require_creator, only: [:edit, :update, :destroy]
   before_action :dont_show_edit_button, only: [:show]
   before_action :must_be_beta_approved
@@ -26,6 +26,11 @@ class DecksController < ApplicationController
       format.html
       format.csv { download_csv }
     end
+  end
+
+  def show_discussion
+    @deck = deck
+    @deck_editor = @deck.user
   end
 
   def edit
@@ -81,13 +86,6 @@ class DecksController < ApplicationController
       render :new
     end
   end
-
-      # {
-      #   name: 'Andrew',
-      #   url: '/users/1',
-      #   contributionText: '9 New Cards, 3 Card Edits'
-      #  }
-      # ]
 
   def contributors
     @deck = Deck.where(id:params[:id]).includes(:cards).first

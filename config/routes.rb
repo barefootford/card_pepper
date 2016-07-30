@@ -27,6 +27,7 @@ Pepper::Application.routes.draw do
 
   get 'deck_contributors/:id' => 'decks#contributors'
   get 'decks/:id/destroy' => 'decks#destroy'
+  get 'deck_discussions/:id/' => 'decks#show_discussion', as: 'deck_discussions'
   resources :decks do
     # let's try and remove this after adding in the card resource routes
     resources :cards, only: [ :create, :destroy, :update ]
