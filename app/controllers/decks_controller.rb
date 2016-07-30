@@ -88,7 +88,7 @@ class DecksController < ApplicationController
   end
 
   def contributors
-    @deck = Deck.where(id:params[:id]).includes(:cards).first
+    @deck = Deck.where(id: params[:id]).includes(:cards).first
     card_ids = @deck.cards.collect {|c| c.id}
 
     deck_card_suggestions = CardSuggestion.approved.where(deck_id: @deck.id)
@@ -98,7 +98,7 @@ class DecksController < ApplicationController
     ce_user_ids = deck_card_edits.collect{|ce| ce.user_id}
     combined_user_ids = (cs_user_ids + ce_user_ids).uniq
 
-    contributors = User.where(id: [combined_user_ids])
+    contributors = User.where(id: combined_user_ids)
 
     response = contributors.collect do |c|
       card_edit_count = deck_card_edits.select {|ce| ce.user_id == c.id }.size

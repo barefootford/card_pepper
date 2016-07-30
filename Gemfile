@@ -22,6 +22,7 @@ gem 'therubyracer'
 
 gem 'time_difference', '0.4.2'
 gem 'uglifier', '>= 1.3.0'
+gem 'puma'
 
 group :test, :development do
   gem 'byebug'
