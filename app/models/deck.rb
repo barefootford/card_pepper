@@ -25,7 +25,8 @@ class Deck < ActiveRecord::Base
       'user_id' => nil,
       'edit_deck_path' => nil,
       'deck_path' => nil,
-      'download_path' => nil
+      'download_path' => nil,
+      'deck_discussions_path' => nil
     }
   end
 
@@ -39,6 +40,10 @@ class Deck < ActiveRecord::Base
 
   def download_path
     self.deck_path + '.csv'
+  end
+
+  def deck_discussions_path
+    "/deck_discussions/#{self.id}"
   end
 
   def any_card_suggestions_pending?

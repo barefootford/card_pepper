@@ -1,0 +1,31 @@
+<div class='row'>
+  <div class='col-md-8'>
+    <h3 style="margin-bottom: -4px;"><%= @deck.title %></h3>
+    <small>by <%= link_to(@deck_editor.name, @deck_editor) %></small>
+    <%= link_to('view deck', @deck, class:'btn btn-xs btn-primary') %>
+    <hr>
+
+    <%= content_tag "span", id: "deckData", data: {deck: @deck} do %>
+    <% end %>
+
+    <div id="disqus_thread"></div>
+      <script>
+        var disqus_config = function () {
+          // No  clue why setting the url doesn't work...
+          // var deck_discussions_url = $('#deckData').data().deck.deck_discussions_path
+
+          // this.page.url = deck_discussions_url
+          // this.page.identifier = (deck_discussions_url + 'identifier')
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = '//card-pepper.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </div>
+</div>

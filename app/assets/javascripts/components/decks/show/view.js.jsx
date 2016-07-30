@@ -221,6 +221,7 @@ Decks.Show.View = React.createClass({
         <Decks.Show.Tabs
           activeComponent={this.state.activeComponent}
           handleSwitchTab={this.handleSwitchTab}
+          deck={this.props.deck}
           cardSuggestions={this.state.cardSuggestions}
           cards={this.state.cards}
           cardEdits={this.state.cardEdits}
@@ -240,7 +241,6 @@ Decks.Show.View = React.createClass({
           active={this.state.activeComponent === "New Card Suggestions"}
           cardSuggestions={ViewHelpers.sortCards(this.state.cardSuggestions)}
         />
-
         <Decks.Show.CardEditsTable
           active={this.state.activeComponent === 'Card Edits'}
           cards={ViewHelpers.sortCards(this.state.cards)}

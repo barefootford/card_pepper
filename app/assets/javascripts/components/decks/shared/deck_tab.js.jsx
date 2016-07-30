@@ -2,6 +2,7 @@ var DeckTab = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
     text: React.PropTypes.string.isRequired,
+    href: React.PropTypes.string,
     handleSwitchTab: React.PropTypes.func.isRequired,
     callbackAttribute: React.PropTypes.string.isRequired
   },
@@ -43,6 +44,7 @@ var DeckTab = React.createClass({
         <a
           onClick={this.props.handleSwitchTab}
           style={linkStyle}
+          href={this.props.href}
           data-callback-attribute={this.props.callbackAttribute}
         >
           {this.props.text + this.cardCountText()}
