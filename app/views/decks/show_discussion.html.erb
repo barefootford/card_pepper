@@ -2,7 +2,7 @@
   <div class='col-md-8'>
     <h3 style="margin-bottom: -4px;"><%= @deck.title %></h3>
     <small>by <%= link_to(@deck_editor.name, @deck_editor) %></small>
-    <%= link_to('view deck', @deck, class:'btn btn-xs btn-primary') %>
+    <%= link_to('return to deck', @deck, class:'btn btn-xs btn-primary') %>
     <hr>
 
     <%= content_tag "span", id: "deckData", data: {deck: @deck} do %>
