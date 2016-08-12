@@ -35,7 +35,7 @@ var FavoritedDecks = React.createClass({
     } else {
       return (
         <div>
-          <QuietLabel text='Other community decks you follow:'/>
+          <QuietLabel text='Community decks you follow:'/>
           <div>
             <small>
               <Heart/> decks and they'll show up here.
