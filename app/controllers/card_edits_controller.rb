@@ -50,7 +50,7 @@ private
       .first
     @card_edit = @card.card_edits.first
 
-    @deck = Deck.find_by(@card.deck_id)
+    @deck = Deck.find_by(id: @card.deck_id)
   end
 
   def update_params
