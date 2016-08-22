@@ -1,4 +1,4 @@
-var Dashboard = React.createClass({
+var DashboardView = React.createClass({
   propTypes: {
     currentUser: React.PropTypes.object.isRequired,
     ownedDecks: React.PropTypes.array.isRequired,

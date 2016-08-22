@@ -1,4 +1,4 @@
-<%= react_component('Dashboard', currentUser: current_user.serializable_hash, ownedDecks: @owned_decks, favoritedDecks: @favorited_decks, favoritedDecksEditors: @favorited_decks_editors) %>
+<%= react_component('DashboardView', currentUser: current_user.serializable_hash, ownedDecks: @owned_decks, favoritedDecks: @favorited_decks, favoritedDecksEditors: @favorited_decks_editors) %>
 
 <br><br>
 <p><%= link_to "Build a New Deck", new_deck_path, class:'btn btn-primary' %>
