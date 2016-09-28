@@ -2,7 +2,7 @@ Pepper::Application.routes.draw do
 
   resources :deck_favorites, only: [:create, :destroy]
 
-  root 'dashboard#show'
+  root 'pages#landing'
   #static pages
   get 'beta' => 'pages#beta', as: 'beta'
   get 'requestafeature' => 'pages#request_feature'
