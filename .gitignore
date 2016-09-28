@@ -17,6 +17,8 @@
 
 to_do.txt
 
+.DS_Store
+
 config/secrets.yml
 
 app/assets/javascripts/components/react_prop_types.jsx
