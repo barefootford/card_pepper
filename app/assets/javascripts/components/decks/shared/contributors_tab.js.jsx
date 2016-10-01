@@ -7,13 +7,15 @@ Decks.ContributorsTab = React.createClass({
   getInitialState: function() {
     return {
       ajaxStatus: '',
-      contributors: [],
+      contributors: []
       // {
       //   name: 'Andrew',
       //   url: '/users/1',
-      //   contributionText: '9 New Cards, 3 Card Edits'
-      //  }
-      // ]
+      //   contributions: {
+      //     edited: 0,
+      //     created: 5
+      //   }
+      // }
     }
   },
 
@@ -38,29 +40,56 @@ Decks.ContributorsTab = React.createClass({
 
   displayContributors: function() {
     var ajaxStatus = this.state.ajaxStatus;
-    var anyContributors = this.state.contributors.length > 0;
-
+    var contributors = this.state.contributors
+    if (!contributors) {
+      return <div>No contributors yet.</div>
+    }
     if ((ajaxStatus === 'requesting') || (ajaxStatus === '')) {
       return <QuietLabel text="loading..." />
-    } else if (ajaxStatus === 'received' && anyContributors ) {
+    }
+    if (ajaxStatus === 'received' && anyContributors ) {
       return <div>some contributors</div>
-    } else if (ajaxStatus === 'responseReceived' && anyContributors) {
+    }
+    if (ajaxStatus === 'responseReceived') {
       return (
-        _.map(this.state.contributors, function(contributor){
+        _.map(contributors, function(user){
           return (
-            <div key={contributor.url}>
+            <div key={user.url}>
               <A
-                text={contributor.name}
-                href={contributor.url}
+                text={user.name}
+                href={user.url}
               />
-              <span> - {contributor.contributionText}</span>
+            <span> - {this.contributionText(user.created, user.edited)}</span>
             </div>
           )
-        })
+        }.bind(this))
       )
-    } else {
-      return <div>No community contributors yet.</div>
     }
+  },
+
+  contributionText: function (created, edited) {
+    var summation = ''
+    edited = edited || ''
+    created = created || ''
+    if (created) {
+      if (created === 1) {
+        created = '1 New Card'
+      } else {
+        created += ' New Cards'
+      }
+    }
+    summation += created;
+    if (edited) {
+      if (edited === 1) {
+        edited = '1 Card Edit'
+      } else {
+        edited += ' Card Edits'
+      }
+    }
+    if (edited) {
+      summation += ', ' + edited
+    }
+    return summation
   },
 
   render: function() {
@@ -83,6 +112,6 @@ Decks.ContributorsTab = React.createClass({
           </tbody>
         </table>
       )
-    } 
+    }
   }
 });

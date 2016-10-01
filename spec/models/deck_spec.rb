@@ -1,5 +1,19 @@
 require 'spec_helper'
 
+describe Deck do
+  describe '.sum_by_user_id' do
+    it 'returns a hash of user_ids and counts' do
+      cards = [
+        {user_id: 10},
+        {user_id: 20},
+        {user_id: 20}
+      ]
+      expect(Deck.sum_by_user_id(cards)).to eq({10=>1, 20=>2})
+    end
+  end
+
+end
+
 describe 'A deck' do
   it 'will not save without a title' do 
     deck = Deck.new(title:"")
