@@ -77,32 +77,19 @@ class Deck < ActiveRecord::Base
     card_suggestions.count
   end
 
-  # this isn't unique to a deck.
-  # its a general purpose function.
-  # [items] ex. cards is [{ user_id: 15 },...]
-  # returns: { user_id: count }
-  def self.sum_by_user_id (items)
+  # input: ex. cards is [{ user_id: 15 },...]
+  # output: { user_id: count }
+  def self.sum_by_user_id(items)
     summary = {}
     items.each do |item|
       id = item[:user_id]
-      if (summary[id].present?)
+      if summary[id].present?
         summary[id] += 1
       else
         summary[id] = 1
       end
     end
     summary
-  end
-
-  def self.contributions (cards, card_edits)
-    edits = card_edits.select { |ce| ce.approved? }
-    authors = sum_by_user_id(cards)
-    editors = sum_by_user_id(edits)
-
-    {
-      authors: authors, # example: {user_id: no_of_cards}
-      editors: editors
-    }
   end
 
   def to_csv

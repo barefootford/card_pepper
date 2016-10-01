@@ -89,19 +89,16 @@ class DecksController < ApplicationController
 
   def contributors
     @deck = Deck.where(id: params[:id]).includes(:cards, :card_edits).first
-    # @deck = Deck.where(id: 1).includes(:cards, :card_edits).first
-    cards = @deck.cards
-    edits = @deck.card_edits
-    contributors = Deck.contributions(cards, edits)
-    user_ids = contributors[:authors].keys + contributors[:editors].keys
-    users = User.where(id: user_ids)
+    authors = Deck.sum_by_user_id(@deck.cards)
+    editors = Deck.sum_by_user_id(@deck.card_edits)
+    users = User.where(id: authors.keys + editors.keys)
 
-    response = users.collect do |user|
+    response = users.map do |user|
       {
         name: user.name,
         url: user_path(user),
-        created: contributors[:authors][user.id].to_i,
-        edited: contributors[:editors][user.id].to_i
+        created: authors[user.id].to_i,
+        edited: editors[user.id].to_i
       }
     end
 
