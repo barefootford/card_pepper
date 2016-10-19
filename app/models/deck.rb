@@ -77,6 +77,22 @@ class Deck < ActiveRecord::Base
     card_suggestions.count
   end
 
+  # input are cards or anything with a user_id
+  def self.sum_by_user_id(items_array)
+    summary = {}
+    items_array.each do |item|
+      id = item[:user_id]
+      if summary[id].present?
+        summary[id] += 1
+      else
+        summary[id] = 1
+      end
+    end
+    # returns a hash of user_ids and counts. ex:
+    # { 10 => 1, 20 => 2 }
+    return summary
+  end
+
   def to_csv
     csv_string = CSV.generate do |csv|
       self.cards.each {|c| csv << [ c.question, c.answer ] }

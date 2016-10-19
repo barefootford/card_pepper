@@ -88,42 +88,25 @@ class DecksController < ApplicationController
   end
 
   def contributors
-    @deck = Deck.where(id: params[:id]).includes(:cards).first
-    card_ids = @deck.cards.collect {|c| c.id}
+    # grab the deck and include all of its cards ('created cards') and card_edits (recomendations to cards)
+    deck = Deck.where(id: params[:id]).includes(:cards, :card_edits).first
+    cards_created_by_users_count = Deck.sum_by_user_id(deck.cards)
+    cards_edited_by_users_count = Deck.sum_by_user_id(deck.card_edits)
+    combined_user_ids = cards_edited_by_users_count.keys + 
+      cards_created_by_users_count.keys
+    users = User.where(id: combined_user_ids)
 
-    deck_card_suggestions = CardSuggestion.approved.where(deck_id: @deck.id)
-    deck_card_edits = CardEdit.approved.where(card_id: card_ids)
-
-    cs_user_ids = deck_card_suggestions.collect {|cs| cs.user_id}
-    ce_user_ids = deck_card_edits.collect{|ce| ce.user_id}
-    combined_user_ids = (cs_user_ids + ce_user_ids).uniq
-
-    contributors = User.where(id: combined_user_ids)
-
-    response = contributors.collect do |c|
-      card_edit_count = deck_card_edits.select {|ce| ce.user_id == c.id }.size
-      card_suggestions_count = deck_card_suggestions.select {|cs| cs.user_id == c.id }.size
-      ce_and_cs = (card_edit_count > 0 && card_suggestions_count > 0)
-
-      if card_edit_count > 0
-        card_edit_text = "#{card_edit_count} #{"Card edit".pluralize(card_edit_count)}"
-      else
-        card_edit_text = ''
-      end
-
-      if card_suggestions_count > 0
-        card_suggestions_text = " #{card_suggestions_count} #{"Card Suggestion".pluralize(card_suggestions_count)}"
-      else
-        card_suggestions_text = ''
-      end
-
+    # Return an array of objects that represent simplified user objects with a user name, user url and the number of cards they have edited and created
+    # [{:name=>"Andrew Ford", :url=>"/users/1", :created=>11, :edited=>20}, {:name=>"kailey kelley", :url=>"/users/2", :created=>3, :edited=>12}]
+    response = users.map do |user|
       {
-        name: c.name,
-        url: user_path(c),
-        contributionText: "#{card_edit_text}#{"," if ce_and_cs}#{card_suggestions_text}"
+        name: user.name,
+        url: user_path(user),
+        cards_created_count: cards_created_by_users_count[user.id].to_i,
+        cards_edited_count: cards_edited_by_users_count[user.id].to_i
       }
     end
-  
+
     render json: response
   end
 
