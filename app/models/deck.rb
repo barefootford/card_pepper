@@ -77,11 +77,10 @@ class Deck < ActiveRecord::Base
     card_suggestions.count
   end
 
-  # input: ex. cards is [{ user_id: 15 },...]
-  # output: { user_id: count }
-  def self.sum_by_user_id(items)
+  # input are cards or anything with a user_id
+  def self.sum_by_user_id(items_array)
     summary = {}
-    items.each do |item|
+    items_array.each do |item|
       id = item[:user_id]
       if summary[id].present?
         summary[id] += 1
@@ -89,7 +88,9 @@ class Deck < ActiveRecord::Base
         summary[id] = 1
       end
     end
-    summary
+    # returns a hash of user_ids and counts. ex:
+    # { 10 => 1, 20 => 2 }
+    return summary
   end
 
   def to_csv

@@ -1,42 +1,3 @@
-Decks.ContributorsRow = React.createClass({
-  message: function (created, edited) {
-    var summation = ''
-    edited = edited || ''
-    created = created || ''
-    if (created) {
-      if (created === 1) {
-        created = '1 New Card'
-      } else {
-        created += ' New Cards'
-      }
-    }
-    summation += created;
-    if (edited) {
-      if (edited === 1) {
-        edited = '1 Card Edit'
-      } else {
-        edited += ' Card Edits'
-      }
-    }
-    if (edited) {
-      summation += ', ' + edited
-    }
-    return summation
-  },
-
-  render: function () {
-    var user = this.props.user;
-    return (
-      <tr>
-        <td>
-          <A text={user.name} href={user.url} />
-          <span> - {this.message(user.created, user.edited)}</span>
-        </td>
-      </tr>
-    )
-  }
-});
-
 Decks.ContributorsTab = React.createClass({
   propTypes: {
     active: React.PropTypes.bool.isRequired,
@@ -46,6 +7,7 @@ Decks.ContributorsTab = React.createClass({
   getInitialState: function() {
     return {
       ajaxStatus: '',
+      // an array of users who have created or edited cards in this deck:
       contributors: []
       // {
       //   name: 'Andrew',

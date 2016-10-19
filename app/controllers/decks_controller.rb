@@ -88,17 +88,22 @@ class DecksController < ApplicationController
   end
 
   def contributors
-    @deck = Deck.where(id: params[:id]).includes(:cards, :card_edits).first
-    authors = Deck.sum_by_user_id(@deck.cards)
-    editors = Deck.sum_by_user_id(@deck.card_edits)
-    users = User.where(id: authors.keys + editors.keys)
+    # grab the deck and include all of its cards ('created cards') and card_edits (recomendations to cards)
+    deck = Deck.where(id: params[:id]).includes(:cards, :card_edits).first
+    cards_created_by_users_count = Deck.sum_by_user_id(deck.cards)
+    cards_edited_by_users_count = Deck.sum_by_user_id(deck.card_edits)
+    combined_user_ids = cards_edited_by_users_count.keys + 
+      cards_created_by_users_count.keys
+    users = User.where(id: combined_user_ids)
 
+    # Return an array of objects that represent simplified user objects with a user name, user url and the number of cards they have edited and created
+    # [{:name=>"Andrew Ford", :url=>"/users/1", :created=>11, :edited=>20}, {:name=>"kailey kelley", :url=>"/users/2", :created=>3, :edited=>12}]
     response = users.map do |user|
       {
         name: user.name,
         url: user_path(user),
-        created: authors[user.id].to_i,
-        edited: editors[user.id].to_i
+        cards_created_count: cards_created_by_users_count[user.id].to_i,
+        cards_edited_count: cards_edited_by_users_count[user.id].to_i
       }
     end
 
