@@ -1,6 +1,6 @@
 ## Manifesto
 
-The aim of Card Pepper is to bring the power of collaboration and multiple iterations to flashcard decks. Most flashcard decks are created with only one user in mind. If decks are instead built with the intention of sharing and collaborating with others, flash cards can be used like a specialized mentor that intimately knows the material well instead of as just notes. Not everyone is going to think this is a good idea, but that's OK. There are lots of alternatives.
+The aim of Card Pepper is to bring the power of collaboration and multiple iterations to flashcard decks. Most flashcard decks are created with only one user in mind. If decks are instead built with the intention of sharing and collaborating with others, flash cards can be used like a mentor that knows the material well and can quiz and nudge you in the right direction. Not everyone is going to think this is a good idea, but that's OK. There are lots of alternatives.
 
 ## Requirements
 
