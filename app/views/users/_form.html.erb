@@ -1,13 +1,12 @@
 <%= form_for(@user) do |f| %>
-  
-  <br>  
+  <br>
   <div class='col-md-4'>
-    <small>Email Address:</small>    
+    <small>Email Address:</small>
     <%= f.email_field :email, placeholder:'stevie@gmail.com', class:'form-control', rows:1 %>
   </div>
 
-  <div class='col-md-2'>      
-    <small>First Name:</small>    
+  <div class='col-md-2'>
+    <small>First Name:</small>
     <%= f.text_area :first_name, placeholder:'Stevie', class:'form-control', rows:1 %>
   </div>
 
